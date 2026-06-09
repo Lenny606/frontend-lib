@@ -1,0 +1,202 @@
+/* Glass Fluid Avatar Component Styles */
+:root {
+  --fl-avatar-status-gap-color: #080c14; /* Matches background to mask status dot */
+  --fl-status-online: #10b981;
+  --fl-status-offline: #6b7280;
+  --fl-status-idle: #f59e0b;
+  --fl-status-dnd: #ef4444;
+}
+
+.fl-avatar {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  user-select: none;
+  box-sizing: border-box;
+  font-family: var(--fl-font-family, system-ui, sans-serif);
+  font-weight: 600;
+  
+  /* Glassmorphic border & background */
+  border: 1px solid var(--fl-glass-border, rgba(255, 255, 255, 0.12));
+  background: var(--fl-glass-bg, rgba(255, 255, 255, 0.07));
+  backdrop-filter: blur(12px) saturate(180%);
+  -webkit-backdrop-filter: blur(12px) saturate(180%);
+  box-shadow: var(--fl-glass-shadow, 0 8px 32px 0 rgba(0, 0, 0, 0.25));
+  
+  overflow: visible; /* Needed for status indicators to extend outside */
+}
+
+/* ==========================================================================
+   Shape Variants
+   ========================================================================== */
+
+.fl-avatar--circle {
+  border-radius: 50%;
+}
+
+.fl-avatar--circle .fl-avatar-img,
+.fl-avatar--circle .fl-avatar-fallback {
+  border-radius: 50%;
+}
+
+/* Size-dependent border radius for square variant for visual harmony */
+.fl-avatar--square.fl-avatar--xs { border-radius: 6px; }
+.fl-avatar--square.fl-avatar--sm { border-radius: var(--fl-radius-sm, 8px); }
+.fl-avatar--square.fl-avatar--md { border-radius: var(--fl-radius, 12px); }
+.fl-avatar--square.fl-avatar--lg { border-radius: var(--fl-radius-lg, 16px); }
+.fl-avatar--square.fl-avatar--xl { border-radius: 20px; }
+
+.fl-avatar--square .fl-avatar-img,
+.fl-avatar--square .fl-avatar-fallback {
+  border-radius: inherit;
+}
+
+/* ==========================================================================
+   Sizing Options
+   ========================================================================== */
+
+.fl-avatar--xs {
+  width: 1.5rem;  /* 24px */
+  height: 1.5rem;
+  font-size: 0.65rem;
+}
+
+.fl-avatar--sm {
+  width: 2rem;    /* 32px */
+  height: 2rem;
+  font-size: 0.8rem;
+}
+
+.fl-avatar--md {
+  width: 2.5rem;  /* 40px */
+  height: 2.5rem;
+  font-size: 0.95rem;
+}
+
+.fl-avatar--lg {
+  width: 3rem;    /* 48px */
+  height: 3rem;
+  font-size: 1.15rem;
+}
+
+.fl-avatar--xl {
+  width: 4rem;    /* 64px */
+  height: 4rem;
+  font-size: 1.5rem;
+}
+
+/* ==========================================================================
+   Inner Elements (Img, Fallback, Placeholder)
+   ========================================================================== */
+
+.fl-avatar-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transition: opacity 0.25s ease-in-out;
+  display: block;
+}
+
+.fl-avatar-img--loaded {
+  opacity: 1;
+}
+
+.fl-avatar-fallback {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--fl-secondary-text, #e5e7eb);
+  background: var(--fl-glass-bg, rgba(255, 255, 255, 0.07));
+  text-transform: uppercase;
+}
+
+/* SVG placeholder style if no fallback/src */
+.fl-avatar-placeholder-icon {
+  width: 55%;
+  height: 55%;
+  color: var(--fl-secondary-text, #e5e7eb);
+  opacity: 0.7;
+}
+
+/* ==========================================================================
+   Status Indicator Badge
+   ========================================================================== */
+
+.fl-avatar-status {
+  position: absolute;
+  border-radius: 50%;
+  display: block;
+  z-index: 2;
+  
+  /* Creates a clean gap separating status dot from avatar content */
+  box-shadow: 0 0 0 2px var(--fl-avatar-status-gap-color);
+}
+
+/* Size-dependent status dot styling */
+.fl-avatar--xs .fl-avatar-status {
+  width: 6px;
+  height: 6px;
+  bottom: -1px;
+  right: -1px;
+}
+
+.fl-avatar--sm .fl-avatar-status {
+  width: 8px;
+  height: 8px;
+  bottom: -1px;
+  right: -1px;
+}
+
+.fl-avatar--md .fl-avatar-status {
+  width: 10px;
+  height: 10px;
+  bottom: 0;
+  right: 0;
+}
+
+.fl-avatar--lg .fl-avatar-status {
+  width: 12px;
+  height: 12px;
+  bottom: 1px;
+  right: 1px;
+}
+
+.fl-avatar--xl .fl-avatar-status {
+  width: 16px;
+  height: 16px;
+  bottom: 2px;
+  right: 2px;
+}
+
+/* Status variants */
+.fl-avatar-status--online {
+  background-color: var(--fl-status-online);
+  box-shadow: 
+    0 0 0 2px var(--fl-avatar-status-gap-color),
+    0 0 8px 1px var(--fl-status-online);
+}
+
+.fl-avatar-status--offline {
+  background-color: var(--fl-status-offline);
+}
+
+.fl-avatar-status--idle {
+  background-color: var(--fl-status-idle);
+  box-shadow: 
+    0 0 0 2px var(--fl-avatar-status-gap-color),
+    0 0 8px 1px var(--fl-status-idle);
+}
+
+.fl-avatar-status--dnd {
+  background-color: var(--fl-status-dnd);
+  box-shadow: 
+    0 0 0 2px var(--fl-avatar-status-gap-color),
+    0 0 8px 1px var(--fl-status-dnd);
+}

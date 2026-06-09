@@ -380,6 +380,8 @@
     <button class="tab-trigger" data-tab="cards">Card Component</button>
     <button class="tab-trigger" data-tab="links">Link Component</button>
     <button class="tab-trigger" data-tab="elements">UI Elements</button>
+    <button class="tab-trigger" data-tab="modals">Modal Component</button>
+    <button class="tab-trigger" data-tab="avatars">Avatar Component</button>
   </nav>
 
   <main>
@@ -839,6 +841,121 @@
         </div>
       </div>
     </section>
+
+    <!-- Modal Customizer -->
+    <section class="card tab-content-modals tab-hidden">
+      <div class="card-title">
+        <span>Interactive Modal Customizer</span>
+        <span class="badge">Live Trigger</span>
+      </div>
+
+      <div class="preview-box" id="modal-preview" style="min-height: 100px;">
+        <!-- Trigger button will appear here -->
+      </div>
+
+      <div class="controls-grid">
+        <div class="control-group">
+          <label for="mdl-title-input">Title (Nadpis)</label>
+          <input type="text" id="mdl-title-input" value="Potvrzení akce">
+        </div>
+
+        <div class="control-group">
+          <label for="mdl-size-select">Size (Velikost)</label>
+          <select id="mdl-size-select">
+            <option value="sm">sm (380px)</option>
+            <option value="default" selected>default (520px)</option>
+            <option value="lg">lg (760px)</option>
+          </select>
+        </div>
+
+        <div class="control-group control-full">
+          <label for="mdl-content-input">Content (Obsah)</label>
+          <input type="text" id="mdl-content-input" value="Opravdu chcete pokračovat? Tuto akci nelze vzít zpět.">
+        </div>
+
+        <div class="control-group control-full">
+          <label>Options (Volby)</label>
+          <div class="checkbox-row">
+            <label class="checkbox-item">
+              <input type="checkbox" id="mdl-closable-check" checked>
+              Closable (X)
+            </label>
+            <label class="checkbox-item">
+              <input type="checkbox" id="mdl-backdrop-check" checked>
+              Close on Backdrop
+            </label>
+            <label class="checkbox-item">
+              <input type="checkbox" id="mdl-footer-check" checked>
+              Footer
+            </label>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Avatar Customizer -->
+    <section class="card tab-content-avatars tab-hidden">
+      <div class="card-title">
+        <span>Interactive Avatar Customizer</span>
+        <span class="badge">Live Preview</span>
+      </div>
+
+      <div class="preview-box" id="avatar-preview" style="min-height: 100px; display: flex; align-items: center; justify-content: center;">
+        <!-- Rendered avatar will appear here -->
+      </div>
+
+      <div class="controls-grid">
+        <div class="control-group">
+          <label for="av-src-input">Image URL (src)</label>
+          <input type="text" id="av-src-input" value="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=150&q=80">
+        </div>
+
+        <div class="control-group">
+          <label for="av-fallback-input">Fallback (Initials)</label>
+          <input type="text" id="av-fallback-input" value="JN" maxlength="2">
+        </div>
+
+        <div class="control-group">
+          <label for="av-size-select">Size (Velikost)</label>
+          <select id="av-size-select">
+            <option value="xs">xs (Extra Small)</option>
+            <option value="sm">sm (Small)</option>
+            <option value="md" selected>md (Medium)</option>
+            <option value="lg">lg (Large)</option>
+            <option value="xl">xl (Extra Large)</option>
+          </select>
+        </div>
+
+        <div class="control-group">
+          <label for="av-shape-select">Shape (Tvar)</label>
+          <select id="av-shape-select">
+            <option value="circle" selected>circle (Kruh)</option>
+            <option value="square">square (Zaoblený čtverec)</option>
+          </select>
+        </div>
+
+        <div class="control-group">
+          <label for="av-status-select">Status</label>
+          <select id="av-status-select">
+            <option value="none" selected>Žádný</option>
+            <option value="online">online</option>
+            <option value="offline">offline</option>
+            <option value="idle">idle</option>
+            <option value="dnd">dnd (nerušit)</option>
+          </select>
+        </div>
+
+        <div class="control-group">
+          <label for="av-alt-input">Alt Text</label>
+          <input type="text" id="av-alt-input" value="Uživatelský profil">
+        </div>
+
+        <div class="control-group control-full">
+          <label for="av-class-input">Custom Class Name</label>
+          <input type="text" id="av-class-input" value="" placeholder="např. custom-avatar-style">
+        </div>
+      </div>
+    </section>
   </div>
 
   <!-- Right Column: Presets & Logs -->
@@ -975,6 +1092,36 @@
         <div class="preset-section tab-content-elements tab-hidden">
           <h3>Toasts (Notifikace)</h3>
           <div class="preset-list" id="preset-toasts">
+            <!-- Rendered automatically -->
+          </div>
+        </div>
+
+        <!-- Modal Presets -->
+        <div class="preset-section tab-content-modals tab-hidden">
+          <h3>Modals (Modální okna)</h3>
+          <div class="preset-list" id="preset-modals">
+            <!-- Rendered automatically -->
+          </div>
+        </div>
+
+        <!-- Avatar Presets -->
+        <div class="preset-section tab-content-avatars tab-hidden">
+          <h3>Avatar Sizes (Velikosti)</h3>
+          <div class="preset-list" id="preset-avatar-sizes" style="gap: 1.5rem; align-items: center; justify-content: flex-start; flex-wrap: wrap;">
+            <!-- Rendered automatically -->
+          </div>
+        </div>
+
+        <div class="preset-section tab-content-avatars tab-hidden">
+          <h3>Avatar Shapes & Presence Statuses</h3>
+          <div class="preset-list" id="preset-avatar-statuses" style="gap: 1.5rem; align-items: center; justify-content: flex-start; flex-wrap: wrap;">
+            <!-- Rendered automatically -->
+          </div>
+        </div>
+
+        <div class="preset-section tab-content-avatars tab-hidden">
+          <h3>Initials & Fallback States</h3>
+          <div class="preset-list" id="preset-avatar-fallbacks" style="gap: 1.5rem; align-items: center; justify-content: flex-start; flex-wrap: wrap;">
             <!-- Rendered automatically -->
           </div>
         </div>

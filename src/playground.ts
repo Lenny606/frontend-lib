@@ -10,7 +10,9 @@ import {
   createToggle,
   createBadge,
   createTooltip,
-  showToast
+  showToast,
+  createModal,
+  createAvatar
 } from './index';
 
 // 1. Icon Definitions (SVG Strings)
@@ -102,6 +104,25 @@ const tstVariantSelect = document.getElementById('tst-variant-select') as HTMLSe
 const tstPositionSelect = document.getElementById('tst-position-select') as HTMLSelectElement;
 const tstDurationInput = document.getElementById('tst-duration-input') as HTMLInputElement;
 const tstClosableCheck = document.getElementById('tst-closable-check') as HTMLInputElement;
+
+// Customizer Element Selectors - Modal
+const modalPreviewContainer = document.getElementById('modal-preview');
+const mdlTitleInput = document.getElementById('mdl-title-input') as HTMLInputElement;
+const mdlSizeSelect = document.getElementById('mdl-size-select') as HTMLSelectElement;
+const mdlContentInput = document.getElementById('mdl-content-input') as HTMLInputElement;
+const mdlClosableCheck = document.getElementById('mdl-closable-check') as HTMLInputElement;
+const mdlBackdropCheck = document.getElementById('mdl-backdrop-check') as HTMLInputElement;
+const mdlFooterCheck = document.getElementById('mdl-footer-check') as HTMLInputElement;
+
+// Customizer Element Selectors - Avatar
+const avatarPreviewContainer = document.getElementById('avatar-preview');
+const avSrcInput = document.getElementById('av-src-input') as HTMLInputElement;
+const avFallbackInput = document.getElementById('av-fallback-input') as HTMLInputElement;
+const avSizeSelect = document.getElementById('av-size-select') as HTMLSelectElement;
+const avShapeSelect = document.getElementById('av-shape-select') as HTMLSelectElement;
+const avStatusSelect = document.getElementById('av-status-select') as HTMLSelectElement;
+const avAltInput = document.getElementById('av-alt-input') as HTMLInputElement;
+const avClassInput = document.getElementById('av-class-input') as HTMLInputElement;
 
 // Log & Console Selectors
 const consoleLogs = document.getElementById('console-logs');
@@ -416,6 +437,109 @@ function setupToastCustomizer() {
       logEvent(`Zobrazen toast: variant ${variant} | pozice ${position} | duration ${duration}ms`);
     }
   }));
+}
+
+// 4g. Modal Customizer (trigger button opens a live modal)
+function setupModalCustomizer() {
+  if (!modalPreviewContainer) return;
+
+  modalPreviewContainer.appendChild(createButton({
+    label: 'Otevřít Modal',
+    endIcon: ICONS.arrow,
+    onClick: () => {
+      const title = mdlTitleInput ? mdlTitleInput.value : 'Modal';
+      const size = (mdlSizeSelect ? mdlSizeSelect.value : 'default') as any;
+      const content = mdlContentInput ? mdlContentInput.value : '';
+      const closable = mdlClosableCheck ? mdlClosableCheck.checked : true;
+      const closeOnBackdrop = mdlBackdropCheck ? mdlBackdropCheck.checked : true;
+      const withFooter = mdlFooterCheck ? mdlFooterCheck.checked : true;
+
+      // Fresh modal per open; destroyed after close so options stay live
+      const modal = createModal({
+        title: title || undefined,
+        content: content || undefined,
+        size,
+        closable,
+        closeOnBackdrop,
+        footer: withFooter
+          ? [
+              createButton({
+                label: 'Zrušit',
+                variant: 'ghost',
+                onClick: () => {
+                  logEvent('Kliknuto na modal tlačítko: Zrušit');
+                  modal.close();
+                }
+              }),
+              createButton({
+                label: 'Potvrdit',
+                startIcon: ICONS.check,
+                onClick: () => {
+                  logEvent('Kliknuto na modal tlačítko: Potvrdit');
+                  modal.close();
+                }
+              })
+            ]
+          : undefined,
+        onClose: () => {
+          logEvent(`Modal "${title}" zavřen.`);
+          // Wait for the exit transition before removing from the DOM
+          setTimeout(() => modal.destroy(), 400);
+        }
+      });
+
+      modal.open();
+      logEvent(`Otevřen modal: "${title}" | size: ${size} | backdrop dismiss: ${closeOnBackdrop}`);
+    }
+  }));
+}
+
+// 4h. Avatar Customizer
+function renderCustomizerAvatar() {
+  if (!avatarPreviewContainer) return;
+  avatarPreviewContainer.innerHTML = '';
+
+  const src = avSrcInput ? avSrcInput.value.trim() : '';
+  const fallback = avFallbackInput ? avFallbackInput.value.trim() : '';
+  const size = (avSizeSelect ? avSizeSelect.value : 'md') as any;
+  const shape = (avShapeSelect ? avShapeSelect.value : 'circle') as any;
+  const statusVal = avStatusSelect ? avStatusSelect.value : 'none';
+  const status = statusVal === 'none' ? undefined : (statusVal as any);
+  const alt = avAltInput ? avAltInput.value.trim() : '';
+  const className = avClassInput ? avClassInput.value.trim() : '';
+
+  const avatar = createAvatar({
+    src: src || undefined,
+    fallback: fallback || undefined,
+    size,
+    shape,
+    status,
+    alt: alt || undefined,
+    className: className || undefined
+  });
+
+  avatarPreviewContainer.appendChild(avatar);
+}
+
+function setupAvatarCustomizer() {
+  if (!avatarPreviewContainer) return;
+
+  // Initial render
+  renderCustomizerAvatar();
+
+  // Wire up listeners
+  [avSrcInput, avFallbackInput, avAltInput, avClassInput].forEach(input => {
+    if (input) input.addEventListener('input', () => {
+      renderCustomizerAvatar();
+    });
+  });
+
+  [avSizeSelect, avShapeSelect, avStatusSelect].forEach(select => {
+    if (select) select.addEventListener('change', () => {
+      renderCustomizerAvatar();
+      logEvent(`Avatar customizer: Změna výběru -> ${select.id}: ${select.value}`);
+    });
+  });
 }
 
 // Wire up customizer listeners - Button
@@ -1015,6 +1139,204 @@ function renderPresets() {
       }));
     });
   }
+
+  // Modal Presets
+  const modalsContainer = document.getElementById('preset-modals');
+  if (modalsContainer) {
+    // 1. Confirmation dialog
+    const confirmModal = createModal({
+      title: 'Smazat položku?',
+      size: 'sm',
+      content: 'Položka bude trvale odstraněna. Tuto akci nelze vzít zpět.',
+      footer: [
+        createButton({
+          label: 'Zrušit',
+          variant: 'ghost',
+          onClick: () => confirmModal.close()
+        }),
+        createButton({
+          label: 'Smazat',
+          onClick: () => {
+            confirmModal.close();
+            showToast({ variant: 'success', title: 'Smazáno', message: 'Položka byla odstraněna.' });
+            logEvent('Preset modal (confirm): potvrzeno smazání');
+          }
+        })
+      ],
+      onClose: () => logEvent('Preset modal (confirm) zavřen.')
+    });
+
+    modalsContainer.appendChild(createButton({
+      label: 'Confirm Dialog',
+      variant: 'outline',
+      size: 'sm',
+      onClick: () => confirmModal.open()
+    }));
+
+    // 2. Modal composed of form components
+    const formModal = createModal({
+      title: 'Pozvat člena týmu',
+      content: [
+        createInput({
+          label: 'E-mail',
+          type: 'email',
+          placeholder: 'kolega@example.com',
+          required: true
+        }),
+        createSelect({
+          label: 'Role',
+          placeholder: 'Vyberte roli…',
+          options: [
+            { value: 'viewer', label: 'Čtenář' },
+            { value: 'editor', label: 'Editor' },
+            { value: 'admin', label: 'Administrátor' }
+          ]
+        })
+      ],
+      footer: createButton({
+        label: 'Odeslat pozvánku',
+        endIcon: ICONS.arrow,
+        onClick: () => {
+          formModal.close();
+          showToast({ variant: 'info', title: 'Pozvánka', message: 'Pozvánka byla odeslána.' });
+          logEvent('Preset modal (form): pozvánka odeslána');
+        }
+      }),
+      onClose: () => logEvent('Preset modal (form) zavřen.')
+    });
+
+    modalsContainer.appendChild(createButton({
+      label: 'Form Modal',
+      variant: 'outline',
+      size: 'sm',
+      onClick: () => formModal.open()
+    }));
+
+    // 3. Strict modal: no backdrop dismiss, must use the buttons
+    const strictModal = createModal({
+      title: 'Souhlas s podmínkami',
+      closable: false,
+      closeOnBackdrop: false,
+      content: 'Toto okno nelze zavřít kliknutím mimo něj — vyžaduje explicitní volbu.',
+      footer: [
+        createButton({
+          label: 'Nesouhlasím',
+          variant: 'ghost',
+          onClick: () => {
+            strictModal.close();
+            logEvent('Preset modal (strict): nesouhlas');
+          }
+        }),
+        createButton({
+          label: 'Souhlasím',
+          startIcon: ICONS.check,
+          onClick: () => {
+            strictModal.close();
+            logEvent('Preset modal (strict): souhlas');
+          }
+        })
+      ],
+      onClose: () => logEvent('Preset modal (strict) zavřen.')
+    });
+
+    modalsContainer.appendChild(createButton({
+      label: 'Strict Modal',
+      variant: 'outline',
+      size: 'sm',
+      onClick: () => strictModal.open()
+    }));
+  }
+
+  // Avatar Presets
+  const avSizesContainer = document.getElementById('preset-avatar-sizes');
+  if (avSizesContainer) {
+    const unsplashPics = [
+      'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=150&q=80',
+      'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=150&q=80',
+      'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&w=150&q=80',
+      'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=150&q=80',
+      'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=150&q=80'
+    ];
+
+    const sizes: Array<'xs' | 'sm' | 'md' | 'lg' | 'xl'> = ['xs', 'sm', 'md', 'lg', 'xl'];
+    sizes.forEach((size, idx) => {
+      avSizesContainer.appendChild(createAvatar({
+        size,
+        src: unsplashPics[idx],
+        alt: `Uživatel velikost ${size}`,
+        shape: 'circle'
+      }));
+    });
+  }
+
+  const avStatusesContainer = document.getElementById('preset-avatar-statuses');
+  if (avStatusesContainer) {
+    const presencePics = [
+      'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=150&q=80',
+      'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=150&q=80',
+      'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&w=150&q=80',
+      'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=150&q=80'
+    ];
+
+    const presenceStatuses: Array<'online' | 'offline' | 'idle' | 'dnd'> = ['online', 'offline', 'idle', 'dnd'];
+    
+    // Circle variants
+    presenceStatuses.forEach((status, idx) => {
+      avStatusesContainer.appendChild(createAvatar({
+        size: 'lg',
+        src: presencePics[idx],
+        shape: 'circle',
+        status
+      }));
+    });
+
+    // Square variants
+    presenceStatuses.forEach((status, idx) => {
+      avStatusesContainer.appendChild(createAvatar({
+        size: 'lg',
+        src: presencePics[(idx + 2) % presencePics.length],
+        shape: 'square',
+        status
+      }));
+    });
+  }
+
+  const avFallbacksContainer = document.getElementById('preset-avatar-fallbacks');
+  if (avFallbacksContainer) {
+    // 1. Circle with initials
+    avFallbacksContainer.appendChild(createAvatar({
+      size: 'lg',
+      fallback: 'JD',
+      shape: 'circle'
+    }));
+
+    // 2. Square with initials
+    avFallbacksContainer.appendChild(createAvatar({
+      size: 'lg',
+      fallback: 'AB',
+      shape: 'square'
+    }));
+
+    // 3. Fallback recovery (bad URL)
+    avFallbacksContainer.appendChild(createAvatar({
+      size: 'lg',
+      src: 'https://invalid-url.example/broken.jpg',
+      fallback: 'ER',
+      shape: 'circle'
+    }));
+
+    // 4. Default SVG placeholder circle
+    avFallbacksContainer.appendChild(createAvatar({
+      size: 'lg',
+      shape: 'circle'
+    }));
+
+    // 5. Default SVG placeholder square
+    avFallbacksContainer.appendChild(createAvatar({
+      size: 'lg',
+      shape: 'square'
+    }));
+  }
 }
 
 // Initial setup
@@ -1025,18 +1347,22 @@ renderCustomizerCard();
 renderCustomizerLink();
 renderCustomizerToggle();
 setupToastCustomizer();
+setupModalCustomizer();
+setupAvatarCustomizer();
 renderPresets();
 logEvent('Playground plně spuštěn.');
 
 // 6. Tabs switching logic
-const TAB_NAMES = ['buttons', 'checkboxes', 'forms', 'cards', 'links', 'elements'];
+const TAB_NAMES = ['buttons', 'checkboxes', 'forms', 'cards', 'links', 'elements', 'modals', 'avatars'];
 const TAB_LABELS: Record<string, string> = {
   buttons: 'Button',
   checkboxes: 'Checkbox',
   forms: 'Form Components',
   cards: 'Card',
   links: 'Link',
-  elements: 'UI Elements'
+  elements: 'UI Elements',
+  modals: 'Modal',
+  avatars: 'Avatar'
 };
 const tabTriggers = document.querySelectorAll('.tab-trigger');
 

@@ -13,3 +13,5 @@ export * from './components/toggle/index.ts';
 export * from './components/badge/index.ts';
 export * from './components/tooltip/index.ts';
 export * from './components/toast/index.ts';
+export * from './components/avatar/index.ts';
+export * from './components/modal/index.ts';
