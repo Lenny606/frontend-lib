@@ -384,6 +384,8 @@
     <button class="tab-trigger" data-tab="avatars">Avatar Component</button>
     <button class="tab-trigger" data-tab="accordions">Accordion Component</button>
     <button class="tab-trigger" data-tab="tabs">Tabs Component</button>
+    <button class="tab-trigger" data-tab="spinners">Spinner Component</button>
+    <button class="tab-trigger" data-tab="skeletons">Skeleton Component</button>
   </nav>
 
   <main>
@@ -1064,6 +1066,102 @@
         </div>
       </div>
     </section>
+
+    <!-- Spinner Customizer -->
+    <section class="card tab-content-spinners tab-hidden">
+      <div class="card-title">
+        <span>Interactive Spinner Customizer</span>
+        <span class="badge">Live Preview</span>
+      </div>
+
+      <div class="preview-box" id="spinner-preview">
+        <!-- Rendered spinner will appear here -->
+      </div>
+
+      <div class="controls-grid">
+        <div class="control-group">
+          <label for="spinner-size-select">Size (Velikost)</label>
+          <select id="spinner-size-select">
+            <option value="sm">Small (sm)</option>
+            <option value="md" selected>Medium (md)</option>
+            <option value="lg">Large (lg)</option>
+            <option value="custom">Custom (vlastní)</option>
+          </select>
+        </div>
+
+        <div class="control-group" id="spinner-custom-size-group" style="display: none;">
+          <label for="spinner-custom-size-input">Custom Size (e.g. 3rem, 48px)</label>
+          <input type="text" id="spinner-custom-size-input" value="3rem">
+        </div>
+
+        <div class="control-group">
+          <label for="spinner-color-select">Color (Barva)</label>
+          <select id="spinner-color-select">
+            <option value="current" selected>Current Color (inherit)</option>
+            <option value="primary">Primary Accent</option>
+            <option value="custom">Custom Color (vlastní)</option>
+          </select>
+        </div>
+
+        <div class="control-group" id="spinner-custom-color-group" style="display: none;">
+          <label for="spinner-custom-color-input">Custom Color (Hex/RGB/HSL)</label>
+          <input type="text" id="spinner-custom-color-input" value="var(--fl-primary-color)">
+        </div>
+
+        <div class="control-group">
+          <label for="spinner-class-input">Custom Class Name</label>
+          <input type="text" id="spinner-class-input" value="" placeholder="např. custom-spinner">
+        </div>
+      </div>
+    </section>
+
+    <!-- Skeleton Customizer -->
+    <section class="card tab-content-skeletons tab-hidden">
+      <div class="card-title">
+        <span>Interactive Skeleton Customizer</span>
+        <span class="badge">Live Preview</span>
+      </div>
+
+      <div class="preview-box" id="skeleton-preview">
+        <!-- Rendered skeleton will appear here -->
+      </div>
+
+      <div class="controls-grid">
+        <div class="control-group">
+          <label for="skeleton-variant-select">Shape Variant (Tvar)</label>
+          <select id="skeleton-variant-select">
+            <option value="text" selected>Text Line</option>
+            <option value="rect">Rectangle Block</option>
+            <option value="circle">Circle</option>
+          </select>
+        </div>
+
+        <div class="control-group">
+          <label for="skeleton-width-input">Width (e.g. 100%, 200px)</label>
+          <input type="text" id="skeleton-width-input" value="100%">
+        </div>
+
+        <div class="control-group">
+          <label for="skeleton-height-input">Height (e.g. 1.25em, 150px)</label>
+          <input type="text" id="skeleton-height-input" value="" placeholder="Default pro tvar">
+        </div>
+
+        <div class="control-group">
+          <label>Animation (Animace)</label>
+          <div class="checkbox-row">
+            <label class="checkbox-item">
+              <input type="checkbox" id="skeleton-animate-check" checked>
+              Pulsing Shimmer
+            </label>
+          </div>
+        </div>
+
+        <div class="control-group">
+          <label for="skeleton-class-input">Custom Class Name</label>
+          <input type="text" id="skeleton-class-input" value="" placeholder="např. custom-sk">
+        </div>
+      </div>
+    </section>
   </div>
 
   <!-- Right Column: Presets & Logs -->
@@ -1260,6 +1358,22 @@
         <div class="preset-section tab-content-tabs tab-hidden">
           <h3>Vertical Tabs Layout</h3>
           <div class="preset-list" id="preset-tabs-vertical" style="width: 100%;">
+            <!-- Rendered automatically -->
+          </div>
+        </div>
+
+        <!-- Spinner Presets -->
+        <div class="preset-section tab-content-spinners tab-hidden">
+          <h3>Spinner Sizes & Colors (Předvolby)</h3>
+          <div class="preset-list" id="preset-spinners" style="gap: 2rem; align-items: center; justify-content: flex-start; padding: 1rem 0;">
+            <!-- Rendered automatically -->
+          </div>
+        </div>
+
+        <!-- Skeleton Presets -->
+        <div class="preset-section tab-content-skeletons tab-hidden">
+          <h3>Skeleton Placeholders (Příklady)</h3>
+          <div class="preset-list preset-list--column" id="preset-skeletons" style="width: 100%; gap: 1.5rem; padding: 1rem 0;">
             <!-- Rendered automatically -->
           </div>
         </div>

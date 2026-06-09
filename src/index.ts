@@ -17,3 +17,5 @@ export * from './components/avatar/index.ts';
 export * from './components/modal/index.ts';
 export * from './components/accordion/index.ts';
 export * from './components/tabs/index.ts';
+export * from './components/spinner/index.ts';
+export * from './components/skeleton/index.ts';

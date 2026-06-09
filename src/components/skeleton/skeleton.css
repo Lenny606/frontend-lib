@@ -1,0 +1,62 @@
+/* Glass Fluid Skeleton Component Styles */
+
+.fl-skeleton {
+  display: block;
+  width: 100%;
+  background: rgba(255, 255, 255, 0.07);
+  box-sizing: border-box;
+}
+
+/* Shape Variants */
+.fl-skeleton--text {
+  height: 1.25em;
+  margin-bottom: 0.5em;
+  border-radius: 4px;
+  transform: scaleY(0.85); /* Slightly vertically centered like real text lines */
+}
+
+/* If last paragraph line, make it slightly shorter for a realistic text skeleton look */
+.fl-skeleton--text:last-child {
+  width: 75%;
+}
+
+.fl-skeleton--rect {
+  border-radius: var(--fl-radius, 8px);
+}
+
+.fl-skeleton--circle {
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+/* Shimmer Sweep Animation */
+.fl-skeleton--animate {
+  position: relative;
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.fl-skeleton--animate::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  transform: translateX(-100%);
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.08) 25%,
+    rgba(255, 255, 255, 0.16) 50%,
+    rgba(255, 255, 255, 0.08) 75%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  animation: fl-shimmer 2s infinite cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes fl-shimmer {
+  100% {
+    transform: translateX(100%);
+  }
+}

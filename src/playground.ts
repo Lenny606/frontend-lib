@@ -14,7 +14,9 @@ import {
   createModal,
   createAvatar,
   createAccordion,
-  createTabs
+  createTabs,
+  createSpinner,
+  createSkeleton
 } from './index';
 
 // 1. Icon Definitions (SVG Strings)
@@ -142,6 +144,24 @@ const tabsSizeSelect = document.getElementById('tabs-size-select') as HTMLSelect
 const tabsCountInput = document.getElementById('tabs-count-input') as HTMLInputElement;
 const tabsDisabledCheck = document.getElementById('tabs-disabled-check') as HTMLInputElement;
 const tabsClassInput = document.getElementById('tabs-class-input') as HTMLInputElement;
+
+// Customizer Element Selectors - Spinner
+const spinnerPreviewContainer = document.getElementById('spinner-preview');
+const spinnerSizeSelect = document.getElementById('spinner-size-select') as HTMLSelectElement;
+const spinnerCustomSizeGroup = document.getElementById('spinner-custom-size-group');
+const spinnerCustomSizeInput = document.getElementById('spinner-custom-size-input') as HTMLInputElement;
+const spinnerColorSelect = document.getElementById('spinner-color-select') as HTMLSelectElement;
+const spinnerCustomColorGroup = document.getElementById('spinner-custom-color-group');
+const spinnerCustomColorInput = document.getElementById('spinner-custom-color-input') as HTMLInputElement;
+const spinnerClassInput = document.getElementById('spinner-class-input') as HTMLInputElement;
+
+// Customizer Element Selectors - Skeleton
+const skeletonPreviewContainer = document.getElementById('skeleton-preview');
+const skeletonVariantSelect = document.getElementById('skeleton-variant-select') as HTMLSelectElement;
+const skeletonWidthInput = document.getElementById('skeleton-width-input') as HTMLInputElement;
+const skeletonHeightInput = document.getElementById('skeleton-height-input') as HTMLInputElement;
+const skeletonAnimateCheck = document.getElementById('skeleton-animate-check') as HTMLInputElement;
+const skeletonClassInput = document.getElementById('skeleton-class-input') as HTMLInputElement;
 
 // Log & Console Selectors
 const consoleLogs = document.getElementById('console-logs');
@@ -663,6 +683,74 @@ function renderCustomizerTabs() {
   tabsPreviewContainer.appendChild(currentTabs);
 }
 
+// 4k. Render Customizer Spinner
+let currentSpinner: HTMLElement | null = null;
+
+function renderCustomizerSpinner() {
+  if (!spinnerPreviewContainer) return;
+
+  // Clear previous element
+  if (currentSpinner && spinnerPreviewContainer.contains(currentSpinner)) {
+    spinnerPreviewContainer.removeChild(currentSpinner);
+  }
+
+  const sizeType = spinnerSizeSelect ? spinnerSizeSelect.value : 'md';
+  let size: string = sizeType;
+  if (sizeType === 'custom') {
+    size = spinnerCustomSizeInput ? spinnerCustomSizeInput.value || '3rem' : '3rem';
+    if (spinnerCustomSizeGroup) spinnerCustomSizeGroup.style.display = 'block';
+  } else {
+    if (spinnerCustomSizeGroup) spinnerCustomSizeGroup.style.display = 'none';
+  }
+
+  const colorType = spinnerColorSelect ? spinnerColorSelect.value : 'current';
+  let color: string = colorType;
+  if (colorType === 'custom') {
+    color = spinnerCustomColorInput ? spinnerCustomColorInput.value || 'var(--fl-primary-color)' : 'var(--fl-primary-color)';
+    if (spinnerCustomColorGroup) spinnerCustomColorGroup.style.display = 'block';
+  } else {
+    if (spinnerCustomColorGroup) spinnerCustomColorGroup.style.display = 'none';
+  }
+
+  const className = spinnerClassInput ? spinnerClassInput.value : '';
+
+  currentSpinner = createSpinner({
+    size,
+    color,
+    className
+  });
+
+  spinnerPreviewContainer.appendChild(currentSpinner);
+}
+
+// 4l. Render Customizer Skeleton
+let currentSkeleton: HTMLElement | null = null;
+
+function renderCustomizerSkeleton() {
+  if (!skeletonPreviewContainer) return;
+
+  // Clear previous element
+  if (currentSkeleton && skeletonPreviewContainer.contains(currentSkeleton)) {
+    skeletonPreviewContainer.removeChild(currentSkeleton);
+  }
+
+  const variant = (skeletonVariantSelect ? skeletonVariantSelect.value : 'text') as any;
+  const width = skeletonWidthInput ? skeletonWidthInput.value : '100%';
+  const height = skeletonHeightInput ? skeletonHeightInput.value : '';
+  const animate = skeletonAnimateCheck ? skeletonAnimateCheck.checked : true;
+  const className = skeletonClassInput ? skeletonClassInput.value : '';
+
+  currentSkeleton = createSkeleton({
+    variant,
+    width,
+    height: height || undefined,
+    animate,
+    className
+  });
+
+  skeletonPreviewContainer.appendChild(currentSkeleton);
+}
+
 // Wire up customizer listeners - Button
 [labelInput, hrefInput, classInput].forEach(input => {
   if (input) input.addEventListener('input', renderCustomizerButton);
@@ -756,6 +844,21 @@ if (accVariantSelect) accVariantSelect.addEventListener('change', renderCustomiz
 if (tabsDisabledCheck) {
   tabsDisabledCheck.addEventListener('change', renderCustomizerTabs);
 }
+
+// Wire up customizer listeners - Spinner
+[spinnerCustomSizeInput, spinnerCustomColorInput, spinnerClassInput].forEach(input => {
+  if (input) input.addEventListener('input', renderCustomizerSpinner);
+});
+[spinnerSizeSelect, spinnerColorSelect].forEach(select => {
+  if (select) select.addEventListener('change', renderCustomizerSpinner);
+});
+
+// Wire up customizer listeners - Skeleton
+[skeletonWidthInput, skeletonHeightInput, skeletonClassInput].forEach(input => {
+  if (input) input.addEventListener('input', renderCustomizerSkeleton);
+});
+if (skeletonVariantSelect) skeletonVariantSelect.addEventListener('change', renderCustomizerSkeleton);
+if (skeletonAnimateCheck) skeletonAnimateCheck.addEventListener('change', renderCustomizerSkeleton);
 
 if (clearConsoleBtn && consoleLogs) {
   clearConsoleBtn.addEventListener('click', () => {
@@ -1609,6 +1712,134 @@ function renderPresets() {
       onTabChange: (id) => logEvent(`Preset tabs (vertical): aktivní záložka ${id}`)
     }));
   }
+
+  // Spinner Presets
+  const spinnersContainer = document.getElementById('preset-spinners');
+  if (spinnersContainer) {
+    // Small Primary Spinner
+    const sp1 = createSpinner({ size: 'sm', color: 'primary' });
+    const wrapper1 = document.createElement('div');
+    wrapper1.style.display = 'flex';
+    wrapper1.style.flexDirection = 'column';
+    wrapper1.style.alignItems = 'center';
+    wrapper1.style.gap = '0.25rem';
+    const label1 = document.createElement('span');
+    label1.textContent = 'Small Primary';
+    label1.style.fontSize = '0.75rem';
+    label1.style.color = 'var(--fl-muted-text)';
+    wrapper1.appendChild(sp1);
+    wrapper1.appendChild(label1);
+    spinnersContainer.appendChild(wrapper1);
+
+    // Medium Inherit Spinner
+    const sp2 = createSpinner({ size: 'md', color: 'current' });
+    const wrapper2 = document.createElement('div');
+    wrapper2.style.display = 'flex';
+    wrapper2.style.flexDirection = 'column';
+    wrapper2.style.alignItems = 'center';
+    wrapper2.style.gap = '0.25rem';
+    const label2 = document.createElement('span');
+    label2.textContent = 'Medium Inherit';
+    label2.style.fontSize = '0.75rem';
+    label2.style.color = 'var(--fl-muted-text)';
+    wrapper2.appendChild(sp2);
+    wrapper2.appendChild(label2);
+    spinnersContainer.appendChild(wrapper2);
+
+    // Large Custom Gold Spinner
+    const sp3 = createSpinner({ size: 'lg', color: '#eab308' });
+    const wrapper3 = document.createElement('div');
+    wrapper3.style.display = 'flex';
+    wrapper3.style.flexDirection = 'column';
+    wrapper3.style.alignItems = 'center';
+    wrapper3.style.gap = '0.25rem';
+    const label3 = document.createElement('span');
+    label3.textContent = 'Large Custom';
+    label3.style.fontSize = '0.75rem';
+    label3.style.color = 'var(--fl-muted-text)';
+    wrapper3.appendChild(sp3);
+    wrapper3.appendChild(label3);
+    spinnersContainer.appendChild(wrapper3);
+
+    // Giant Custom Purple Spinner
+    const sp4 = createSpinner({ size: '3.5rem', color: '#a855f7' });
+    const wrapper4 = document.createElement('div');
+    wrapper4.style.display = 'flex';
+    wrapper4.style.flexDirection = 'column';
+    wrapper4.style.alignItems = 'center';
+    wrapper4.style.gap = '0.25rem';
+    const label4 = document.createElement('span');
+    label4.textContent = 'Giant (3.5rem)';
+    label4.style.fontSize = '0.75rem';
+    label4.style.color = 'var(--fl-muted-text)';
+    wrapper4.appendChild(sp4);
+    wrapper4.appendChild(label4);
+    spinnersContainer.appendChild(wrapper4);
+  }
+
+  // Skeleton Presets
+  const skeletonsContainer = document.getElementById('preset-skeletons');
+  if (skeletonsContainer) {
+    // 1. Text Paragraph Placeholder
+    const textGroup = document.createElement('div');
+    textGroup.style.display = 'flex';
+    textGroup.style.flexDirection = 'column';
+    textGroup.style.gap = '0.4rem';
+    textGroup.style.width = '100%';
+    const h4_1 = document.createElement('h4');
+    h4_1.textContent = 'Text Paragraph Placeholder';
+    h4_1.style.fontSize = '0.9rem';
+    h4_1.style.marginBottom = '0.5rem';
+    h4_1.style.color = 'var(--fl-muted-text)';
+    textGroup.appendChild(h4_1);
+    
+    textGroup.appendChild(createSkeleton({ variant: 'text', width: '100%' }));
+    textGroup.appendChild(createSkeleton({ variant: 'text', width: '90%' }));
+    textGroup.appendChild(createSkeleton({ variant: 'text', width: '95%' }));
+    textGroup.appendChild(createSkeleton({ variant: 'text', width: '60%' }));
+    skeletonsContainer.appendChild(textGroup);
+
+    // Divider
+    const hr = document.createElement('hr');
+    hr.style.border = 'none';
+    hr.style.borderTop = '1px solid rgba(255, 255, 255, 0.08)';
+    hr.style.margin = '1.5rem 0';
+    skeletonsContainer.appendChild(hr);
+
+    // 2. Profile Card Placeholder
+    const cardSk = document.createElement('div');
+    const h4_2 = document.createElement('h4');
+    h4_2.textContent = 'Profile Card Placeholder';
+    h4_2.style.fontSize = '0.9rem';
+    h4_2.style.marginBottom = '0.5rem';
+    h4_2.style.color = 'var(--fl-muted-text)';
+    cardSk.appendChild(h4_2);
+
+    const cardBody = document.createElement('div');
+    cardBody.style.display = 'flex';
+    cardBody.style.alignItems = 'center';
+    cardBody.style.gap = '1rem';
+    cardBody.style.padding = '1rem';
+    cardBody.style.borderRadius = '12px';
+    cardBody.style.border = '1px solid rgba(255, 255, 255, 0.06)';
+    cardBody.style.background = 'rgba(255, 255, 255, 0.02)';
+
+    // Avatar circle
+    cardBody.appendChild(createSkeleton({ variant: 'circle', width: '48px', height: '48px' }));
+
+    // Content lines
+    const textLines = document.createElement('div');
+    textLines.style.flex = '1';
+    textLines.style.display = 'flex';
+    textLines.style.flexDirection = 'column';
+    textLines.style.gap = '0.4rem';
+    textLines.appendChild(createSkeleton({ variant: 'text', width: '40%' }));
+    textLines.appendChild(createSkeleton({ variant: 'text', width: '85%' }));
+    cardBody.appendChild(textLines);
+
+    cardSk.appendChild(cardBody);
+    skeletonsContainer.appendChild(cardSk);
+  }
 }
 
 // Initial setup
@@ -1623,11 +1854,13 @@ setupModalCustomizer();
 setupAvatarCustomizer();
 renderCustomizerAccordion();
 renderCustomizerTabs();
+renderCustomizerSpinner();
+renderCustomizerSkeleton();
 renderPresets();
 logEvent('Playground plně spuštěn.');
 
 // 6. Tabs switching logic
-const TAB_NAMES = ['buttons', 'checkboxes', 'forms', 'cards', 'links', 'elements', 'modals', 'avatars', 'accordions', 'tabs'];
+const TAB_NAMES = ['buttons', 'checkboxes', 'forms', 'cards', 'links', 'elements', 'modals', 'avatars', 'accordions', 'tabs', 'spinners', 'skeletons'];
 const TAB_LABELS: Record<string, string> = {
   buttons: 'Button',
   checkboxes: 'Checkbox',
@@ -1638,7 +1871,9 @@ const TAB_LABELS: Record<string, string> = {
   modals: 'Modal',
   avatars: 'Avatar',
   accordions: 'Accordion',
-  tabs: 'Tabs'
+  tabs: 'Tabs',
+  spinners: 'Spinner',
+  skeletons: 'Skeleton'
 };
 const tabTriggers = document.querySelectorAll('.tab-trigger');
 

@@ -245,23 +245,6 @@
   display: block;
 }
 
-/* Spinner and rotation animations */
-.fl-spinner {
-  width: 1.2em;
-  height: 1.2em;
-  animation: fl-spin 0.8s linear infinite;
-  display: inline-block;
-  flex-shrink: 0;
-}
-
-@keyframes fl-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
 
 /* ==========================================================================
    States (Disabled / Loading)

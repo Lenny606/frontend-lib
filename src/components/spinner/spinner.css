@@ -1,0 +1,46 @@
+/* Glass Fluid Spinner Component Styles */
+
+.fl-spinner-container {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+}
+
+.fl-spinner {
+  display: block;
+  animation: fl-spin 0.8s linear infinite;
+  flex-shrink: 0;
+  box-sizing: border-box;
+  color: inherit; /* Defaults to inherit parent text/accent color */
+}
+
+/* Sizing Variants */
+.fl-spinner--sm {
+  width: 1rem;
+  height: 1rem;
+}
+
+.fl-spinner--md {
+  width: 1.5rem;
+  height: 1.5rem;
+}
+
+.fl-spinner--lg {
+  width: 2.5rem;
+  height: 2.5rem;
+}
+
+/* Colors Variants */
+.fl-spinner--primary {
+  color: var(--fl-primary-color, #3b82f6);
+}
+
+@keyframes fl-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}

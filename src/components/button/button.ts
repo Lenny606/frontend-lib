@@ -1,4 +1,5 @@
 import './button.css';
+import { createSpinner } from '../spinner/spinner';
 
 export interface ButtonOptions {
   /**
@@ -64,13 +65,6 @@ function parseIcon(markup: string): HTMLElement | null {
   return el as HTMLElement;
 }
 
-// Spinner SVG markup
-const SPINNER_SVG = `
-  <svg class="fl-spinner" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-dasharray="31.4 31.4" opacity="0.25"></circle>
-    <path d="M12 2C6.47715 2 2 6.47715 2 12C2 13.5 2.5 15 3.5 16" stroke="currentColor" stroke-width="4" stroke-linecap="round"></path>
-  </svg>
-`;
 
 /**
  * Creates a highly configurable, accessible, and premium styled button element.
@@ -138,8 +132,8 @@ export function createButton(options: ButtonOptions): HTMLElement {
 
   // 1. Loading Spinner
   if (options.loading) {
-    const spinner = parseIcon(SPINNER_SVG);
-    if (spinner) container.appendChild(spinner);
+    const spinner = createSpinner({ size: 'sm' });
+    container.appendChild(spinner);
   }
 
   // 2. Start Icon (only if not loading, to avoid overcrowding)
