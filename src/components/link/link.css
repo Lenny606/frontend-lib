@@ -1,0 +1,108 @@
+/* Link base style */
+.fl-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35em;
+  font-family: var(--fl-font-family, system-ui, sans-serif);
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  cursor: pointer;
+  outline: none;
+  text-decoration: none;
+  transition: var(--fl-transition, all 0.35s cubic-bezier(0.16, 1, 0.3, 1));
+}
+
+.fl-link:focus-visible {
+  outline: 2px solid var(--fl-primary-border, rgba(168, 85, 247, 0.3));
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+/* ==========================================================================
+   Design Variants
+   ========================================================================== */
+
+/* Default: purple accent matching the link button variant */
+.fl-link--default {
+  color: #a855f7;
+}
+
+.fl-link--default:hover:not(.fl-link--disabled) {
+  color: #c084fc;
+  text-shadow: 0 0 12px var(--fl-primary-glow, rgba(168, 85, 247, 0.4));
+}
+
+/* Muted: silver text that brightens on hover */
+.fl-link--muted {
+  color: var(--text-muted, #9ca3af);
+  font-weight: 500;
+}
+
+.fl-link--muted:hover:not(.fl-link--disabled) {
+  color: #ffffff;
+}
+
+/* Standalone: indigo, slightly larger, for call-to-action links */
+.fl-link--standalone {
+  color: #818cf8;
+  font-size: 1.02em;
+}
+
+.fl-link--standalone:hover:not(.fl-link--disabled) {
+  color: #a5b4fc;
+  text-shadow: 0 0 12px var(--fl-outline-glow, rgba(99, 102, 241, 0.3));
+}
+
+/* ==========================================================================
+   Underline behaviour
+   ========================================================================== */
+
+.fl-link--underline-always {
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+  text-decoration-thickness: 1px;
+}
+
+.fl-link--underline-hover:hover:not(.fl-link--disabled) {
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+  text-decoration-thickness: 1px;
+}
+
+.fl-link--underline-none,
+.fl-link--underline-none:hover {
+  text-decoration: none;
+}
+
+/* ==========================================================================
+   Icons
+   ========================================================================== */
+
+.fl-link-icon {
+  width: 1em;
+  height: 1em;
+  flex-shrink: 0;
+  display: inline-block;
+}
+
+/* External indicator is slightly smaller and lifted */
+.fl-link-external {
+  width: 0.85em;
+  height: 0.85em;
+  opacity: 0.8;
+}
+
+.fl-link:hover:not(.fl-link--disabled) .fl-link-external {
+  opacity: 1;
+  transform: translate(1px, -1px);
+}
+
+/* ==========================================================================
+   Disabled state
+   ========================================================================== */
+
+.fl-link--disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+  text-shadow: none;
+}

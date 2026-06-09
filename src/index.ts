@@ -7,3 +7,5 @@ export * from './components/input/index.ts';
 export * from './components/textarea/index.ts';
 export * from './components/select/index.ts';
 export * from './components/radio/index.ts';
+export * from './components/card/index.ts';
+export * from './components/link/index.ts';

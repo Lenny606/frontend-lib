@@ -4,7 +4,9 @@ import {
   createInput,
   createTextarea,
   createSelect,
-  createRadioGroup
+  createRadioGroup,
+  createCard,
+  createLink
 } from './index';
 
 // 1. Icon Definitions (SVG Strings)
@@ -48,6 +50,37 @@ const inpReadonlyCheck = document.getElementById('inp-readonly-check') as HTMLIn
 const inpHelperInput = document.getElementById('inp-helper-input') as HTMLInputElement;
 const inpErrorInput = document.getElementById('inp-error-input') as HTMLInputElement;
 const inpClassInput = document.getElementById('inp-class-input') as HTMLInputElement;
+
+// Customizer Element Selectors - Card
+const cardPreviewContainer = document.getElementById('card-preview');
+const cardTitleInput = document.getElementById('card-title-input') as HTMLInputElement;
+const cardSubtitleInput = document.getElementById('card-subtitle-input') as HTMLInputElement;
+const cardContentInput = document.getElementById('card-content-input') as HTMLInputElement;
+const cardVariantSelect = document.getElementById('card-variant-select') as HTMLSelectElement;
+const cardImageCheck = document.getElementById('card-image-check') as HTMLInputElement;
+const cardHoverableCheck = document.getElementById('card-hoverable-check') as HTMLInputElement;
+const cardClickableCheck = document.getElementById('card-clickable-check') as HTMLInputElement;
+const cardFooterCheck = document.getElementById('card-footer-check') as HTMLInputElement;
+const cardClassInput = document.getElementById('card-class-input') as HTMLInputElement;
+
+// Demo image for cards (inline SVG gradient, works offline)
+const DEMO_IMAGE = `data:image/svg+xml;utf8,${encodeURIComponent(
+  '<svg xmlns="http://www.w3.org/2000/svg" width="400" height="160">' +
+  '<defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1">' +
+  '<stop offset="0" stop-color="#6366f1"/><stop offset="1" stop-color="#a855f7"/>' +
+  '</linearGradient></defs><rect width="400" height="160" fill="url(#g)"/></svg>'
+)}`;
+
+// Customizer Element Selectors - Link
+const linkPreviewContainer = document.getElementById('link-preview');
+const lnkLabelInput = document.getElementById('lnk-label-input') as HTMLInputElement;
+const lnkHrefInput = document.getElementById('lnk-href-input') as HTMLInputElement;
+const lnkVariantSelect = document.getElementById('lnk-variant-select') as HTMLSelectElement;
+const lnkUnderlineSelect = document.getElementById('lnk-underline-select') as HTMLSelectElement;
+const lnkExternalCheck = document.getElementById('lnk-external-check') as HTMLInputElement;
+const lnkDisabledCheck = document.getElementById('lnk-disabled-check') as HTMLInputElement;
+const lnkStartIconSelect = document.getElementById('lnk-start-icon-select') as HTMLSelectElement;
+const lnkClassInput = document.getElementById('lnk-class-input') as HTMLInputElement;
 
 // Log & Console Selectors
 const consoleLogs = document.getElementById('console-logs');
@@ -197,6 +230,112 @@ function renderCustomizerInput() {
   inputPreviewContainer.appendChild(currentInput);
 }
 
+// 4c. Render Customizer Card
+let currentCard: HTMLElement | null = null;
+
+function renderCustomizerCard() {
+  if (!cardPreviewContainer) return;
+
+  // Clear previous element
+  if (currentCard && cardPreviewContainer.contains(currentCard)) {
+    cardPreviewContainer.removeChild(currentCard);
+  }
+
+  const title = cardTitleInput ? cardTitleInput.value : 'Karta';
+  const subtitle = cardSubtitleInput ? cardSubtitleInput.value : '';
+  const content = cardContentInput ? cardContentInput.value : '';
+  const variant = (cardVariantSelect ? cardVariantSelect.value : 'default') as any;
+  const withImage = cardImageCheck ? cardImageCheck.checked : false;
+  const hoverable = cardHoverableCheck ? cardHoverableCheck.checked : false;
+  const clickable = cardClickableCheck ? cardClickableCheck.checked : false;
+  const withFooter = cardFooterCheck ? cardFooterCheck.checked : false;
+  const className = cardClassInput ? cardClassInput.value : '';
+
+  const footer = withFooter
+    ? [
+        createButton({
+          label: 'Zrušit',
+          variant: 'ghost',
+          size: 'sm',
+          onClick: (e) => {
+            e.stopPropagation();
+            logEvent('Kliknuto na footer tlačítko karty: Zrušit');
+          }
+        }),
+        createButton({
+          label: 'Pokračovat',
+          size: 'sm',
+          endIcon: ICONS.arrow,
+          onClick: (e) => {
+            e.stopPropagation();
+            logEvent('Kliknuto na footer tlačítko karty: Pokračovat');
+          }
+        })
+      ]
+    : undefined;
+
+  // Instantiate component
+  currentCard = createCard({
+    title: title || undefined,
+    subtitle: subtitle || undefined,
+    content: content || undefined,
+    variant,
+    image: withImage ? DEMO_IMAGE : undefined,
+    imageAlt: withImage ? 'Ukázkový gradient' : undefined,
+    hoverable,
+    footer,
+    className,
+    onClick: clickable
+      ? () => logEvent(`Kliknuto na customizer kartu: "${title}" | variant: ${variant}`)
+      : undefined
+  });
+
+  cardPreviewContainer.appendChild(currentCard);
+}
+
+// 4d. Render Customizer Link
+let currentLink: HTMLElement | null = null;
+
+function renderCustomizerLink() {
+  if (!linkPreviewContainer) return;
+
+  // Clear previous element
+  if (currentLink && linkPreviewContainer.contains(currentLink)) {
+    linkPreviewContainer.removeChild(currentLink);
+  }
+
+  const label = lnkLabelInput ? lnkLabelInput.value : 'Odkaz';
+  const href = lnkHrefInput ? lnkHrefInput.value : '#';
+  const variant = (lnkVariantSelect ? lnkVariantSelect.value : 'default') as any;
+  const underline = (lnkUnderlineSelect ? lnkUnderlineSelect.value : 'hover') as any;
+  const external = lnkExternalCheck ? lnkExternalCheck.checked : false;
+  const disabled = lnkDisabledCheck ? lnkDisabledCheck.checked : false;
+  const className = lnkClassInput ? lnkClassInput.value : '';
+
+  const startIcon = lnkStartIconSelect && lnkStartIconSelect.value !== 'none'
+    ? (ICONS as any)[lnkStartIconSelect.value]
+    : undefined;
+
+  // Instantiate component
+  currentLink = createLink({
+    label,
+    href,
+    variant,
+    underline,
+    external,
+    disabled,
+    startIcon,
+    className,
+    onClick: (e) => {
+      // External links may navigate (new tab); internal ones are blocked for testing
+      if (!external) e.preventDefault();
+      logEvent(`Kliknuto na customizer odkaz: "${label}" | variant: ${variant} | external: ${external}`);
+    }
+  });
+
+  linkPreviewContainer.appendChild(currentLink);
+}
+
 // Wire up customizer listeners - Button
 [labelInput, hrefInput, classInput].forEach(input => {
   if (input) input.addEventListener('input', renderCustomizerButton);
@@ -230,6 +369,30 @@ function renderCustomizerInput() {
 
 [inpDisabledCheck, inpRequiredCheck, inpReadonlyCheck].forEach(check => {
   if (check) check.addEventListener('change', renderCustomizerInput);
+});
+
+// Wire up customizer listeners - Card
+[cardTitleInput, cardSubtitleInput, cardContentInput, cardClassInput].forEach(input => {
+  if (input) input.addEventListener('input', renderCustomizerCard);
+});
+
+if (cardVariantSelect) cardVariantSelect.addEventListener('change', renderCustomizerCard);
+
+[cardImageCheck, cardHoverableCheck, cardClickableCheck, cardFooterCheck].forEach(check => {
+  if (check) check.addEventListener('change', renderCustomizerCard);
+});
+
+// Wire up customizer listeners - Link
+[lnkLabelInput, lnkHrefInput, lnkClassInput].forEach(input => {
+  if (input) input.addEventListener('input', renderCustomizerLink);
+});
+
+[lnkVariantSelect, lnkUnderlineSelect, lnkStartIconSelect].forEach(select => {
+  if (select) select.addEventListener('change', renderCustomizerLink);
+});
+
+[lnkExternalCheck, lnkDisabledCheck].forEach(check => {
+  if (check) check.addEventListener('change', renderCustomizerLink);
 });
 
 if (clearConsoleBtn && consoleLogs) {
@@ -508,21 +671,195 @@ function renderPresets() {
 
     formContainer.appendChild(form);
   }
+
+  // Card: Variant Presets
+  const cardVariantsContainer = document.getElementById('preset-card-variants');
+  if (cardVariantsContainer) {
+    cardVariantsContainer.appendChild(createCard({
+      title: 'Default Glass',
+      subtitle: 'Výchozí skleněný vzhled',
+      content: 'Standardní karta s glassmorphism pozadím a jemným stínem.'
+    }));
+
+    cardVariantsContainer.appendChild(createCard({
+      title: 'Primary Glass',
+      subtitle: 'Fialový nádech',
+      variant: 'primary',
+      content: 'Zvýrazněná karta ladící s primary tlačítky.'
+    }));
+
+    cardVariantsContainer.appendChild(createCard({
+      title: 'Outline',
+      subtitle: 'Pouze ohraničení',
+      variant: 'outline',
+      content: 'Transparentní karta s indigo rámečkem.'
+    }));
+  }
+
+  // Card: Composition Presets
+  const cardCompositionContainer = document.getElementById('preset-card-composition');
+  if (cardCompositionContainer) {
+    cardCompositionContainer.appendChild(createCard({
+      title: 'Karta s obrázkem',
+      subtitle: 'Image + footer akce',
+      image: DEMO_IMAGE,
+      imageAlt: 'Ukázkový gradient',
+      content: 'Obrázek nahoře, obsah uprostřed a akční tlačítka v patičce.',
+      footer: [
+        createButton({
+          label: 'Detail',
+          variant: 'outline',
+          size: 'sm',
+          onClick: () => logEvent('Kliknuto na footer preset karty: Detail')
+        }),
+        createButton({
+          label: 'Koupit',
+          size: 'sm',
+          onClick: () => logEvent('Kliknuto na footer preset karty: Koupit')
+        })
+      ]
+    }));
+
+    cardCompositionContainer.appendChild(createCard({
+      title: 'Klikací karta',
+      subtitle: 'Celá karta je interaktivní',
+      content: 'Má role="button", reaguje na Enter i mezerník a po najetí se zvedne.',
+      onClick: () => logEvent('Kliknuto na preset: Klikací karta')
+    }));
+
+    // Card composed with form components inside
+    const newsletterInput = createInput({
+      label: 'Váš e-mail',
+      type: 'email',
+      placeholder: 'jan@example.com',
+      size: 'sm'
+    });
+    cardCompositionContainer.appendChild(createCard({
+      title: 'Newsletter',
+      subtitle: 'Karta složená z dalších komponent',
+      content: [newsletterInput],
+      footer: createButton({
+        label: 'Odebírat',
+        size: 'sm',
+        endIcon: ICONS.arrow,
+        onClick: () => logEvent('Kliknuto na preset kartu: Odebírat newsletter')
+      })
+    }));
+  }
+
+  // Link: Variant Presets
+  const linkVariantsContainer = document.getElementById('preset-link-variants');
+  if (linkVariantsContainer) {
+    linkVariantsContainer.appendChild(createLink({
+      label: 'Default odkaz',
+      href: '#',
+      onClick: (e) => {
+        e.preventDefault();
+        logEvent('Kliknuto na preset odkaz: Default');
+      }
+    }));
+
+    linkVariantsContainer.appendChild(createLink({
+      label: 'Muted odkaz',
+      href: '#',
+      variant: 'muted',
+      onClick: (e) => {
+        e.preventDefault();
+        logEvent('Kliknuto na preset odkaz: Muted');
+      }
+    }));
+
+    linkVariantsContainer.appendChild(createLink({
+      label: 'Standalone CTA',
+      href: '#',
+      variant: 'standalone',
+      underline: 'none',
+      startIcon: ICONS.arrow,
+      onClick: (e) => {
+        e.preventDefault();
+        logEvent('Kliknuto na preset odkaz: Standalone');
+      }
+    }));
+  }
+
+  // Link: State & Icon Presets
+  const linkStatesContainer = document.getElementById('preset-link-states');
+  if (linkStatesContainer) {
+    linkStatesContainer.appendChild(createLink({
+      label: 'Externí odkaz (Google)',
+      href: 'https://google.com',
+      external: true,
+      onClick: () => logEvent('Kliknuto na preset odkaz: External (otevírá nový panel)')
+    }));
+
+    linkStatesContainer.appendChild(createLink({
+      label: 'Vždy podtržený',
+      href: '#',
+      underline: 'always',
+      onClick: (e) => {
+        e.preventDefault();
+        logEvent('Kliknuto na preset odkaz: Underline always');
+      }
+    }));
+
+    linkStatesContainer.appendChild(createLink({
+      label: 'Deaktivovaný odkaz',
+      href: 'https://google.com',
+      disabled: true,
+      onClick: () => logEvent('Kliknuto na preset odkaz: Disabled (nemělo by se logovat!)')
+    }));
+  }
+
+  // Link: Inline usage inside text
+  const linkInlineContainer = document.getElementById('preset-link-inline');
+  if (linkInlineContainer) {
+    const paragraph = document.createElement('p');
+    paragraph.style.margin = '0';
+    paragraph.style.fontSize = '0.9rem';
+    paragraph.style.lineHeight = '1.7';
+    paragraph.append('Odesláním formuláře souhlasíte s ');
+    paragraph.appendChild(createLink({
+      label: 'obchodními podmínkami',
+      href: '#',
+      underline: 'always',
+      onClick: (e) => {
+        e.preventDefault();
+        logEvent('Kliknuto na inline odkaz: Obchodní podmínky');
+      }
+    }));
+    paragraph.append(' a berete na vědomí ');
+    paragraph.appendChild(createLink({
+      label: 'zásady ochrany osobních údajů',
+      href: '#',
+      variant: 'muted',
+      underline: 'always',
+      onClick: (e) => {
+        e.preventDefault();
+        logEvent('Kliknuto na inline odkaz: Zásady ochrany osobních údajů');
+      }
+    }));
+    paragraph.append('.');
+    linkInlineContainer.appendChild(paragraph);
+  }
 }
 
 // Initial setup
 renderCustomizerButton();
 renderCustomizerCheckbox();
 renderCustomizerInput();
+renderCustomizerCard();
+renderCustomizerLink();
 renderPresets();
 logEvent('Playground plně spuštěn.');
 
 // 6. Tabs switching logic
-const TAB_NAMES = ['buttons', 'checkboxes', 'forms'];
+const TAB_NAMES = ['buttons', 'checkboxes', 'forms', 'cards', 'links'];
 const TAB_LABELS: Record<string, string> = {
   buttons: 'Button',
   checkboxes: 'Checkbox',
-  forms: 'Form Components'
+  forms: 'Form Components',
+  cards: 'Card',
+  links: 'Link'
 };
 const tabTriggers = document.querySelectorAll('.tab-trigger');
 

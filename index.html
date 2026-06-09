@@ -249,6 +249,12 @@
       align-self: flex-start;
     }
 
+    /* Card preview sizing inside the playground */
+    #card-preview .fl-card {
+      width: 100%;
+      max-width: 380px;
+    }
+
     /* Event console panel */
     .console-panel {
       margin-top: auto;
@@ -371,6 +377,8 @@
     <button class="tab-trigger active" data-tab="buttons">Button Component</button>
     <button class="tab-trigger" data-tab="checkboxes">Checkbox Component</button>
     <button class="tab-trigger" data-tab="forms">Form Components</button>
+    <button class="tab-trigger" data-tab="cards">Card Component</button>
+    <button class="tab-trigger" data-tab="links">Link Component</button>
   </nav>
 
   <main>
@@ -589,6 +597,142 @@
         </div>
       </div>
     </section>
+
+    <!-- Card Customizer -->
+    <section class="card tab-content-cards tab-hidden">
+      <div class="card-title">
+        <span>Interactive Card Customizer</span>
+        <span class="badge">Live Preview</span>
+      </div>
+
+      <div class="preview-box" id="card-preview">
+        <!-- Rendered card will appear here -->
+      </div>
+
+      <div class="controls-grid">
+        <div class="control-group">
+          <label for="card-title-input">Title (Nadpis)</label>
+          <input type="text" id="card-title-input" value="Glass Fluid Karta">
+        </div>
+
+        <div class="control-group">
+          <label for="card-subtitle-input">Subtitle (Podnadpis)</label>
+          <input type="text" id="card-subtitle-input" value="Ukázková komponenta">
+        </div>
+
+        <div class="control-group control-full">
+          <label for="card-content-input">Content (Obsah)</label>
+          <input type="text" id="card-content-input" value="Tělo karty s libovolným textovým nebo elementovým obsahem ve stylu Glass Fluid.">
+        </div>
+
+        <div class="control-group">
+          <label for="card-variant-select">Variant (Vzhled)</label>
+          <select id="card-variant-select">
+            <option value="default">default (Glass)</option>
+            <option value="primary">primary (Purple Glass)</option>
+            <option value="outline">outline (Indigo Border)</option>
+          </select>
+        </div>
+
+        <div class="control-group">
+          <label>Options (Volby)</label>
+          <div class="checkbox-row">
+            <label class="checkbox-item">
+              <input type="checkbox" id="card-image-check">
+              Image
+            </label>
+            <label class="checkbox-item">
+              <input type="checkbox" id="card-hoverable-check" checked>
+              Hoverable
+            </label>
+            <label class="checkbox-item">
+              <input type="checkbox" id="card-clickable-check">
+              Clickable
+            </label>
+            <label class="checkbox-item">
+              <input type="checkbox" id="card-footer-check" checked>
+              Footer
+            </label>
+          </div>
+        </div>
+
+        <div class="control-group control-full">
+          <label for="card-class-input">Custom Class Name</label>
+          <input type="text" id="card-class-input" value="" placeholder="např. custom-uppercase">
+        </div>
+      </div>
+    </section>
+
+    <!-- Link Customizer -->
+    <section class="card tab-content-links tab-hidden">
+      <div class="card-title">
+        <span>Interactive Link Customizer</span>
+        <span class="badge">Live Preview</span>
+      </div>
+
+      <div class="preview-box" id="link-preview">
+        <!-- Rendered link will appear here -->
+      </div>
+
+      <div class="controls-grid">
+        <div class="control-group">
+          <label for="lnk-label-input">Label (Text)</label>
+          <input type="text" id="lnk-label-input" value="Přejít na dokumentaci">
+        </div>
+
+        <div class="control-group">
+          <label for="lnk-href-input">Href (URL odkazu)</label>
+          <input type="text" id="lnk-href-input" value="https://google.com">
+        </div>
+
+        <div class="control-group">
+          <label for="lnk-variant-select">Variant (Vzhled)</label>
+          <select id="lnk-variant-select">
+            <option value="default">default (Purple)</option>
+            <option value="muted">muted (Silver)</option>
+            <option value="standalone">standalone (Indigo CTA)</option>
+          </select>
+        </div>
+
+        <div class="control-group">
+          <label for="lnk-underline-select">Underline (Podtržení)</label>
+          <select id="lnk-underline-select">
+            <option value="hover">hover (Při najetí)</option>
+            <option value="always">always (Vždy)</option>
+            <option value="none">none (Nikdy)</option>
+          </select>
+        </div>
+
+        <div class="control-group">
+          <label>States (Stavy)</label>
+          <div class="checkbox-row">
+            <label class="checkbox-item">
+              <input type="checkbox" id="lnk-external-check">
+              External
+            </label>
+            <label class="checkbox-item">
+              <input type="checkbox" id="lnk-disabled-check">
+              Disabled
+            </label>
+          </div>
+        </div>
+
+        <div class="control-group">
+          <label for="lnk-start-icon-select">Start Icon</label>
+          <select id="lnk-start-icon-select">
+            <option value="none">Žádná</option>
+            <option value="search">Hledat (Search)</option>
+            <option value="arrow">Šipka (Arrow Right)</option>
+            <option value="check">Potvrdit (Check)</option>
+          </select>
+        </div>
+
+        <div class="control-group control-full">
+          <label for="lnk-class-input">Custom Class Name</label>
+          <input type="text" id="lnk-class-input" value="" placeholder="např. custom-uppercase">
+        </div>
+      </div>
+    </section>
   </div>
 
   <!-- Right Column: Presets & Logs -->
@@ -659,6 +803,43 @@
         <div class="preset-section tab-content-forms tab-hidden">
           <h3>Kompletní formulář (Live Demo)</h3>
           <div class="preset-list preset-list--column" id="preset-form">
+            <!-- Rendered automatically -->
+          </div>
+        </div>
+
+        <!-- Card Presets -->
+        <div class="preset-section tab-content-cards tab-hidden">
+          <h3>Variants (Vzhledy karet)</h3>
+          <div class="preset-list preset-list--column" id="preset-card-variants">
+            <!-- Rendered automatically -->
+          </div>
+        </div>
+
+        <div class="preset-section tab-content-cards tab-hidden">
+          <h3>Composition (Karty s obsahem)</h3>
+          <div class="preset-list preset-list--column" id="preset-card-composition">
+            <!-- Rendered automatically -->
+          </div>
+        </div>
+
+        <!-- Link Presets -->
+        <div class="preset-section tab-content-links tab-hidden">
+          <h3>Variants (Vzhledy odkazů)</h3>
+          <div class="preset-list" id="preset-link-variants">
+            <!-- Rendered automatically -->
+          </div>
+        </div>
+
+        <div class="preset-section tab-content-links tab-hidden">
+          <h3>States & Icons (Stavy a ikony)</h3>
+          <div class="preset-list" id="preset-link-states">
+            <!-- Rendered automatically -->
+          </div>
+        </div>
+
+        <div class="preset-section tab-content-links tab-hidden">
+          <h3>Inline (Odkaz v textu)</h3>
+          <div class="preset-list preset-list--column" id="preset-link-inline">
             <!-- Rendered automatically -->
           </div>
         </div>
