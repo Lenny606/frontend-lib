@@ -231,6 +231,24 @@
       border: 1px solid rgba(255, 255, 255, 0.04);
     }
 
+    .preset-list--column {
+      flex-direction: column;
+      align-items: stretch;
+      gap: 1.25rem;
+    }
+
+    /* Complete form demo layout */
+    .demo-form {
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+      width: 100%;
+    }
+
+    .demo-form .demo-form-submit {
+      align-self: flex-start;
+    }
+
     /* Event console panel */
     .console-panel {
       margin-top: auto;
@@ -352,6 +370,7 @@
   <nav class="tabs-nav">
     <button class="tab-trigger active" data-tab="buttons">Button Component</button>
     <button class="tab-trigger" data-tab="checkboxes">Checkbox Component</button>
+    <button class="tab-trigger" data-tab="forms">Form Components</button>
   </nav>
 
   <main>
@@ -483,6 +502,93 @@
         </div>
       </div>
     </section>
+
+    <!-- Input Customizer -->
+    <section class="card tab-content-forms tab-hidden">
+      <div class="card-title">
+        <span>Interactive Input Customizer</span>
+        <span class="badge">Live Preview</span>
+      </div>
+
+      <div class="preview-box" id="input-preview">
+        <!-- Rendered input will appear here -->
+      </div>
+
+      <div class="controls-grid">
+        <div class="control-group">
+          <label for="inp-label-input">Label (Text)</label>
+          <input type="text" id="inp-label-input" value="E-mailová adresa">
+        </div>
+
+        <div class="control-group">
+          <label for="inp-type-select">Type (Typ inputu)</label>
+          <select id="inp-type-select">
+            <option value="text">text</option>
+            <option value="email" selected>email</option>
+            <option value="password">password</option>
+            <option value="number">number</option>
+            <option value="search">search</option>
+            <option value="date">date</option>
+          </select>
+        </div>
+
+        <div class="control-group">
+          <label for="inp-placeholder-input">Placeholder</label>
+          <input type="text" id="inp-placeholder-input" value="jan@example.com">
+        </div>
+
+        <div class="control-group">
+          <label for="inp-size-select">Size (Velikost)</label>
+          <select id="inp-size-select">
+            <option value="default">default</option>
+            <option value="sm">sm (Small)</option>
+            <option value="lg">lg (Large)</option>
+          </select>
+        </div>
+
+        <div class="control-group">
+          <label for="inp-start-icon-select">Start Icon</label>
+          <select id="inp-start-icon-select">
+            <option value="none">Žádná</option>
+            <option value="search">Hledat (Search)</option>
+            <option value="check">Potvrdit (Check)</option>
+          </select>
+        </div>
+
+        <div class="control-group">
+          <label>States (Stavy)</label>
+          <div class="checkbox-row">
+            <label class="checkbox-item">
+              <input type="checkbox" id="inp-disabled-check">
+              Disabled
+            </label>
+            <label class="checkbox-item">
+              <input type="checkbox" id="inp-required-check">
+              Required
+            </label>
+            <label class="checkbox-item">
+              <input type="checkbox" id="inp-readonly-check">
+              Readonly
+            </label>
+          </div>
+        </div>
+
+        <div class="control-group">
+          <label for="inp-helper-input">Helper Text (Nápověda)</label>
+          <input type="text" id="inp-helper-input" value="Nikdy nebudeme sdílet váš e-mail.">
+        </div>
+
+        <div class="control-group">
+          <label for="inp-error-input">Error Message (Chyba)</label>
+          <input type="text" id="inp-error-input" value="" placeholder="Vyplněním aktivujete error stav">
+        </div>
+
+        <div class="control-group control-full">
+          <label for="inp-class-input">Custom Class Name</label>
+          <input type="text" id="inp-class-input" value="" placeholder="např. custom-uppercase">
+        </div>
+      </div>
+    </section>
   </div>
 
   <!-- Right Column: Presets & Logs -->
@@ -521,6 +627,38 @@
         <div class="preset-section tab-content-checkboxes tab-hidden">
           <h3>Checkboxes (Zaškrtávací políčka)</h3>
           <div class="preset-list" id="preset-checkboxes">
+            <!-- Rendered automatically -->
+          </div>
+        </div>
+
+        <!-- Form: Input Presets -->
+        <div class="preset-section tab-content-forms tab-hidden">
+          <h3>Inputs (Textová pole)</h3>
+          <div class="preset-list preset-list--column" id="preset-inputs">
+            <!-- Rendered automatically -->
+          </div>
+        </div>
+
+        <!-- Form: Select & Textarea Presets -->
+        <div class="preset-section tab-content-forms tab-hidden">
+          <h3>Select & Textarea</h3>
+          <div class="preset-list preset-list--column" id="preset-selects">
+            <!-- Rendered automatically -->
+          </div>
+        </div>
+
+        <!-- Form: Radio Presets -->
+        <div class="preset-section tab-content-forms tab-hidden">
+          <h3>Radio Groups (Přepínače)</h3>
+          <div class="preset-list preset-list--column" id="preset-radios">
+            <!-- Rendered automatically -->
+          </div>
+        </div>
+
+        <!-- Form: Complete form demo -->
+        <div class="preset-section tab-content-forms tab-hidden">
+          <h3>Kompletní formulář (Live Demo)</h3>
+          <div class="preset-list preset-list--column" id="preset-form">
             <!-- Rendered automatically -->
           </div>
         </div>

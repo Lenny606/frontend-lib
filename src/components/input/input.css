@@ -1,0 +1,108 @@
+/* Glass input wrapper: carries background, border and focus glow */
+.fl-input-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  width: 100%;
+  box-sizing: border-box;
+  background: var(--fl-glass-bg, rgba(255, 255, 255, 0.07));
+  border: 1px solid var(--fl-glass-border, rgba(255, 255, 255, 0.12));
+  box-shadow: var(--fl-glass-shadow, 0 8px 32px 0 rgba(0, 0, 0, 0.25));
+  backdrop-filter: blur(12px) saturate(180%);
+  -webkit-backdrop-filter: blur(12px) saturate(180%);
+  transition: var(--fl-transition, all 0.35s cubic-bezier(0.16, 1, 0.3, 1));
+}
+
+.fl-input-wrapper:hover:not(:has(.fl-input:disabled)) {
+  border-color: rgba(255, 255, 255, 0.25);
+  background: rgba(255, 255, 255, 0.1);
+}
+
+/* Focus glow (purple, matching primary buttons) */
+.fl-input-wrapper:focus-within {
+  border-color: var(--fl-primary-border, rgba(168, 85, 247, 0.3));
+  background: rgba(255, 255, 255, 0.09);
+  box-shadow:
+    var(--fl-glass-shadow, 0 8px 32px 0 rgba(0, 0, 0, 0.25)),
+    0 0 0 3px rgba(168, 85, 247, 0.25);
+}
+
+/* Native input is transparent; the wrapper provides all chrome */
+.fl-input {
+  flex: 1;
+  min-width: 0;
+  background: transparent;
+  border: none;
+  outline: none;
+  font-family: var(--fl-font-family, system-ui, sans-serif);
+  font-size: inherit;
+  color: var(--fl-secondary-text, #f3f4f6);
+  letter-spacing: -0.01em;
+}
+
+.fl-input::placeholder {
+  color: var(--text-muted, #9ca3af);
+  opacity: 0.7;
+}
+
+.fl-input:disabled {
+  cursor: not-allowed;
+}
+
+/* Icons inside the input */
+.fl-input-icon {
+  width: 1.1em;
+  height: 1.1em;
+  flex-shrink: 0;
+  color: var(--text-muted, #9ca3af);
+  display: inline-block;
+}
+
+.fl-input-wrapper:focus-within .fl-input-icon {
+  color: var(--fl-primary-text, #f3e8ff);
+}
+
+/* ==========================================================================
+   Sizing Options (heights match button sizes)
+   ========================================================================== */
+
+.fl-input-wrapper--default {
+  font-size: 0.95rem;
+  padding: 0 1rem;
+  height: 2.75rem;
+  border-radius: var(--fl-radius, 12px);
+}
+
+.fl-input-wrapper--sm {
+  font-size: 0.85rem;
+  padding: 0 0.75rem;
+  height: 2.25rem;
+  border-radius: var(--fl-radius-sm, 8px);
+}
+
+.fl-input-wrapper--lg {
+  font-size: 1.05rem;
+  padding: 0 1.25rem;
+  height: 3.25rem;
+  border-radius: var(--fl-radius-lg, 16px);
+}
+
+/* ==========================================================================
+   States (Error / Disabled)
+   ========================================================================== */
+
+.fl-field--error .fl-input-wrapper {
+  border-color: var(--fl-error-border, rgba(248, 113, 113, 0.5));
+}
+
+.fl-field--error .fl-input-wrapper:focus-within {
+  box-shadow:
+    var(--fl-glass-shadow, 0 8px 32px 0 rgba(0, 0, 0, 0.25)),
+    0 0 0 3px var(--fl-error-glow, rgba(248, 113, 113, 0.25));
+}
+
+.fl-field--disabled .fl-input-wrapper {
+  opacity: 0.45;
+  box-shadow: none;
+  pointer-events: none;
+}

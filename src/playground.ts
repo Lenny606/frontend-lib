@@ -1,4 +1,11 @@
-import { createButton, createCheckbox } from './index';
+import {
+  createButton,
+  createCheckbox,
+  createInput,
+  createTextarea,
+  createSelect,
+  createRadioGroup
+} from './index';
 
 // 1. Icon Definitions (SVG Strings)
 const ICONS = {
@@ -27,6 +34,20 @@ const chkLabelInput = document.getElementById('chk-label-input') as HTMLInputEle
 const chkCheckedInput = document.getElementById('chk-checked-input') as HTMLInputElement;
 const chkDisabledInput = document.getElementById('chk-disabled-input') as HTMLInputElement;
 const chkClassInput = document.getElementById('chk-class-input') as HTMLInputElement;
+
+// Customizer Element Selectors - Input
+const inputPreviewContainer = document.getElementById('input-preview');
+const inpLabelInput = document.getElementById('inp-label-input') as HTMLInputElement;
+const inpTypeSelect = document.getElementById('inp-type-select') as HTMLSelectElement;
+const inpPlaceholderInput = document.getElementById('inp-placeholder-input') as HTMLInputElement;
+const inpSizeSelect = document.getElementById('inp-size-select') as HTMLSelectElement;
+const inpStartIconSelect = document.getElementById('inp-start-icon-select') as HTMLSelectElement;
+const inpDisabledCheck = document.getElementById('inp-disabled-check') as HTMLInputElement;
+const inpRequiredCheck = document.getElementById('inp-required-check') as HTMLInputElement;
+const inpReadonlyCheck = document.getElementById('inp-readonly-check') as HTMLInputElement;
+const inpHelperInput = document.getElementById('inp-helper-input') as HTMLInputElement;
+const inpErrorInput = document.getElementById('inp-error-input') as HTMLInputElement;
+const inpClassInput = document.getElementById('inp-class-input') as HTMLInputElement;
 
 // Log & Console Selectors
 const consoleLogs = document.getElementById('console-logs');
@@ -129,6 +150,53 @@ function renderCustomizerCheckbox() {
   checkboxPreviewContainer.appendChild(currentCheckbox);
 }
 
+// 4b. Render Customizer Input
+let currentInput: HTMLElement | null = null;
+
+function renderCustomizerInput() {
+  if (!inputPreviewContainer) return;
+
+  // Clear previous element
+  if (currentInput && inputPreviewContainer.contains(currentInput)) {
+    inputPreviewContainer.removeChild(currentInput);
+  }
+
+  const label = inpLabelInput ? inpLabelInput.value : 'Input';
+  const type = (inpTypeSelect ? inpTypeSelect.value : 'text') as any;
+  const placeholder = inpPlaceholderInput ? inpPlaceholderInput.value : '';
+  const size = (inpSizeSelect ? inpSizeSelect.value : 'default') as any;
+  const disabled = inpDisabledCheck ? inpDisabledCheck.checked : false;
+  const required = inpRequiredCheck ? inpRequiredCheck.checked : false;
+  const readonly = inpReadonlyCheck ? inpReadonlyCheck.checked : false;
+  const helperText = inpHelperInput ? inpHelperInput.value : '';
+  const error = inpErrorInput ? inpErrorInput.value : '';
+  const className = inpClassInput ? inpClassInput.value : '';
+
+  const startIcon = inpStartIconSelect && inpStartIconSelect.value !== 'none'
+    ? (ICONS as any)[inpStartIconSelect.value]
+    : undefined;
+
+  // Instantiate component
+  currentInput = createInput({
+    label,
+    type,
+    placeholder,
+    size,
+    disabled,
+    required,
+    readonly,
+    helperText: helperText || undefined,
+    error: error || undefined,
+    startIcon,
+    className,
+    onChange: (value) => {
+      logEvent(`Změna hodnoty customizer inputu "${label}" na: "${value}"`);
+    }
+  });
+
+  inputPreviewContainer.appendChild(currentInput);
+}
+
 // Wire up customizer listeners - Button
 [labelInput, hrefInput, classInput].forEach(input => {
   if (input) input.addEventListener('input', renderCustomizerButton);
@@ -149,6 +217,19 @@ function renderCustomizerCheckbox() {
 
 [chkCheckedInput, chkDisabledInput].forEach(check => {
   if (check) check.addEventListener('change', renderCustomizerCheckbox);
+});
+
+// Wire up customizer listeners - Input
+[inpLabelInput, inpPlaceholderInput, inpHelperInput, inpErrorInput, inpClassInput].forEach(input => {
+  if (input) input.addEventListener('input', renderCustomizerInput);
+});
+
+[inpTypeSelect, inpSizeSelect, inpStartIconSelect].forEach(select => {
+  if (select) select.addEventListener('change', renderCustomizerInput);
+});
+
+[inpDisabledCheck, inpRequiredCheck, inpReadonlyCheck].forEach(check => {
+  if (check) check.addEventListener('change', renderCustomizerInput);
 });
 
 if (clearConsoleBtn && consoleLogs) {
@@ -261,18 +342,189 @@ function renderPresets() {
       onChange: (val) => logEvent(`Změna stavu preset checkboxu (deaktivovaný & vybraný): ${val}`)
     }));
   }
+  // Form: Input Presets
+  const inputsContainer = document.getElementById('preset-inputs');
+  if (inputsContainer) {
+    inputsContainer.appendChild(createInput({
+      label: 'Hledat',
+      type: 'search',
+      placeholder: 'Hledat komponenty…',
+      startIcon: ICONS.search,
+      onChange: (value) => logEvent(`Preset input (search): "${value}"`)
+    }));
+
+    inputsContainer.appendChild(createInput({
+      label: 'Heslo',
+      type: 'password',
+      value: '123',
+      required: true,
+      error: 'Heslo musí mít alespoň 8 znaků.',
+      onChange: (value) => logEvent(`Preset input (heslo): délka ${value.length}`)
+    }));
+
+    inputsContainer.appendChild(createInput({
+      label: 'Deaktivovaný',
+      value: 'Hodnotu nelze upravit',
+      disabled: true
+    }));
+
+    inputsContainer.appendChild(createInput({
+      label: 'Malý input (sm)',
+      size: 'sm',
+      placeholder: 'Kompaktní velikost',
+      helperText: 'Velikosti sm / default / lg odpovídají tlačítkům.'
+    }));
+  }
+
+  // Form: Select & Textarea Presets
+  const selectsContainer = document.getElementById('preset-selects');
+  if (selectsContainer) {
+    selectsContainer.appendChild(createSelect({
+      label: 'Země',
+      placeholder: 'Vyberte zemi…',
+      options: [
+        { value: 'cz', label: 'Česká republika' },
+        { value: 'sk', label: 'Slovensko' },
+        { value: 'pl', label: 'Polsko' },
+        { value: 'de', label: 'Německo', disabled: true }
+      ],
+      helperText: 'Položka „Německo“ je deaktivovaná.',
+      onChange: (value) => logEvent(`Preset select (země): "${value}"`)
+    }));
+
+    selectsContainer.appendChild(createTextarea({
+      label: 'Zpráva',
+      placeholder: 'Napište nám, co vás zajímá…',
+      rows: 3,
+      maxLength: 200,
+      helperText: 'Maximálně 200 znaků.',
+      onChange: (value) => logEvent(`Preset textarea: ${value.length} znaků`)
+    }));
+  }
+
+  // Form: Radio Presets
+  const radiosContainer = document.getElementById('preset-radios');
+  if (radiosContainer) {
+    radiosContainer.appendChild(createRadioGroup({
+      label: 'Tarif',
+      name: 'preset-plan',
+      value: 'pro',
+      options: [
+        { value: 'free', label: 'Free' },
+        { value: 'pro', label: 'Pro' },
+        { value: 'enterprise', label: 'Enterprise', disabled: true }
+      ],
+      helperText: 'Vertikální layout, „Enterprise“ deaktivovaný.',
+      onChange: (value) => logEvent(`Preset radio (tarif): "${value}"`)
+    }));
+
+    radiosContainer.appendChild(createRadioGroup({
+      label: 'Preferovaný kontakt',
+      name: 'preset-contact',
+      direction: 'horizontal',
+      value: 'email',
+      options: [
+        { value: 'email', label: 'E-mail' },
+        { value: 'phone', label: 'Telefon' },
+        { value: 'sms', label: 'SMS' }
+      ],
+      onChange: (value) => logEvent(`Preset radio (kontakt): "${value}"`)
+    }));
+  }
+
+  // Form: Complete form demo combining all components
+  const formContainer = document.getElementById('preset-form');
+  if (formContainer) {
+    const form = document.createElement('form');
+    form.className = 'demo-form';
+    form.noValidate = true;
+
+    form.appendChild(createInput({
+      label: 'Jméno a příjmení',
+      name: 'fullName',
+      placeholder: 'Jan Novák',
+      required: true
+    }));
+
+    form.appendChild(createInput({
+      label: 'E-mail',
+      type: 'email',
+      name: 'email',
+      placeholder: 'jan@example.com',
+      required: true,
+      helperText: 'Nikdy nebudeme sdílet váš e-mail.'
+    }));
+
+    form.appendChild(createSelect({
+      label: 'Země',
+      name: 'country',
+      placeholder: 'Vyberte zemi…',
+      options: [
+        { value: 'cz', label: 'Česká republika' },
+        { value: 'sk', label: 'Slovensko' },
+        { value: 'pl', label: 'Polsko' }
+      ]
+    }));
+
+    form.appendChild(createRadioGroup({
+      label: 'Preferovaný kontakt',
+      name: 'contact',
+      direction: 'horizontal',
+      value: 'email',
+      options: [
+        { value: 'email', label: 'E-mail' },
+        { value: 'phone', label: 'Telefon' }
+      ]
+    }));
+
+    form.appendChild(createTextarea({
+      label: 'Zpráva',
+      name: 'message',
+      placeholder: 'Vaše zpráva…',
+      rows: 3
+    }));
+
+    form.appendChild(createCheckbox({
+      label: 'Souhlasím s obchodními podmínkami',
+      name: 'terms',
+      value: 'yes'
+    }));
+
+    const submitButton = createButton({
+      label: 'Odeslat formulář',
+      type: 'submit',
+      className: 'demo-form-submit'
+    });
+    form.appendChild(submitButton);
+
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const data = new FormData(form);
+      const entries = Array.from(data.entries())
+        .map(([key, value]) => `${key}="${value}"`)
+        .join(', ');
+      logEvent(`Formulář odeslán: ${entries || '(prázdný)'}`);
+    });
+
+    formContainer.appendChild(form);
+  }
 }
 
 // Initial setup
 renderCustomizerButton();
 renderCustomizerCheckbox();
+renderCustomizerInput();
 renderPresets();
 logEvent('Playground plně spuštěn.');
 
 // 6. Tabs switching logic
+const TAB_NAMES = ['buttons', 'checkboxes', 'forms'];
+const TAB_LABELS: Record<string, string> = {
+  buttons: 'Button',
+  checkboxes: 'Checkbox',
+  forms: 'Form Components'
+};
 const tabTriggers = document.querySelectorAll('.tab-trigger');
-const buttonContents = document.querySelectorAll('.tab-content-buttons');
-const checkboxContents = document.querySelectorAll('.tab-content-checkboxes');
 
 tabTriggers.forEach(trigger => {
   trigger.addEventListener('click', () => {
@@ -280,16 +532,14 @@ tabTriggers.forEach(trigger => {
     tabTriggers.forEach(t => t.classList.remove('active'));
     // Add active class to clicked tab
     trigger.classList.add('active');
-    
+
     const tab = trigger.getAttribute('data-tab');
-    logEvent(`Přepnuto na záložku: ${tab === 'buttons' ? 'Button' : 'Checkbox'}`);
-    
-    if (tab === 'buttons') {
-      buttonContents.forEach(el => el.classList.remove('tab-hidden'));
-      checkboxContents.forEach(el => el.classList.add('tab-hidden'));
-    } else {
-      buttonContents.forEach(el => el.classList.add('tab-hidden'));
-      checkboxContents.forEach(el => el.classList.remove('tab-hidden'));
-    }
+    logEvent(`Přepnuto na záložku: ${TAB_LABELS[tab || ''] || tab}`);
+
+    TAB_NAMES.forEach(name => {
+      document.querySelectorAll(`.tab-content-${name}`).forEach(el => {
+        el.classList.toggle('tab-hidden', name !== tab);
+      });
+    });
   });
 });

@@ -1,0 +1,25 @@
+/* Form label base style */
+.fl-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  font-family: var(--fl-font-family, system-ui, sans-serif);
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: var(--fl-secondary-text, #e5e7eb);
+  cursor: pointer;
+  user-select: none;
+}
+
+/* Required asterisk indicator */
+.fl-label-required {
+  color: var(--fl-error-text, #f87171);
+  font-weight: 700;
+}
+
+/* Disabled state */
+.fl-label--disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}

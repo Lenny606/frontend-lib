@@ -1,0 +1,32 @@
+/* Additional theme variables for form components */
+:root {
+  --fl-error-text: #f87171;
+  --fl-error-border: rgba(248, 113, 113, 0.5);
+  --fl-error-glow: rgba(248, 113, 113, 0.25);
+}
+
+/* Field wrapper: label + control + message stacked vertically */
+.fl-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  width: 100%;
+  font-family: var(--fl-font-family, system-ui, sans-serif);
+}
+
+/* Helper / error message below the control */
+.fl-field-message {
+  margin: 0;
+  font-size: 0.78rem;
+  color: var(--text-muted, #9ca3af);
+  letter-spacing: -0.01em;
+}
+
+.fl-field-message--error {
+  color: var(--fl-error-text, #f87171);
+}
+
+/* Disabled field mutes everything inside */
+.fl-field--disabled {
+  cursor: not-allowed;
+}
