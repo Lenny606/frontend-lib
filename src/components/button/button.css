@@ -1,47 +1,137 @@
-/* CSS Variables for custom branding */
+/* Glass Fluid Theme Variables */
 :root {
-  --fl-font-family: 'Inter', system-ui, -apple-system, sans-serif;
-  --fl-primary-grad: linear-gradient(135deg, #6366f1 0%, #a855f7 100%);
-  --fl-primary-hover-grad: linear-gradient(135deg, #4f46e5 0%, #9333ea 100%);
-  --fl-text-color: #ffffff;
-  --fl-radius: 8px;
-  --fl-transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  --fl-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-  --fl-shadow-hover: 0 10px 15px -3px rgba(168, 85, 247, 0.3), 0 4px 6px -2px rgba(99, 102, 241, 0.2);
+  --fl-font-family: 'Plus Jakarta Sans', 'Inter', system-ui, -apple-system, sans-serif;
+  --fl-radius: 12px;
+  --fl-transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  
+  /* Glass colors */
+  --fl-glass-bg: rgba(255, 255, 255, 0.07);
+  --fl-glass-border: rgba(255, 255, 255, 0.12);
+  --fl-glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+  
+  /* Primary Glass Fluid (Vibrant Indigo-Purple gradient glow) */
+  --fl-primary-bg: rgba(168, 85, 247, 0.12);
+  --fl-primary-border: rgba(168, 85, 247, 0.3);
+  --fl-primary-glow: rgba(168, 85, 247, 0.4);
+  --fl-primary-text: #f3e8ff;
+  
+  /* Secondary Glass Fluid (Minimal white/silver glass) */
+  --fl-secondary-bg: rgba(255, 255, 255, 0.05);
+  --fl-secondary-border: rgba(255, 255, 255, 0.1);
+  --fl-secondary-glow: rgba(255, 255, 255, 0.15);
+  --fl-secondary-text: #e5e7eb;
+  
+  /* Outline Glass Fluid (Translucent border with subtle hover fill) */
+  --fl-outline-bg: transparent;
+  --fl-outline-border: rgba(99, 102, 241, 0.4);
+  --fl-outline-glow: rgba(99, 102, 241, 0.3);
+  --fl-outline-text: #c7d2fe;
 }
 
+/* Base button styles */
 .fl-btn {
   font-family: var(--fl-font-family);
   font-size: 0.95rem;
   font-weight: 600;
-  padding: 0.75rem 1.5rem;
-  border: none;
+  padding: 0.8rem 1.6rem;
   border-radius: var(--fl-radius);
-  background: var(--fl-primary-grad);
-  color: var(--fl-text-color);
   cursor: pointer;
   outline: none;
-  box-shadow: var(--fl-shadow);
-  transition: var(--fl-transition);
   position: relative;
   overflow: hidden;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 0.5rem;
+  gap: 0.6rem;
+  transition: var(--fl-transition);
+  text-decoration: none;
+  letter-spacing: -0.01em;
+  
+  /* Glassmorphism Core */
+  backdrop-filter: blur(12px) saturate(180%);
+  -webkit-backdrop-filter: blur(12px) saturate(180%);
+  box-shadow: var(--fl-glass-shadow);
+  border: 1px solid var(--fl-glass-border);
 }
 
-.fl-btn:hover {
-  background: var(--fl-primary-hover-grad);
-  transform: translateY(-2px);
-  box-shadow: var(--fl-shadow-hover);
+/* Fluid shiny reflection effect */
+.fl-btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -150%;
+  width: 120%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.08) 50%,
+    transparent 100%
+  );
+  transform: skewX(-25deg);
+  transition: all 0.75s ease;
+}
+
+.fl-btn:hover::before {
+  left: 150%;
 }
 
 .fl-btn:active {
-  transform: translateY(0);
+  transform: translateY(1px) scale(0.98);
 }
 
 .fl-btn:focus-visible {
-  outline: 2px solid #a855f7;
-  outline-offset: 2px;
+  outline: 2px solid var(--fl-primary-border);
+  outline-offset: 4px;
+}
+
+/* Primary Glass Fluid Variant */
+.fl-btn--primary {
+  background: var(--fl-primary-bg);
+  border-color: var(--fl-primary-border);
+  color: var(--fl-primary-text);
+  text-shadow: 0 0 10px rgba(168, 85, 247, 0.5);
+}
+
+.fl-btn--primary:hover {
+  background: rgba(168, 85, 247, 0.2);
+  border-color: rgba(168, 85, 247, 0.5);
+  box-shadow: 
+    0 12px 40px 0 rgba(0, 0, 0, 0.35),
+    0 0 20px 0 var(--fl-primary-glow);
+  transform: translateY(-2px);
+}
+
+/* Secondary Glass Fluid Variant */
+.fl-btn--secondary {
+  background: var(--fl-secondary-bg);
+  border-color: var(--fl-secondary-border);
+  color: var(--fl-secondary-text);
+}
+
+.fl-btn--secondary:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.25);
+  box-shadow: 
+    0 12px 40px 0 rgba(0, 0, 0, 0.35),
+    0 0 15px 0 var(--fl-secondary-glow);
+  transform: translateY(-2px);
+  color: #ffffff;
+}
+
+/* Outline Glass Fluid Variant */
+.fl-btn--outline {
+  background: var(--fl-outline-bg);
+  border-color: var(--fl-outline-border);
+  color: var(--fl-outline-text);
+}
+
+.fl-btn--outline:hover {
+  background: rgba(99, 102, 241, 0.12);
+  border-color: rgba(99, 102, 241, 0.6);
+  box-shadow: 
+    0 12px 40px 0 rgba(0, 0, 0, 0.35),
+    0 0 15px 0 var(--fl-outline-glow);
+  transform: translateY(-2px);
+  color: #e0e7ff;
 }
