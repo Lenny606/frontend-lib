@@ -3,14 +3,14 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Component Library Playground</title>
+  <title>Component Library Playground - Shadcn style</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Plus+Jakarta+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg-color: #0b0f19;
-      --panel-bg: rgba(17, 24, 39, 0.7);
+      --bg-color: #080c14;
+      --panel-bg: rgba(15, 23, 42, 0.65);
       --border-color: rgba(255, 255, 255, 0.08);
       --accent-color: #a855f7;
       --text-main: #f3f4f6;
@@ -33,7 +33,7 @@
       color: var(--text-main);
       font-family: var(--font-sans);
       min-height: 100vh;
-      padding: 2rem;
+      padding: 2rem 1.5rem;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -41,19 +41,20 @@
 
     header {
       width: 100%;
-      max-width: 1000px;
-      margin-bottom: 3rem;
-      text-align: center;
+      max-width: 1200px;
+      margin-bottom: 2.5rem;
+      text-align: left;
     }
 
     header h1 {
       font-family: var(--font-display);
       font-size: 2.5rem;
       font-weight: 800;
-      background: linear-gradient(135deg, #6366f1 0%, #a855f7 100%);
+      background: linear-gradient(135deg, #a855f7 0%, #6366f1 100%);
       -webkit-background-clip: text;
+      background-clip: text;
       -webkit-text-fill-color: transparent;
-      margin-bottom: 0.5rem;
+      margin-bottom: 0.25rem;
     }
 
     header p {
@@ -63,31 +64,33 @@
 
     main {
       width: 100%;
-      max-width: 1000px;
+      max-width: 1200px;
       display: grid;
       grid-template-columns: 1fr;
       gap: 2rem;
     }
 
-    @media (min-width: 768px) {
+    @media (min-width: 992px) {
       main {
-        grid-template-columns: 2fr 1fr;
+        grid-template-columns: 1.25fr 1fr;
       }
     }
 
     .card {
       background: var(--panel-bg);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
+      backdrop-filter: blur(16px) saturate(180%);
+      -webkit-backdrop-filter: blur(16px) saturate(180%);
       border: 1px solid var(--border-color);
-      border-radius: 16px;
+      border-radius: 20px;
       padding: 2rem;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.35);
+      display: flex;
+      flex-direction: column;
     }
 
     .card-title {
       font-family: var(--font-display);
-      font-size: 1.5rem;
+      font-size: 1.4rem;
       font-weight: 600;
       margin-bottom: 1.5rem;
       border-bottom: 1px solid var(--border-color);
@@ -95,34 +98,45 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
+      color: #ffffff;
     }
 
     .badge {
-      background: rgba(168, 85, 247, 0.15);
+      background: rgba(168, 85, 247, 0.12);
       color: var(--accent-color);
       font-size: 0.75rem;
       padding: 0.25rem 0.75rem;
       border-radius: 9999px;
-      border: 1px solid rgba(168, 85, 247, 0.3);
+      border: 1px solid rgba(168, 85, 247, 0.25);
+      font-weight: 600;
     }
 
     /* Showcase area */
     .preview-box {
-      background: rgba(0, 0, 0, 0.2);
-      border: 1px dashed var(--border-color);
-      border-radius: 12px;
-      padding: 3rem;
+      background: rgba(0, 0, 0, 0.25);
+      border: 1px dashed rgba(255, 255, 255, 0.08);
+      border-radius: 14px;
+      padding: 2.5rem;
       display: flex;
       justify-content: center;
       align-items: center;
-      min-height: 200px;
+      min-height: 180px;
       margin-bottom: 1.5rem;
     }
 
     .controls-grid {
       display: grid;
       grid-template-columns: 1fr;
-      gap: 1rem;
+      gap: 1.25rem;
+    }
+
+    @media (min-width: 576px) {
+      .controls-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+      .control-full {
+        grid-column: span 2;
+      }
     }
 
     .control-group {
@@ -132,52 +146,112 @@
     }
 
     .control-group label {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .control-group input, .control-group select {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      color: var(--text-main);
+      padding: 0.7rem;
+      font-family: inherit;
+      font-size: 0.9rem;
+      outline: none;
+      transition: all 0.25s;
+    }
+
+    .control-group input:focus, .control-group select:focus {
+      border-color: var(--accent-color);
+      box-shadow: 0 0 0 3px rgba(168, 85, 247, 0.25);
+      background: rgba(255, 255, 255, 0.07);
+    }
+
+    .control-group select option {
+      background: #0d1321;
+      color: var(--text-main);
+    }
+
+    /* Checkboxes side-by-side */
+    .checkbox-row {
+      display: flex;
+      gap: 1.5rem;
+      align-items: center;
+      margin-top: 0.5rem;
+    }
+
+    .checkbox-item {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      cursor: pointer;
+      font-size: 0.9rem;
+      user-select: none;
+    }
+
+    .checkbox-item input {
+      cursor: pointer;
+      width: 1.1rem;
+      height: 1.1rem;
+      accent-color: var(--accent-color);
+    }
+
+    /* Preset layout lists */
+    .presets-container {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    .preset-section {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    .preset-section h3 {
       font-size: 0.85rem;
       color: var(--text-muted);
-      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      font-weight: 700;
     }
 
-    .control-group input {
-      background: rgba(255, 255, 255, 0.05);
-      border: 1px solid var(--border-color);
-      border-radius: 8px;
-      color: var(--text-main);
-      padding: 0.6rem;
-      font-family: inherit;
-      outline: none;
-      transition: all 0.2s;
-    }
-
-    .control-group input:focus {
-      border-color: var(--accent-color);
-      box-shadow: 0 0 0 2px rgba(168, 85, 247, 0.2);
+    .preset-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      background: rgba(0, 0, 0, 0.15);
+      padding: 1rem;
+      border-radius: 12px;
+      border: 1px solid rgba(255, 255, 255, 0.04);
     }
 
     /* Event console panel */
     .console-panel {
-      display: flex;
-      flex-direction: column;
-      height: 100%;
+      margin-top: auto;
     }
 
     .console-logs {
-      background: rgba(0, 0, 0, 0.3);
+      background: rgba(0, 0, 0, 0.35);
       border: 1px solid var(--border-color);
-      border-radius: 8px;
+      border-radius: 10px;
       padding: 1rem;
-      flex-grow: 1;
       font-family: monospace;
       font-size: 0.85rem;
       overflow-y: auto;
-      max-height: 250px;
-      min-height: 150px;
+      height: 160px;
       color: #34d399;
     }
 
     .console-log-entry {
-      margin-bottom: 0.5rem;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.03);
-      padding-bottom: 0.25rem;
+      margin-bottom: 0.4rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.02);
+      padding-bottom: 0.2rem;
       word-break: break-all;
     }
 
@@ -192,7 +266,7 @@
       color: var(--text-muted);
       font-size: 0.75rem;
       padding: 0.25rem 0.5rem;
-      border-radius: 4px;
+      border-radius: 6px;
       cursor: pointer;
       transition: all 0.2s;
     }
@@ -201,21 +275,92 @@
       color: var(--text-main);
       background: rgba(255, 255, 255, 0.05);
     }
+
+    /* Custom utility styles */
+    .custom-uppercase {
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+    }
+    .custom-gradient-text {
+      background: linear-gradient(to right, #38bdf8, #818cf8);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    /* Tabs Navigation styling */
+    .tabs-nav {
+      display: flex;
+      gap: 0.5rem;
+      width: 100%;
+      max-width: 1200px;
+      margin: 0 auto 2rem auto;
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: 0.75rem;
+      padding-left: 1rem;
+      padding-right: 1rem;
+    }
+
+    .tab-trigger {
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      font-family: var(--font-display);
+      font-size: 1rem;
+      font-weight: 600;
+      padding: 0.6rem 1.2rem;
+      cursor: pointer;
+      border-radius: 8px;
+      transition: all 0.25s ease;
+      position: relative;
+      outline: none;
+    }
+
+    .tab-trigger:hover {
+      color: var(--text-main);
+      background: rgba(255, 255, 255, 0.04);
+    }
+
+    .tab-trigger.active {
+      color: var(--accent-color);
+      background: rgba(168, 85, 247, 0.1);
+    }
+
+    .tab-trigger.active::after {
+      content: '';
+      position: absolute;
+      bottom: -0.75rem;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: var(--accent-color);
+      box-shadow: 0 0 10px var(--accent-color);
+    }
+
+    .tab-hidden {
+      display: none !important;
+    }
   </style>
 </head>
 <body>
 
   <header>
     <h1>Frontend Lib Playground</h1>
-    <p>Interaktivní testovací prostředí pro knihovnu komponent</p>
+    <p>Shadcn style & Glass Fluid Engine</p>
   </header>
 
+  <nav class="tabs-nav">
+    <button class="tab-trigger active" data-tab="buttons">Button Component</button>
+    <button class="tab-trigger" data-tab="checkboxes">Checkbox Component</button>
+  </nav>
+
   <main>
-    <!-- Component Showcase -->
-    <section class="card">
+    <!-- Left Column: Customizers -->
+    <div style="display: flex; flex-direction: column; gap: 2rem;">
+      <section class="card tab-content-buttons">
       <div class="card-title">
-        <span>Button Component</span>
-        <span class="badge">Vanilla JS/TS</span>
+        <span>Interactive Button Customizer</span>
+        <span class="badge">Live Preview</span>
       </div>
 
       <div class="preview-box" id="button-preview">
@@ -224,27 +369,178 @@
 
       <div class="controls-grid">
         <div class="control-group">
-          <label for="btn-label-input">Text tlačítka (Label)</label>
+          <label for="btn-label-input">Label (Text)</label>
           <input type="text" id="btn-label-input" value="Klikni na mě">
         </div>
-      </div>
-    </section>
 
-    <!-- Event Logs -->
-    <section class="card console-panel">
-      <div class="card-title">
-        <span>Event Log</span>
-        <button class="clear-btn" id="clear-console">Smazat</button>
-      </div>
-      <div class="console-logs" id="console-logs">
-        <div class="console-log-entry">
-          <span class="time">[System]</span>Playground spuštěn. Klikněte na tlačítko vlevo.
+        <div class="control-group">
+          <label for="btn-variant-select">Variant (Vzhled)</label>
+          <select id="btn-variant-select">
+            <option value="primary">primary (Glass Fluid)</option>
+            <option value="secondary">secondary (Glass Minimal)</option>
+            <option value="outline">outline (Glass Border)</option>
+            <option value="ghost">ghost (No Background)</option>
+            <option value="link">link (Underline text)</option>
+          </select>
+        </div>
+
+        <div class="control-group">
+          <label for="btn-size-select">Size (Velikost)</label>
+          <select id="btn-size-select">
+            <option value="default">default</option>
+            <option value="sm">sm (Small)</option>
+            <option value="lg">lg (Large)</option>
+            <option value="icon">icon (Icon only)</option>
+          </select>
+        </div>
+
+        <div class="control-group">
+          <label for="btn-tag-select">HTML Tag</label>
+          <select id="btn-tag-select">
+            <option value="button">button</option>
+            <option value="a">a (Odkaz)</option>
+          </select>
+        </div>
+
+        <div class="control-group" id="href-group" style="display: none;">
+          <label for="btn-href-input">Href (URL odkazu)</label>
+          <input type="text" id="btn-href-input" value="https://google.com">
+        </div>
+
+        <div class="control-group">
+          <label>States (Stavy)</label>
+          <div class="checkbox-row">
+            <label class="checkbox-item">
+              <input type="checkbox" id="btn-disabled-check">
+              Disabled
+            </label>
+            <label class="checkbox-item">
+              <input type="checkbox" id="btn-loading-check">
+              Loading
+            </label>
+          </div>
+        </div>
+
+        <div class="control-group">
+          <label for="btn-start-icon-select">Start Icon</label>
+          <select id="btn-start-icon-select">
+            <option value="none">Žádná</option>
+            <option value="search">Hledat (Search)</option>
+            <option value="check">Potvrdit (Check)</option>
+          </select>
+        </div>
+
+        <div class="control-group">
+          <label for="btn-end-icon-select">End Icon</label>
+          <select id="btn-end-icon-select">
+            <option value="none">Žádná</option>
+            <option value="arrow">Šipka (Arrow Right)</option>
+            <option value="check">Potvrdit (Check)</option>
+          </select>
+        </div>
+
+        <div class="control-group control-full">
+          <label for="btn-class-input">Custom Class Name</label>
+          <input type="text" id="btn-class-input" value="" placeholder="např. custom-uppercase">
         </div>
       </div>
     </section>
+
+    <!-- Checkbox Customizer -->
+    <section class="card tab-content-checkboxes tab-hidden">
+      <div class="card-title">
+        <span>Interactive Checkbox Customizer</span>
+        <span class="badge">Live Preview</span>
+      </div>
+
+      <div class="preview-box" id="checkbox-preview">
+        <!-- Rendered checkbox will appear here -->
+      </div>
+
+      <div class="controls-grid">
+        <div class="control-group">
+          <label for="chk-label-input">Label (Text)</label>
+          <input type="text" id="chk-label-input" value="Souhlasím s obchodními podmínkami">
+        </div>
+
+        <div class="control-group">
+          <label>States (Stavy)</label>
+          <div class="checkbox-row">
+            <label class="checkbox-item">
+              <input type="checkbox" id="chk-checked-input">
+              Checked
+            </label>
+            <label class="checkbox-item">
+              <input type="checkbox" id="chk-disabled-input">
+              Disabled
+            </label>
+          </div>
+        </div>
+
+        <div class="control-group control-full">
+          <label for="chk-class-input">Custom Class Name</label>
+          <input type="text" id="chk-class-input" value="" placeholder="např. custom-bold">
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- Right Column: Presets & Logs -->
+  <div style="display: flex; flex-direction: column; gap: 2rem;">
+      <section class="card presets-container">
+        <div class="card-title">
+          <span>Shadcn Presets Gallery</span>
+          <span class="badge">Static Presets</span>
+        </div>
+
+        <!-- Sizing Presets -->
+        <div class="preset-section tab-content-buttons">
+          <h3>Sizing (Velikosti)</h3>
+          <div class="preset-list" id="preset-sizes">
+            <!-- Rendered automatically -->
+          </div>
+        </div>
+
+        <!-- Icon Presets -->
+        <div class="preset-section tab-content-buttons">
+          <h3>Icons (Tlačítka s ikonami)</h3>
+          <div class="preset-list" id="preset-icons">
+            <!-- Rendered automatically -->
+          </div>
+        </div>
+
+        <!-- State Presets -->
+        <div class="preset-section tab-content-buttons">
+          <h3>States (Stavy a odkazy)</h3>
+          <div class="preset-list" id="preset-states">
+            <!-- Rendered automatically -->
+          </div>
+        </div>
+
+        <!-- Checkbox Presets -->
+        <div class="preset-section tab-content-checkboxes tab-hidden">
+          <h3>Checkboxes (Zaškrtávací políčka)</h3>
+          <div class="preset-list" id="preset-checkboxes">
+            <!-- Rendered automatically -->
+          </div>
+        </div>
+      </section>
+
+      <!-- Event Logs -->
+      <section class="card console-panel">
+        <div class="card-title">
+          <span>Interactive Logs</span>
+          <button class="clear-btn" id="clear-console">Smazat</button>
+        </div>
+        <div class="console-logs" id="console-logs">
+          <div class="console-log-entry">
+            <span class="time">[System]</span>Playground inicializován.
+          </div>
+        </div>
+      </section>
+    </div>
   </main>
 
-  <!-- Load our local development entry point -->
   <script type="module" src="/src/playground.ts"></script>
 </body>
 </html>

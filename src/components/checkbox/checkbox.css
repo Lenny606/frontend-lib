@@ -1,0 +1,96 @@
+/* Checkbox Layout & Base Style */
+.fl-checkbox-container {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.65rem;
+  font-family: var(--fl-font-family, system-ui, sans-serif);
+  font-size: 0.875rem;
+  color: var(--fl-secondary-text, #f3f4f6);
+  cursor: pointer;
+  user-select: none;
+  position: relative;
+  transition: var(--fl-transition, all 0.35s cubic-bezier(0.16, 1, 0.3, 1));
+}
+
+/* Visually hide native checkbox while keeping accessibility */
+.fl-checkbox-input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+/* Custom indicator box */
+.fl-checkbox-indicator {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.25rem;
+  height: 1.25rem;
+  border-radius: 6px;
+  background: var(--fl-glass-bg, rgba(255, 255, 255, 0.07));
+  border: 1px solid var(--fl-glass-border, rgba(255, 255, 255, 0.12));
+  box-shadow: var(--fl-glass-shadow, 0 8px 32px 0 rgba(0, 0, 0, 0.25));
+  backdrop-filter: blur(12px) saturate(180%);
+  -webkit-backdrop-filter: blur(12px) saturate(180%);
+  transition: var(--fl-transition, all 0.35s cubic-bezier(0.16, 1, 0.3, 1));
+  flex-shrink: 0;
+}
+
+/* Hover style */
+.fl-checkbox-container:hover .fl-checkbox-indicator {
+  border-color: rgba(255, 255, 255, 0.3);
+  background: rgba(255, 255, 255, 0.12);
+  box-shadow: var(--fl-glass-shadow), 0 0 10px rgba(255, 255, 255, 0.1);
+}
+
+/* Focused style (keyboard accessibility) */
+.fl-checkbox-input:focus-visible + .fl-checkbox-indicator {
+  outline: none;
+  border-color: var(--fl-primary-border, #a855f7);
+  box-shadow: var(--fl-glass-shadow), 0 0 0 3px rgba(168, 85, 247, 0.3);
+}
+
+/* Checked styling */
+.fl-checkbox-input:checked + .fl-checkbox-indicator {
+  background: var(--fl-primary-bg, rgba(168, 85, 247, 0.12));
+  border-color: var(--fl-primary-border, rgba(168, 85, 247, 0.3));
+  box-shadow: var(--fl-glass-shadow), 0 0 12px var(--fl-primary-glow, rgba(168, 85, 247, 0.4));
+}
+
+/* Custom checkmark SVG details */
+.fl-checkbox-check {
+  width: 0.75rem;
+  height: 0.75rem;
+  color: var(--fl-primary-text, #f3e8ff);
+  stroke-dasharray: 24;
+  stroke-dashoffset: 24;
+  opacity: 0;
+  transform: scale(0.6);
+  transition: var(--fl-transition, all 0.35s cubic-bezier(0.16, 1, 0.3, 1));
+}
+
+/* Checkmark animation on check */
+.fl-checkbox-input:checked + .fl-checkbox-indicator .fl-checkbox-check {
+  stroke-dashoffset: 0;
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* Disabled styling */
+.fl-checkbox-container.fl-checkbox--disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+.fl-checkbox-container.fl-checkbox--disabled .fl-checkbox-indicator {
+  background: rgba(255, 255, 255, 0.02);
+  border-color: rgba(255, 255, 255, 0.06);
+  box-shadow: none;
+}
