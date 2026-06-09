@@ -2,12 +2,14 @@
 :root {
   --fl-font-family: 'Plus Jakarta Sans', 'Inter', system-ui, -apple-system, sans-serif;
   --fl-radius: 12px;
-  --fl-transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  --fl-radius-sm: 8px;
+  --fl-radius-lg: 16px;
+  --fl-transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
   
   /* Glass colors */
   --fl-glass-bg: rgba(255, 255, 255, 0.07);
   --fl-glass-border: rgba(255, 255, 255, 0.12);
-  --fl-glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+  --fl-glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.25);
   
   /* Primary Glass Fluid (Vibrant Indigo-Purple gradient glow) */
   --fl-primary-bg: rgba(168, 85, 247, 0.12);
@@ -31,10 +33,7 @@
 /* Base button styles */
 .fl-btn {
   font-family: var(--fl-font-family);
-  font-size: 0.95rem;
   font-weight: 600;
-  padding: 0.8rem 1.6rem;
-  border-radius: var(--fl-radius);
   cursor: pointer;
   outline: none;
   position: relative;
@@ -42,19 +41,29 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 0.6rem;
   transition: var(--fl-transition);
   text-decoration: none;
   letter-spacing: -0.01em;
+  border: 1px solid var(--fl-glass-border);
+  box-sizing: border-box;
   
   /* Glassmorphism Core */
   backdrop-filter: blur(12px) saturate(180%);
   -webkit-backdrop-filter: blur(12px) saturate(180%);
   box-shadow: var(--fl-glass-shadow);
-  border: 1px solid var(--fl-glass-border);
 }
 
-/* Fluid shiny reflection effect */
+/* Button Content Alignment */
+.fl-btn-content {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  width: 100%;
+  height: 100%;
+}
+
+/* Shiny reflection overlay */
 .fl-btn::before {
   content: '';
   position: absolute;
@@ -70,13 +79,14 @@
   );
   transform: skewX(-25deg);
   transition: all 0.75s ease;
+  pointer-events: none;
 }
 
 .fl-btn:hover::before {
   left: 150%;
 }
 
-.fl-btn:active {
+.fl-btn:active:not(.fl-btn--disabled) {
   transform: translateY(1px) scale(0.98);
 }
 
@@ -84,6 +94,10 @@
   outline: 2px solid var(--fl-primary-border);
   outline-offset: 4px;
 }
+
+/* ==========================================================================
+   Design Variants (Glass Fluid & Minimal styles)
+   ========================================================================== */
 
 /* Primary Glass Fluid Variant */
 .fl-btn--primary {
@@ -93,7 +107,7 @@
   text-shadow: 0 0 10px rgba(168, 85, 247, 0.5);
 }
 
-.fl-btn--primary:hover {
+.fl-btn--primary:hover:not(.fl-btn--disabled) {
   background: rgba(168, 85, 247, 0.2);
   border-color: rgba(168, 85, 247, 0.5);
   box-shadow: 
@@ -109,7 +123,7 @@
   color: var(--fl-secondary-text);
 }
 
-.fl-btn--secondary:hover {
+.fl-btn--secondary:hover:not(.fl-btn--disabled) {
   background: rgba(255, 255, 255, 0.1);
   border-color: rgba(255, 255, 255, 0.25);
   box-shadow: 
@@ -126,7 +140,7 @@
   color: var(--fl-outline-text);
 }
 
-.fl-btn--outline:hover {
+.fl-btn--outline:hover:not(.fl-btn--disabled) {
   background: rgba(99, 102, 241, 0.12);
   border-color: rgba(99, 102, 241, 0.6);
   box-shadow: 
@@ -134,4 +148,143 @@
     0 0 15px 0 var(--fl-outline-glow);
   transform: translateY(-2px);
   color: #e0e7ff;
+}
+
+/* Ghost Variant */
+.fl-btn--ghost {
+  background: transparent;
+  border-color: transparent;
+  box-shadow: none;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  color: var(--text-muted, #9ca3af);
+}
+
+.fl-btn--ghost:hover:not(.fl-btn--disabled) {
+  background: rgba(255, 255, 255, 0.06);
+  color: #ffffff;
+  transform: translateY(-1px);
+}
+
+/* Link Variant */
+.fl-btn--link {
+  background: transparent;
+  border-color: transparent;
+  box-shadow: none;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  color: #a855f7;
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+}
+
+.fl-btn--link:hover:not(.fl-btn--disabled) {
+  text-decoration: underline;
+  color: #c084fc;
+}
+
+/* ==========================================================================
+   Sizing Options
+   ========================================================================== */
+
+.fl-btn--default {
+  font-size: 0.95rem;
+  padding: 0.8rem 1.6rem;
+  border-radius: var(--fl-radius);
+  height: 2.75rem;
+}
+
+.fl-btn--sm {
+  font-size: 0.85rem;
+  padding: 0.5rem 1rem;
+  border-radius: var(--fl-radius-sm);
+  height: 2.25rem;
+}
+
+.fl-btn--lg {
+  font-size: 1.05rem;
+  padding: 1rem 2rem;
+  border-radius: var(--fl-radius-lg);
+  height: 3.25rem;
+}
+
+.fl-btn--icon {
+  padding: 0;
+  width: 2.75rem;
+  height: 2.75rem;
+  border-radius: var(--fl-radius);
+}
+
+.fl-btn--icon.fl-btn--sm {
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: var(--fl-radius-sm);
+}
+
+.fl-btn--icon.fl-btn--lg {
+  width: 3.25rem;
+  height: 3.25rem;
+  border-radius: var(--fl-radius-lg);
+}
+
+/* ==========================================================================
+   Icons & Spinners
+   ========================================================================== */
+
+/* Standard icon dimensions */
+.fl-btn-icon {
+  width: 1.25em;
+  height: 1.25em;
+  display: inline-block;
+  flex-shrink: 0;
+}
+
+.fl-btn-icon svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+/* Spinner and rotation animations */
+.fl-spinner {
+  width: 1.2em;
+  height: 1.2em;
+  animation: fl-spin 0.8s linear infinite;
+  display: inline-block;
+  flex-shrink: 0;
+}
+
+@keyframes fl-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* ==========================================================================
+   States (Disabled / Loading)
+   ========================================================================== */
+
+.fl-btn--disabled,
+.fl-btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+  pointer-events: none;
+  box-shadow: none !important;
+  transform: none !important;
+}
+
+/* Accessibility: screen reader text utility */
+.fl-sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
 }
