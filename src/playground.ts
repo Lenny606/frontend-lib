@@ -16,7 +16,9 @@ import {
   createAccordion,
   createTabs,
   createSpinner,
-  createSkeleton
+  createSkeleton,
+  createDropdown,
+  createProgress
 } from './index';
 
 // 1. Icon Definitions (SVG Strings)
@@ -162,6 +164,22 @@ const skeletonWidthInput = document.getElementById('skeleton-width-input') as HT
 const skeletonHeightInput = document.getElementById('skeleton-height-input') as HTMLInputElement;
 const skeletonAnimateCheck = document.getElementById('skeleton-animate-check') as HTMLInputElement;
 const skeletonClassInput = document.getElementById('skeleton-class-input') as HTMLInputElement;
+
+// Customizer Element Selectors - Dropdown
+const dropdownCustomizerTrigger = document.getElementById('dropdown-customizer-trigger') as HTMLButtonElement;
+const dropdownPlacementSelect = document.getElementById('dropdown-placement-select') as HTMLSelectElement;
+const dropdownIconsCheck = document.getElementById('dropdown-icons-check') as HTMLInputElement;
+const dropdownDisabledCheck = document.getElementById('dropdown-disabled-check') as HTMLInputElement;
+const dropdownClassInput = document.getElementById('dropdown-class-input') as HTMLInputElement;
+
+// Customizer Element Selectors - Progress
+const progressPreviewContainer = document.getElementById('progress-preview');
+const progressValueInput = document.getElementById('progress-value-input') as HTMLInputElement;
+const progressIndeterminateCheck = document.getElementById('progress-indeterminate-check') as HTMLInputElement;
+const progressMaxInput = document.getElementById('progress-max-input') as HTMLInputElement;
+const progressVariantSelect = document.getElementById('progress-variant-select') as HTMLSelectElement;
+const progressLabelCheck = document.getElementById('progress-label-check') as HTMLInputElement;
+const progressClassInput = document.getElementById('progress-class-input') as HTMLInputElement;
 
 // Log & Console Selectors
 const consoleLogs = document.getElementById('console-logs');
@@ -751,6 +769,86 @@ function renderCustomizerSkeleton() {
   skeletonPreviewContainer.appendChild(currentSkeleton);
 }
 
+// 4m. Render Customizer Dropdown
+let customizerDropdownInstance: any = null;
+
+function renderCustomizerDropdown() {
+  if (!dropdownCustomizerTrigger) return;
+
+  if (customizerDropdownInstance) {
+    customizerDropdownInstance.destroy();
+    customizerDropdownInstance = null;
+  }
+
+  const placement = (dropdownPlacementSelect ? dropdownPlacementSelect.value : 'bottom-start') as any;
+  const showIcons = dropdownIconsCheck ? dropdownIconsCheck.checked : true;
+  const disableSecond = dropdownDisabledCheck ? dropdownDisabledCheck.checked : true;
+  const className = dropdownClassInput ? dropdownClassInput.value : '';
+
+  const item1Icon = showIcons ? `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:100%;height:100%"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>` : undefined;
+  const item2Icon = showIcons ? `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:100%;height:100%"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.1a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"></path><circle cx="12" cy="12" r="3"></circle></svg>` : undefined;
+  const item3Icon = showIcons ? `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:100%;height:100%"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>` : undefined;
+
+  customizerDropdownInstance = createDropdown({
+    trigger: dropdownCustomizerTrigger,
+    placement,
+    className,
+    items: [
+      {
+        label: 'Můj Profil',
+        icon: item1Icon,
+        onClick: () => logEvent('Dropdown: Kliknuto na Můj Profil')
+      },
+      {
+        label: 'Nastavení účtu',
+        icon: item2Icon,
+        disabled: disableSecond,
+        onClick: () => logEvent('Dropdown: Kliknuto na Nastavení účtu')
+      },
+      { type: 'divider' },
+      {
+        label: 'Odhlásit se',
+        icon: item3Icon,
+        className: 'text-error',
+        onClick: () => logEvent('Dropdown: Kliknuto na Odhlásit se')
+      }
+    ]
+  });
+}
+
+// 4n. Render Customizer Progress
+let currentProgressInstance: any = null;
+
+function renderCustomizerProgress() {
+  if (!progressPreviewContainer) return;
+
+  if (currentProgressInstance) {
+    currentProgressInstance.destroy();
+    currentProgressInstance = null;
+  }
+
+  const isIndeterminate = progressIndeterminateCheck ? progressIndeterminateCheck.checked : false;
+  const value = isIndeterminate ? undefined : (progressValueInput ? parseFloat(progressValueInput.value) : 50);
+  const max = progressMaxInput ? parseFloat(progressMaxInput.value) || 100 : 100;
+  const variant = (progressVariantSelect ? progressVariantSelect.value : 'primary') as any;
+  const showLabel = progressLabelCheck ? progressLabelCheck.checked : true;
+  const className = progressClassInput ? progressClassInput.value : '';
+
+  if (progressValueInput) {
+    progressValueInput.disabled = isIndeterminate;
+  }
+
+  currentProgressInstance = createProgress({
+    value,
+    max,
+    variant,
+    showLabel,
+    className
+  });
+
+  progressPreviewContainer.appendChild(currentProgressInstance.element);
+}
+
 // Wire up customizer listeners - Button
 [labelInput, hrefInput, classInput].forEach(input => {
   if (input) input.addEventListener('input', renderCustomizerButton);
@@ -860,6 +958,25 @@ if (tabsDisabledCheck) {
 if (skeletonVariantSelect) skeletonVariantSelect.addEventListener('change', renderCustomizerSkeleton);
 if (skeletonAnimateCheck) skeletonAnimateCheck.addEventListener('change', renderCustomizerSkeleton);
 
+// Wire up customizer listeners - Dropdown
+[dropdownClassInput].forEach(input => {
+  if (input) input.addEventListener('input', renderCustomizerDropdown);
+});
+if (dropdownPlacementSelect) dropdownPlacementSelect.addEventListener('change', renderCustomizerDropdown);
+[dropdownIconsCheck, dropdownDisabledCheck].forEach(check => {
+  if (check) check.addEventListener('change', renderCustomizerDropdown);
+});
+
+// Wire up customizer listeners - Progress
+[progressClassInput, progressMaxInput].forEach(input => {
+  if (input) input.addEventListener('input', renderCustomizerProgress);
+});
+if (progressValueInput) progressValueInput.addEventListener('input', renderCustomizerProgress);
+if (progressVariantSelect) progressVariantSelect.addEventListener('change', renderCustomizerProgress);
+[progressIndeterminateCheck, progressLabelCheck].forEach(check => {
+  if (check) check.addEventListener('change', renderCustomizerProgress);
+});
+
 if (clearConsoleBtn && consoleLogs) {
   clearConsoleBtn.addEventListener('click', () => {
     consoleLogs.innerHTML = '';
@@ -868,7 +985,21 @@ if (clearConsoleBtn && consoleLogs) {
 }
 
 // 5. Render Presets Gallery (Static Cases)
+const presetDropdownInstances: any[] = [];
+const presetProgressInstances: any[] = [];
+
 function renderPresets() {
+  // Clear any existing instances to avoid memory leaks
+  presetDropdownInstances.forEach(inst => {
+    if (inst && typeof inst.destroy === 'function') inst.destroy();
+  });
+  presetDropdownInstances.length = 0;
+  
+  presetProgressInstances.forEach(inst => {
+    if (inst && typeof inst.destroy === 'function') inst.destroy();
+  });
+  presetProgressInstances.length = 0;
+
   // Sizing Presets
   const sizesContainer = document.getElementById('preset-sizes');
   if (sizesContainer) {
@@ -1840,6 +1971,274 @@ function renderPresets() {
     cardSk.appendChild(cardBody);
     skeletonsContainer.appendChild(cardSk);
   }
+
+  // Dropdown Presets
+  const dropdownsContainer = document.getElementById('preset-dropdowns');
+  if (dropdownsContainer) {
+    // 1. Placement Presets
+    const alignGroup = document.createElement('div');
+    alignGroup.style.display = 'flex';
+    alignGroup.style.flexDirection = 'column';
+    alignGroup.style.gap = '0.5rem';
+    alignGroup.style.width = '100%';
+
+    const h4_3 = document.createElement('h4');
+    h4_3.textContent = 'Menu Placement Alignments';
+    h4_3.style.fontSize = '0.9rem';
+    h4_3.style.marginBottom = '0.5rem';
+    h4_3.style.color = 'var(--fl-muted-text)';
+    alignGroup.appendChild(h4_3);
+
+    const btnRow = document.createElement('div');
+    btnRow.style.display = 'flex';
+    btnRow.style.gap = '1rem';
+    btnRow.style.flexWrap = 'wrap';
+
+    const placements = ['bottom-start', 'bottom-end', 'top-start', 'top-end'] as const;
+    placements.forEach(pos => {
+      const triggerBtn = createButton({
+        label: pos,
+        variant: 'outline',
+        size: 'sm'
+      });
+      btnRow.appendChild(triggerBtn);
+
+      const dropdown = createDropdown({
+        trigger: triggerBtn,
+        placement: pos,
+        items: [
+          { label: `Action A (${pos})`, onClick: () => logEvent(`Clicked Action A on ${pos}`) },
+          { label: 'Action B', onClick: () => logEvent(`Clicked Action B on ${pos}`) }
+        ]
+      });
+      presetDropdownInstances.push(dropdown);
+    });
+    alignGroup.appendChild(btnRow);
+    dropdownsContainer.appendChild(alignGroup);
+
+    // Divider
+    const hr = document.createElement('hr');
+    hr.style.border = 'none';
+    hr.style.borderTop = '1px solid rgba(255, 255, 255, 0.08)';
+    hr.style.margin = '1.5rem 0';
+    hr.style.width = '100%';
+    dropdownsContainer.appendChild(hr);
+
+    // 2. Scenario Presets: Header Bar with User Menu & Card with Actions Menu
+    const scenarioGroup = document.createElement('div');
+    scenarioGroup.style.display = 'flex';
+    scenarioGroup.style.flexDirection = 'column';
+    scenarioGroup.style.gap = '1rem';
+    scenarioGroup.style.width = '100%';
+
+    const h4_4 = document.createElement('h4');
+    h4_4.textContent = 'Real-World Scenarios';
+    h4_4.style.fontSize = '0.9rem';
+    h4_4.style.marginBottom = '0.5rem';
+    h4_4.style.color = 'var(--fl-muted-text)';
+    scenarioGroup.appendChild(h4_4);
+
+    const flexRow = document.createElement('div');
+    flexRow.style.display = 'flex';
+    flexRow.style.gap = '1.5rem';
+    flexRow.style.flexWrap = 'wrap';
+    flexRow.style.width = '100%';
+
+    // Mock Header User Area
+    const headerMock = document.createElement('div');
+    headerMock.style.display = 'flex';
+    headerMock.style.alignItems = 'center';
+    headerMock.style.justifyContent = 'space-between';
+    headerMock.style.padding = '0.75rem 1rem';
+    headerMock.style.borderRadius = '12px';
+    headerMock.style.border = '1px solid rgba(255, 255, 255, 0.08)';
+    headerMock.style.background = 'rgba(255, 255, 255, 0.02)';
+    headerMock.style.flex = '1';
+    headerMock.style.minWidth = '280px';
+
+    const headerTitle = document.createElement('span');
+    headerTitle.textContent = 'Navbar Mock';
+    headerTitle.style.fontWeight = '600';
+    headerTitle.style.fontSize = '0.85rem';
+    headerMock.appendChild(headerTitle);
+
+    const userTrigger = document.createElement('div');
+    userTrigger.style.display = 'flex';
+    userTrigger.style.alignItems = 'center';
+    userTrigger.style.gap = '0.5rem';
+    userTrigger.style.cursor = 'pointer';
+    userTrigger.style.padding = '0.25rem 0.5rem';
+    userTrigger.style.borderRadius = '8px';
+    userTrigger.style.transition = 'background-color 0.12s ease';
+    userTrigger.addEventListener('mouseenter', () => {
+      userTrigger.style.backgroundColor = 'rgba(255, 255, 255, 0.06)';
+    });
+    userTrigger.addEventListener('mouseleave', () => {
+      userTrigger.style.backgroundColor = 'transparent';
+    });
+
+    const userAvatar = createAvatar({
+      src: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=100&q=80',
+      size: 'sm'
+    });
+    const userChevron = document.createElement('span');
+    userChevron.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width: 14px; height: 14px; color: var(--fl-muted-text)"><path d="m6 9 6 6 6-6"></path></svg>`;
+    userChevron.style.display = 'flex';
+    userChevron.style.alignItems = 'center';
+
+    userTrigger.appendChild(userAvatar);
+    userTrigger.appendChild(userChevron);
+    headerMock.appendChild(userTrigger);
+
+    const userDropdown = createDropdown({
+      trigger: userTrigger,
+      placement: 'bottom-end',
+      items: [
+        { label: 'Zobrazit Profil', icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>`, onClick: () => logEvent('Header Menu: Zobrazit Profil') },
+        { label: 'Nastavení', icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.1a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"></path><circle cx="12" cy="12" r="3"></circle></svg>`, onClick: () => logEvent('Header Menu: Nastavení') },
+        { type: 'divider' },
+        { label: 'Odhlásit', icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>`, className: 'text-error', onClick: () => logEvent('Header Menu: Odhlásit') }
+      ]
+    });
+    presetDropdownInstances.push(userDropdown);
+
+    // Mock File Item Card with Dots Menu
+    const cardMock = document.createElement('div');
+    cardMock.style.display = 'flex';
+    cardMock.style.alignItems = 'center';
+    cardMock.style.justifyContent = 'space-between';
+    cardMock.style.padding = '0.75rem 1rem';
+    cardMock.style.borderRadius = '12px';
+    cardMock.style.border = '1px solid rgba(255, 255, 255, 0.08)';
+    cardMock.style.background = 'rgba(255, 255, 255, 0.02)';
+    cardMock.style.flex = '1';
+    cardMock.style.minWidth = '280px';
+
+    const cardInfo = document.createElement('div');
+    cardInfo.style.display = 'flex';
+    cardInfo.style.flexDirection = 'column';
+    cardInfo.style.gap = '0.2rem';
+    
+    const cardName = document.createElement('span');
+    cardName.textContent = 'annual-report-2026.pdf';
+    cardName.style.fontWeight = '500';
+    cardName.style.fontSize = '0.85rem';
+    const cardMeta = document.createElement('span');
+    cardMeta.textContent = 'PDF dokument • 4.2 MB';
+    cardMeta.style.fontSize = '0.75rem';
+    cardMeta.style.color = 'var(--fl-muted-text)';
+
+    cardInfo.appendChild(cardName);
+    cardInfo.appendChild(cardMeta);
+    cardMock.appendChild(cardInfo);
+
+    const dotsTrigger = createButton({
+      variant: 'ghost',
+      size: 'sm',
+      startIcon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="fl-btn-icon"><circle cx="12" cy="12" r="1"></circle><circle cx="19" cy="12" r="1"></circle><circle cx="5" cy="12" r="1"></circle></svg>`
+    });
+    dotsTrigger.style.padding = '0.4rem';
+    dotsTrigger.style.minWidth = 'auto';
+    cardMock.appendChild(dotsTrigger);
+
+    const dotsDropdown = createDropdown({
+      trigger: dotsTrigger,
+      placement: 'bottom-end',
+      items: [
+        { label: 'Upravit název', icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px"><path d="M12 20h9"></path><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"></path></svg>`, onClick: () => logEvent('Dots Menu: Upravit') },
+        { label: 'Duplikovat', icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"></rect><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path></svg>`, onClick: () => logEvent('Dots Menu: Duplikovat') },
+        { type: 'divider' },
+        { label: 'Smazat soubor', icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px"><path d="M3 6h18"></path><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"></path><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"></path></svg>`, className: 'text-error', onClick: () => logEvent('Dots Menu: Smazat') }
+      ]
+    });
+    presetDropdownInstances.push(dotsDropdown);
+
+    flexRow.appendChild(headerMock);
+    flexRow.appendChild(cardMock);
+    scenarioGroup.appendChild(flexRow);
+    dropdownsContainer.appendChild(scenarioGroup);
+  }
+
+  // Progress Presets
+  const progressContainer = document.getElementById('preset-progress');
+  if (progressContainer) {
+    // 1. Color Variant Queue
+    const colGroup = document.createElement('div');
+    colGroup.style.display = 'flex';
+    colGroup.style.flexDirection = 'column';
+    colGroup.style.gap = '1rem';
+    colGroup.style.width = '100%';
+
+    const h4_5 = document.createElement('h4');
+    h4_5.textContent = 'Progress Bar Color Themes';
+    h4_5.style.fontSize = '0.9rem';
+    h4_5.style.marginBottom = '0.5rem';
+    h4_5.style.color = 'var(--fl-muted-text)';
+    colGroup.appendChild(h4_5);
+
+    const variants = ['primary', 'success', 'warning', 'error'] as const;
+    const values = [75, 100, 45, 15];
+    const subtexts = ['Primary (Zpracování)', 'Success (Dokončeno)', 'Warning (Upozornění)', 'Error (Chyba stahování)'];
+    
+    variants.forEach((v, index) => {
+      const wrapper = document.createElement('div');
+      wrapper.style.display = 'flex';
+      wrapper.style.flexDirection = 'column';
+      wrapper.style.gap = '0.25rem';
+      
+      const titleSpan = document.createElement('span');
+      titleSpan.textContent = subtexts[index];
+      titleSpan.style.fontSize = '0.75rem';
+      titleSpan.style.fontWeight = '500';
+      wrapper.appendChild(titleSpan);
+
+      const prog = createProgress({
+        value: values[index],
+        variant: v,
+        showLabel: true
+      });
+      presetProgressInstances.push(prog);
+      wrapper.appendChild(prog.element);
+      colGroup.appendChild(wrapper);
+    });
+
+    progressContainer.appendChild(colGroup);
+
+    // Divider
+    const hr = document.createElement('hr');
+    hr.style.border = 'none';
+    hr.style.borderTop = '1px solid rgba(255, 255, 255, 0.08)';
+    hr.style.margin = '1.5rem 0';
+    progressContainer.appendChild(hr);
+
+    // 2. Queue Manager Example
+    const queueGroup = document.createElement('div');
+    queueGroup.style.display = 'flex';
+    queueGroup.style.flexDirection = 'column';
+    queueGroup.style.gap = '0.75rem';
+    queueGroup.style.width = '100%';
+
+    const h4_6 = document.createElement('h4');
+    h4_6.textContent = 'Dynamic Queue & Indeterminate States';
+    h4_6.style.fontSize = '0.9rem';
+    h4_6.style.color = 'var(--fl-muted-text)';
+    queueGroup.appendChild(h4_6);
+
+    // Indeterminate upload progress bar
+    const labelUpload = document.createElement('span');
+    labelUpload.textContent = 'Uploading huge_backup.tar.gz...';
+    labelUpload.style.fontSize = '0.75rem';
+    queueGroup.appendChild(labelUpload);
+
+    const uploadProgress = createProgress({
+      variant: 'primary',
+      showLabel: true
+    });
+    presetProgressInstances.push(uploadProgress);
+    queueGroup.appendChild(uploadProgress.element);
+
+    progressContainer.appendChild(queueGroup);
+  }
 }
 
 // Initial setup
@@ -1856,11 +2255,13 @@ renderCustomizerAccordion();
 renderCustomizerTabs();
 renderCustomizerSpinner();
 renderCustomizerSkeleton();
+renderCustomizerDropdown();
+renderCustomizerProgress();
 renderPresets();
 logEvent('Playground plně spuštěn.');
 
 // 6. Tabs switching logic
-const TAB_NAMES = ['buttons', 'checkboxes', 'forms', 'cards', 'links', 'elements', 'modals', 'avatars', 'accordions', 'tabs', 'spinners', 'skeletons'];
+const TAB_NAMES = ['buttons', 'checkboxes', 'forms', 'cards', 'links', 'elements', 'modals', 'avatars', 'accordions', 'tabs', 'spinners', 'skeletons', 'dropdowns', 'progress'];
 const TAB_LABELS: Record<string, string> = {
   buttons: 'Button',
   checkboxes: 'Checkbox',
@@ -1873,7 +2274,9 @@ const TAB_LABELS: Record<string, string> = {
   accordions: 'Accordion',
   tabs: 'Tabs',
   spinners: 'Spinner',
-  skeletons: 'Skeleton'
+  skeletons: 'Skeleton',
+  dropdowns: 'Dropdown',
+  progress: 'Progress'
 };
 const tabTriggers = document.querySelectorAll('.tab-trigger');
 

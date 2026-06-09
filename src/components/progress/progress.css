@@ -1,0 +1,108 @@
+/* Glass Fluid Progress Bar Styles */
+
+.fl-progress-container {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.fl-progress-info {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.fl-progress-label {
+  font-family: inherit;
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--fl-muted-text, rgba(255, 255, 255, 0.6));
+}
+
+.fl-progress {
+  -webkit-appearance: none;
+  appearance: none;
+  display: block;
+  width: 100%;
+  height: 8px;
+  border: none;
+  border-radius: 9999px;
+  background: rgba(255, 255, 255, 0.08);
+  overflow: hidden;
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.2);
+  box-sizing: border-box;
+  color: var(--fl-progress-fill-color, var(--fl-primary-color, #3b82f6));
+}
+
+/* Chrome/Safari progress track and value */
+.fl-progress::-webkit-progress-bar {
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 9999px;
+}
+
+.fl-progress::-webkit-progress-value {
+  background: var(--fl-progress-fill-color, var(--fl-primary-color, #3b82f6));
+  border-radius: 9999px;
+  transition: width 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Firefox progress value */
+.fl-progress::-moz-progress-bar {
+  background: var(--fl-progress-fill-color, var(--fl-primary-color, #3b82f6));
+  border-radius: 9999px;
+}
+
+/* Theme Variant colors */
+.fl-progress--primary {
+  --fl-progress-fill-color: var(--fl-primary-color, #3b82f6);
+}
+
+.fl-progress--success {
+  --fl-progress-fill-color: var(--fl-success-color, #10b981);
+}
+
+.fl-progress--warning {
+  --fl-progress-fill-color: var(--fl-warning-color, #f59e0b);
+}
+
+.fl-progress--error {
+  --fl-progress-fill-color: var(--fl-error-color, #ef4444);
+}
+
+/* Indeterminate State styling */
+.fl-progress:not([value]) {
+  position: relative;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.fl-progress:not([value])::-webkit-progress-bar {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.fl-progress:not([value])::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: 30%;
+  background: var(--fl-progress-fill-color, var(--fl-primary-color, #3b82f6));
+  border-radius: 9999px;
+  animation: fl-progress-indeterminate 1.5s infinite ease-in-out;
+}
+
+@keyframes fl-progress-indeterminate {
+  0% {
+    left: -30%;
+    width: 30%;
+  }
+  50% {
+    width: 60%;
+  }
+  100% {
+    left: 100%;
+    width: 30%;
+  }
+}

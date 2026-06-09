@@ -7,6 +7,14 @@ a tento projekt dodržuje [Sémantické verzování](https://semver.org/lang/cs/
 
 ## [Unreleased]
 
+## [0.1.2] - 2026-06-09
+
+### Přidáno
+- Implementace komponenty **Dropdown / Menu** (nativní Popover API + CSS Anchor Positioning s automatickým JS fallbackem).
+- Implementace komponenty **Progress** (nativní progress bar s variantami a indeterminate animací).
+- Implementace komponent **Spinner** a **Skeleton** pro indikaci načítání a pulzující placeholdery.
+- Plná integrace nových komponent do interaktivního playgroundu (customizery, statické šablony, reálné příklady jako navbar profilové menu či kontextové akce souboru).
+
 ### Opraveno
 - Odstraněna nepoužívaná závislost `string-format-helpers` z `package.json`.
 

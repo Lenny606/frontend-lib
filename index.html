@@ -386,6 +386,8 @@
     <button class="tab-trigger" data-tab="tabs">Tabs Component</button>
     <button class="tab-trigger" data-tab="spinners">Spinner Component</button>
     <button class="tab-trigger" data-tab="skeletons">Skeleton Component</button>
+    <button class="tab-trigger" data-tab="dropdowns">Dropdown Component</button>
+    <button class="tab-trigger" data-tab="progress">Progress Component</button>
   </nav>
 
   <main>
@@ -1162,6 +1164,114 @@
         </div>
       </div>
     </section>
+
+    <!-- Dropdown Customizer -->
+    <section class="card tab-content-dropdowns tab-hidden">
+      <div class="card-title">
+        <span>Interactive Dropdown Customizer</span>
+        <span class="badge">Live Preview</span>
+      </div>
+
+      <div class="preview-box" id="dropdown-preview" style="min-height: 200px; display: flex; align-items: center; justify-content: center; position: relative;">
+        <button id="dropdown-customizer-trigger" class="fl-btn fl-btn--primary">Open Dropdown Menu</button>
+      </div>
+
+      <div class="controls-grid">
+        <div class="control-group">
+          <label for="dropdown-placement-select">Menu Placement (Umístění)</label>
+          <select id="dropdown-placement-select">
+            <option value="bottom-start" selected>Bottom Start (Dole vlevo)</option>
+            <option value="bottom-end">Bottom End (Dole vpravo)</option>
+            <option value="top-start">Top Start (Nahoře vlevo)</option>
+            <option value="top-end">Top End (Nahoře vpravo)</option>
+          </select>
+        </div>
+
+        <div class="control-group">
+          <label>Include Icons (Zahrnout ikony)</label>
+          <div class="checkbox-row">
+            <label class="checkbox-item">
+              <input type="checkbox" id="dropdown-icons-check" checked>
+              Show list icons
+            </label>
+          </div>
+        </div>
+
+        <div class="control-group">
+          <label>Disabled Item (Zakázaná položka)</label>
+          <div class="checkbox-row">
+            <label class="checkbox-item">
+              <input type="checkbox" id="dropdown-disabled-check" checked>
+              Disable second item
+            </label>
+          </div>
+        </div>
+
+        <div class="control-group">
+          <label for="dropdown-class-input">Custom Class Name</label>
+          <input type="text" id="dropdown-class-input" value="" placeholder="např. custom-dropdown">
+        </div>
+      </div>
+    </section>
+
+    <!-- Progress Customizer -->
+    <section class="card tab-content-progress tab-hidden">
+      <div class="card-title">
+        <span>Interactive Progress Customizer</span>
+        <span class="badge">Live Preview</span>
+      </div>
+
+      <div class="preview-box" id="progress-preview" style="min-height: 120px; display: flex; align-items: center; justify-content: center; padding: 2rem;">
+        <!-- Rendered progress bar will appear here -->
+      </div>
+
+      <div class="controls-grid">
+        <div class="control-group">
+          <label for="progress-value-input">Progress Value (Hodnota: 0-100)</label>
+          <input type="range" id="progress-value-input" min="0" max="100" value="50" style="width: 100%;">
+        </div>
+
+        <div class="control-group">
+          <label>Progress State (Stav)</label>
+          <div class="checkbox-row">
+            <label class="checkbox-item">
+              <input type="checkbox" id="progress-indeterminate-check">
+              Indeterminate (Neurčitý)
+            </label>
+          </div>
+        </div>
+
+        <div class="control-group">
+          <label for="progress-max-input">Max Value (Max. hodnota)</label>
+          <input type="number" id="progress-max-input" value="100">
+        </div>
+
+        <div class="control-group">
+          <label for="progress-variant-select">Color Variant (Barva)</label>
+          <select id="progress-variant-select">
+            <option value="primary" selected>Primary (Modrá)</option>
+            <option value="success">Success (Zelená)</option>
+            <option value="warning">Warning (Oranžová)</option>
+            <option value="error">Error (Červená)</option>
+          </select>
+        </div>
+
+        <div class="control-group">
+          <label>Show Text Label (Zobrazit label)</label>
+          <div class="checkbox-row">
+            <label class="checkbox-item">
+              <input type="checkbox" id="progress-label-check" checked>
+              Percentage value
+            </label>
+          </div>
+        </div>
+
+        <div class="control-group">
+          <label for="progress-class-input">Custom Class Name</label>
+          <input type="text" id="progress-class-input" value="" placeholder="např. custom-progress">
+        </div>
+      </div>
+    </section>
   </div>
 
   <!-- Right Column: Presets & Logs -->
@@ -1374,6 +1484,22 @@
         <div class="preset-section tab-content-skeletons tab-hidden">
           <h3>Skeleton Placeholders (Příklady)</h3>
           <div class="preset-list preset-list--column" id="preset-skeletons" style="width: 100%; gap: 1.5rem; padding: 1rem 0;">
+            <!-- Rendered automatically -->
+          </div>
+        </div>
+
+        <!-- Dropdown Presets -->
+        <div class="preset-section tab-content-dropdowns tab-hidden">
+          <h3>Dropdown Context Scenarios (Předvolby)</h3>
+          <div class="preset-list" id="preset-dropdowns" style="gap: 1.5rem; width: 100%; padding: 1rem 0; flex-wrap: wrap;">
+            <!-- Rendered automatically -->
+          </div>
+        </div>
+
+        <!-- Progress Presets -->
+        <div class="preset-section tab-content-progress tab-hidden">
+          <h3>Progress Scenarios (Předvolby)</h3>
+          <div class="preset-list preset-list--column" id="preset-progress" style="width: 100%; gap: 1.5rem; padding: 1rem 0;">
             <!-- Rendered automatically -->
           </div>
         </div>

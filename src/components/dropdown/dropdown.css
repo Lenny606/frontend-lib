@@ -1,0 +1,103 @@
+/* Glass Fluid Dropdown / Menu Styles */
+
+.fl-dropdown-menu {
+  display: none; /* Required for popover transition support */
+  position: fixed;
+  z-index: 9999;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: var(--fl-radius, 12px);
+  padding: 0.35rem;
+  background: rgba(15, 15, 20, 0.65);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35),
+              inset 0 1px 1px rgba(255, 255, 255, 0.08);
+  min-width: 200px;
+  max-width: 320px;
+  box-sizing: border-box;
+  margin: 0;
+  
+  /* Entry/Exit Transitions */
+  opacity: 0;
+  transform: translateY(-8px) scale(0.96);
+  transition: 
+    opacity 0.18s ease, 
+    transform 0.18s cubic-bezier(0.16, 1, 0.3, 1), 
+    display 0.18s allow-discrete, 
+    overlay 0.18s allow-discrete;
+}
+
+.fl-dropdown-menu:popover-open {
+  display: flex;
+  flex-direction: column;
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+/* Starting style for entering from the top layer */
+@starting-style {
+  .fl-dropdown-menu:popover-open {
+    opacity: 0;
+    transform: translateY(-8px) scale(0.96);
+  }
+}
+
+/* Dropdown Item button */
+.fl-dropdown-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  width: 100%;
+  padding: 0.5rem 0.75rem;
+  border: none;
+  background: transparent;
+  color: var(--fl-text-color, #ffffff);
+  font-family: inherit;
+  font-size: 0.875rem;
+  text-align: left;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.12s ease, color 0.12s ease;
+  box-sizing: border-box;
+}
+
+.fl-dropdown-item:hover:not(:disabled),
+.fl-dropdown-item:focus-visible:not(:disabled) {
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--fl-text-color, #ffffff);
+  outline: none;
+}
+
+.fl-dropdown-item:active:not(:disabled) {
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.fl-dropdown-item:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* Icon container inside item */
+.fl-dropdown-item-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.25rem;
+  height: 1.25rem;
+  color: var(--fl-muted-text, rgba(255, 255, 255, 0.55));
+  flex-shrink: 0;
+  transition: color 0.12s ease;
+}
+
+.fl-dropdown-item:hover:not(:disabled) .fl-dropdown-item-icon,
+.fl-dropdown-item:focus-visible:not(:disabled) .fl-dropdown-item-icon {
+  color: var(--fl-text-color, #ffffff);
+}
+
+/* Separator divider line */
+.fl-dropdown-divider {
+  height: 1px;
+  background: rgba(255, 255, 255, 0.08);
+  margin: 0.35rem 0.25rem;
+  border: none;
+}

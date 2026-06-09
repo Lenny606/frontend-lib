@@ -19,3 +19,6 @@ export * from './components/accordion/index.ts';
 export * from './components/tabs/index.ts';
 export * from './components/spinner/index.ts';
 export * from './components/skeleton/index.ts';
+export * from './components/dropdown/index.ts';
+export * from './components/progress/index.ts';
+
