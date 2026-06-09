@@ -1,5 +1,5 @@
 {
-  "name": "frontend-lib",
+  "name": "@thomas666/frontend-lib",
   "version": "0.1.0",
   "type": "module",
   "description": "A modern, responsive frontend component library skeleton",
