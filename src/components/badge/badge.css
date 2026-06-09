@@ -1,0 +1,96 @@
+/* Status color variables for badges and toasts */
+:root {
+  --fl-success-text: #34d399;
+  --fl-success-bg: rgba(52, 211, 153, 0.12);
+  --fl-success-border: rgba(52, 211, 153, 0.3);
+  --fl-warning-text: #fbbf24;
+  --fl-warning-bg: rgba(251, 191, 36, 0.12);
+  --fl-warning-border: rgba(251, 191, 36, 0.3);
+}
+
+/* Badge base style */
+.fl-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35em;
+  font-family: var(--fl-font-family, system-ui, sans-serif);
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  white-space: nowrap;
+  border-radius: 9999px;
+  border: 1px solid var(--fl-glass-border, rgba(255, 255, 255, 0.12));
+  backdrop-filter: blur(12px) saturate(180%);
+  -webkit-backdrop-filter: blur(12px) saturate(180%);
+  box-sizing: border-box;
+}
+
+/* Sizing */
+.fl-badge--default {
+  font-size: 0.78rem;
+  padding: 0.3rem 0.8rem;
+}
+
+.fl-badge--sm {
+  font-size: 0.7rem;
+  padding: 0.18rem 0.6rem;
+}
+
+/* Status dot */
+.fl-badge-dot {
+  width: 0.45em;
+  height: 0.45em;
+  border-radius: 50%;
+  background: currentColor;
+  box-shadow: 0 0 6px currentColor;
+  flex-shrink: 0;
+}
+
+/* Icon inside badge */
+.fl-badge-icon {
+  width: 1em;
+  height: 1em;
+  flex-shrink: 0;
+  display: inline-block;
+}
+
+/* ==========================================================================
+   Design Variants
+   ========================================================================== */
+
+.fl-badge--default {
+  background: var(--fl-glass-bg, rgba(255, 255, 255, 0.07));
+  border-color: var(--fl-glass-border, rgba(255, 255, 255, 0.12));
+  color: var(--fl-secondary-text, #e5e7eb);
+}
+
+.fl-badge--primary {
+  background: var(--fl-primary-bg, rgba(168, 85, 247, 0.12));
+  border-color: var(--fl-primary-border, rgba(168, 85, 247, 0.3));
+  color: #d8b4fe;
+}
+
+.fl-badge--success {
+  background: var(--fl-success-bg, rgba(52, 211, 153, 0.12));
+  border-color: var(--fl-success-border, rgba(52, 211, 153, 0.3));
+  color: var(--fl-success-text, #34d399);
+}
+
+.fl-badge--warning {
+  background: var(--fl-warning-bg, rgba(251, 191, 36, 0.12));
+  border-color: var(--fl-warning-border, rgba(251, 191, 36, 0.3));
+  color: var(--fl-warning-text, #fbbf24);
+}
+
+.fl-badge--error {
+  background: rgba(248, 113, 113, 0.12);
+  border-color: var(--fl-error-border, rgba(248, 113, 113, 0.5));
+  color: var(--fl-error-text, #f87171);
+}
+
+.fl-badge--outline {
+  background: transparent;
+  border-color: var(--fl-outline-border, rgba(99, 102, 241, 0.4));
+  color: #c7d2fe;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}

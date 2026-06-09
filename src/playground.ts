@@ -6,7 +6,11 @@ import {
   createSelect,
   createRadioGroup,
   createCard,
-  createLink
+  createLink,
+  createToggle,
+  createBadge,
+  createTooltip,
+  showToast
 } from './index';
 
 // 1. Icon Definitions (SVG Strings)
@@ -81,6 +85,23 @@ const lnkExternalCheck = document.getElementById('lnk-external-check') as HTMLIn
 const lnkDisabledCheck = document.getElementById('lnk-disabled-check') as HTMLInputElement;
 const lnkStartIconSelect = document.getElementById('lnk-start-icon-select') as HTMLSelectElement;
 const lnkClassInput = document.getElementById('lnk-class-input') as HTMLInputElement;
+
+// Customizer Element Selectors - Toggle
+const togglePreviewContainer = document.getElementById('toggle-preview');
+const tglLabelInput = document.getElementById('tgl-label-input') as HTMLInputElement;
+const tglSizeSelect = document.getElementById('tgl-size-select') as HTMLSelectElement;
+const tglCheckedCheck = document.getElementById('tgl-checked-check') as HTMLInputElement;
+const tglDisabledCheck = document.getElementById('tgl-disabled-check') as HTMLInputElement;
+const tglClassInput = document.getElementById('tgl-class-input') as HTMLInputElement;
+
+// Customizer Element Selectors - Toast
+const toastPreviewContainer = document.getElementById('toast-preview');
+const tstTitleInput = document.getElementById('tst-title-input') as HTMLInputElement;
+const tstMessageInput = document.getElementById('tst-message-input') as HTMLInputElement;
+const tstVariantSelect = document.getElementById('tst-variant-select') as HTMLSelectElement;
+const tstPositionSelect = document.getElementById('tst-position-select') as HTMLSelectElement;
+const tstDurationInput = document.getElementById('tst-duration-input') as HTMLInputElement;
+const tstClosableCheck = document.getElementById('tst-closable-check') as HTMLInputElement;
 
 // Log & Console Selectors
 const consoleLogs = document.getElementById('console-logs');
@@ -336,6 +357,67 @@ function renderCustomizerLink() {
   linkPreviewContainer.appendChild(currentLink);
 }
 
+// 4e. Render Customizer Toggle
+let currentToggle: HTMLElement | null = null;
+
+function renderCustomizerToggle() {
+  if (!togglePreviewContainer) return;
+
+  // Clear previous element
+  if (currentToggle && togglePreviewContainer.contains(currentToggle)) {
+    togglePreviewContainer.removeChild(currentToggle);
+  }
+
+  const label = tglLabelInput ? tglLabelInput.value : 'Toggle';
+  const size = (tglSizeSelect ? tglSizeSelect.value : 'default') as any;
+  const checked = tglCheckedCheck ? tglCheckedCheck.checked : false;
+  const disabled = tglDisabledCheck ? tglDisabledCheck.checked : false;
+  const className = tglClassInput ? tglClassInput.value : '';
+
+  // Instantiate component
+  currentToggle = createToggle({
+    label,
+    size,
+    checked,
+    disabled,
+    className,
+    onChange: (isChecked) => {
+      logEvent(`Změna stavu customizer toggle "${label}" na: ${isChecked}`);
+    }
+  });
+
+  togglePreviewContainer.appendChild(currentToggle);
+}
+
+// 4f. Toast Customizer (trigger button fires a live toast)
+function setupToastCustomizer() {
+  if (!toastPreviewContainer) return;
+
+  toastPreviewContainer.appendChild(createButton({
+    label: 'Zobrazit Toast',
+    endIcon: ICONS.arrow,
+    onClick: () => {
+      const title = tstTitleInput ? tstTitleInput.value : '';
+      const message = tstMessageInput ? tstMessageInput.value : 'Toast zpráva';
+      const variant = (tstVariantSelect ? tstVariantSelect.value : 'info') as any;
+      const position = (tstPositionSelect ? tstPositionSelect.value : 'top-right') as any;
+      const duration = tstDurationInput ? Number(tstDurationInput.value) : 4000;
+      const closable = tstClosableCheck ? tstClosableCheck.checked : true;
+
+      showToast({
+        title: title || undefined,
+        message,
+        variant,
+        position,
+        duration,
+        closable,
+        onClose: () => logEvent(`Toast "${title || message}" zavřen.`)
+      });
+      logEvent(`Zobrazen toast: variant ${variant} | pozice ${position} | duration ${duration}ms`);
+    }
+  }));
+}
+
 // Wire up customizer listeners - Button
 [labelInput, hrefInput, classInput].forEach(input => {
   if (input) input.addEventListener('input', renderCustomizerButton);
@@ -393,6 +475,17 @@ if (cardVariantSelect) cardVariantSelect.addEventListener('change', renderCustom
 
 [lnkExternalCheck, lnkDisabledCheck].forEach(check => {
   if (check) check.addEventListener('change', renderCustomizerLink);
+});
+
+// Wire up customizer listeners - Toggle
+[tglLabelInput, tglClassInput].forEach(input => {
+  if (input) input.addEventListener('input', renderCustomizerToggle);
+});
+
+if (tglSizeSelect) tglSizeSelect.addEventListener('change', renderCustomizerToggle);
+
+[tglCheckedCheck, tglDisabledCheck].forEach(check => {
+  if (check) check.addEventListener('change', renderCustomizerToggle);
 });
 
 if (clearConsoleBtn && consoleLogs) {
@@ -841,6 +934,87 @@ function renderPresets() {
     paragraph.append('.');
     linkInlineContainer.appendChild(paragraph);
   }
+
+  // Toggle Presets
+  const togglesContainer = document.getElementById('preset-toggles');
+  if (togglesContainer) {
+    togglesContainer.appendChild(createToggle({
+      label: 'Výchozí vypnutý',
+      onChange: (val) => logEvent(`Změna stavu preset toggle (výchozí): ${val}`)
+    }));
+
+    togglesContainer.appendChild(createToggle({
+      label: 'Předvolený',
+      checked: true,
+      onChange: (val) => logEvent(`Změna stavu preset toggle (předvolený): ${val}`)
+    }));
+
+    togglesContainer.appendChild(createToggle({
+      label: 'Malý (sm)',
+      size: 'sm',
+      onChange: (val) => logEvent(`Změna stavu preset toggle (sm): ${val}`)
+    }));
+
+    togglesContainer.appendChild(createToggle({
+      label: 'Deaktivovaný',
+      disabled: true,
+      checked: true,
+      onChange: (val) => logEvent(`Změna stavu preset toggle (deaktivovaný): ${val}`)
+    }));
+  }
+
+  // Badge Presets
+  const badgesContainer = document.getElementById('preset-badges');
+  if (badgesContainer) {
+    badgesContainer.appendChild(createBadge({ label: 'Default' }));
+    badgesContainer.appendChild(createBadge({ label: 'Primary', variant: 'primary' }));
+    badgesContainer.appendChild(createBadge({ label: 'Online', variant: 'success', dot: true }));
+    badgesContainer.appendChild(createBadge({ label: 'Beta', variant: 'warning' }));
+    badgesContainer.appendChild(createBadge({ label: 'Deprecated', variant: 'error' }));
+    badgesContainer.appendChild(createBadge({ label: 'Outline', variant: 'outline' }));
+    badgesContainer.appendChild(createBadge({ label: 'Ověřeno', variant: 'success', size: 'sm', icon: ICONS.check }));
+  }
+
+  // Tooltip Presets (each wraps a button)
+  const tooltipsContainer = document.getElementById('preset-tooltips');
+  if (tooltipsContainer) {
+    const positions: Array<'top' | 'bottom' | 'left' | 'right'> = ['top', 'bottom', 'left', 'right'];
+    positions.forEach(position => {
+      tooltipsContainer.appendChild(createTooltip({
+        target: createButton({
+          label: position,
+          variant: 'secondary',
+          size: 'sm',
+          onClick: () => logEvent(`Kliknuto na tlačítko s tooltipem (${position})`)
+        }),
+        content: `Tooltip umístěný ${position}. Funguje i přes klávesnici (Tab).`,
+        position
+      }));
+    });
+  }
+
+  // Toast Presets (trigger buttons)
+  const toastsContainer = document.getElementById('preset-toasts');
+  if (toastsContainer) {
+    const toastPresets: Array<{ variant: 'info' | 'success' | 'warning' | 'error'; title: string; message: string }> = [
+      { variant: 'info', title: 'Informace', message: 'K dispozici je nová verze knihovny.' },
+      { variant: 'success', title: 'Hotovo', message: 'Komponenta byla úspěšně vytvořena.' },
+      { variant: 'warning', title: 'Pozor', message: 'Blížíte se limitu úložiště.' },
+      { variant: 'error', title: 'Chyba', message: 'Spojení se serverem se nezdařilo.' }
+    ];
+
+    toastPresets.forEach(preset => {
+      toastsContainer.appendChild(createButton({
+        label: preset.variant,
+        variant: 'outline',
+        size: 'sm',
+        onClick: () => {
+          showToast(preset);
+          logEvent(`Zobrazen preset toast: ${preset.variant}`);
+        }
+      }));
+    });
+  }
 }
 
 // Initial setup
@@ -849,17 +1023,20 @@ renderCustomizerCheckbox();
 renderCustomizerInput();
 renderCustomizerCard();
 renderCustomizerLink();
+renderCustomizerToggle();
+setupToastCustomizer();
 renderPresets();
 logEvent('Playground plně spuštěn.');
 
 // 6. Tabs switching logic
-const TAB_NAMES = ['buttons', 'checkboxes', 'forms', 'cards', 'links'];
+const TAB_NAMES = ['buttons', 'checkboxes', 'forms', 'cards', 'links', 'elements'];
 const TAB_LABELS: Record<string, string> = {
   buttons: 'Button',
   checkboxes: 'Checkbox',
   forms: 'Form Components',
   cards: 'Card',
-  links: 'Link'
+  links: 'Link',
+  elements: 'UI Elements'
 };
 const tabTriggers = document.querySelectorAll('.tab-trigger');
 

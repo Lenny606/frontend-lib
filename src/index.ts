@@ -9,3 +9,7 @@ export * from './components/select/index.ts';
 export * from './components/radio/index.ts';
 export * from './components/card/index.ts';
 export * from './components/link/index.ts';
+export * from './components/toggle/index.ts';
+export * from './components/badge/index.ts';
+export * from './components/tooltip/index.ts';
+export * from './components/toast/index.ts';

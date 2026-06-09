@@ -1,0 +1,118 @@
+/* Toggle layout & base style */
+.fl-toggle-container {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.65rem;
+  font-family: var(--fl-font-family, system-ui, sans-serif);
+  font-size: 0.875rem;
+  color: var(--fl-secondary-text, #f3f4f6);
+  cursor: pointer;
+  user-select: none;
+  position: relative;
+  transition: var(--fl-transition, all 0.35s cubic-bezier(0.16, 1, 0.3, 1));
+}
+
+/* Visually hide native checkbox while keeping accessibility */
+.fl-toggle-input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+/* Glass track */
+.fl-toggle-track {
+  display: inline-flex;
+  align-items: center;
+  width: 2.75rem;
+  height: 1.5rem;
+  padding: 0 0.2rem;
+  box-sizing: border-box;
+  border-radius: 9999px;
+  background: var(--fl-glass-bg, rgba(255, 255, 255, 0.07));
+  border: 1px solid var(--fl-glass-border, rgba(255, 255, 255, 0.12));
+  box-shadow: var(--fl-glass-shadow, 0 8px 32px 0 rgba(0, 0, 0, 0.25));
+  backdrop-filter: blur(12px) saturate(180%);
+  -webkit-backdrop-filter: blur(12px) saturate(180%);
+  transition: var(--fl-transition, all 0.35s cubic-bezier(0.16, 1, 0.3, 1));
+  flex-shrink: 0;
+}
+
+/* Sliding thumb */
+.fl-toggle-thumb {
+  width: 1.05rem;
+  height: 1.05rem;
+  border-radius: 50%;
+  background: var(--fl-secondary-text, #e5e7eb);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.35);
+  transform: translateX(0);
+  transition: var(--fl-transition, all 0.35s cubic-bezier(0.16, 1, 0.3, 1));
+}
+
+/* Hover style */
+.fl-toggle-container:hover .fl-toggle-track {
+  border-color: rgba(255, 255, 255, 0.3);
+  background: rgba(255, 255, 255, 0.12);
+}
+
+/* Focused style (keyboard accessibility) */
+.fl-toggle-input:focus-visible + .fl-toggle-track {
+  border-color: var(--fl-primary-border, #a855f7);
+  box-shadow: var(--fl-glass-shadow), 0 0 0 3px rgba(168, 85, 247, 0.3);
+}
+
+/* Checked styling: purple glow, thumb slides right */
+.fl-toggle-input:checked + .fl-toggle-track {
+  background: var(--fl-primary-bg, rgba(168, 85, 247, 0.12));
+  border-color: var(--fl-primary-border, rgba(168, 85, 247, 0.3));
+  box-shadow: var(--fl-glass-shadow), 0 0 12px var(--fl-primary-glow, rgba(168, 85, 247, 0.4));
+}
+
+.fl-toggle-input:checked + .fl-toggle-track .fl-toggle-thumb {
+  transform: translateX(1.25rem);
+  background: var(--fl-primary-text, #f3e8ff);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.35), 0 0 8px var(--fl-primary-glow, rgba(168, 85, 247, 0.4));
+}
+
+/* ==========================================================================
+   Small size
+   ========================================================================== */
+
+.fl-toggle--sm {
+  font-size: 0.8rem;
+}
+
+.fl-toggle--sm .fl-toggle-track {
+  width: 2.25rem;
+  height: 1.25rem;
+}
+
+.fl-toggle--sm .fl-toggle-thumb {
+  width: 0.85rem;
+  height: 0.85rem;
+}
+
+.fl-toggle--sm .fl-toggle-input:checked + .fl-toggle-track .fl-toggle-thumb {
+  transform: translateX(1rem);
+}
+
+/* ==========================================================================
+   Disabled state
+   ========================================================================== */
+
+.fl-toggle-container.fl-toggle--disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+.fl-toggle-container.fl-toggle--disabled .fl-toggle-track {
+  background: rgba(255, 255, 255, 0.02);
+  border-color: rgba(255, 255, 255, 0.06);
+  box-shadow: none;
+}

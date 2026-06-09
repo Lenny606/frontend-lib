@@ -379,6 +379,7 @@
     <button class="tab-trigger" data-tab="forms">Form Components</button>
     <button class="tab-trigger" data-tab="cards">Card Component</button>
     <button class="tab-trigger" data-tab="links">Link Component</button>
+    <button class="tab-trigger" data-tab="elements">UI Elements</button>
   </nav>
 
   <main>
@@ -733,6 +734,111 @@
         </div>
       </div>
     </section>
+
+    <!-- Toggle Customizer -->
+    <section class="card tab-content-elements tab-hidden">
+      <div class="card-title">
+        <span>Interactive Toggle Customizer</span>
+        <span class="badge">Live Preview</span>
+      </div>
+
+      <div class="preview-box" id="toggle-preview">
+        <!-- Rendered toggle will appear here -->
+      </div>
+
+      <div class="controls-grid">
+        <div class="control-group">
+          <label for="tgl-label-input">Label (Text)</label>
+          <input type="text" id="tgl-label-input" value="Povolit notifikace">
+        </div>
+
+        <div class="control-group">
+          <label for="tgl-size-select">Size (Velikost)</label>
+          <select id="tgl-size-select">
+            <option value="default">default</option>
+            <option value="sm">sm (Small)</option>
+          </select>
+        </div>
+
+        <div class="control-group">
+          <label>States (Stavy)</label>
+          <div class="checkbox-row">
+            <label class="checkbox-item">
+              <input type="checkbox" id="tgl-checked-check">
+              Checked
+            </label>
+            <label class="checkbox-item">
+              <input type="checkbox" id="tgl-disabled-check">
+              Disabled
+            </label>
+          </div>
+        </div>
+
+        <div class="control-group">
+          <label for="tgl-class-input">Custom Class Name</label>
+          <input type="text" id="tgl-class-input" value="" placeholder="např. custom-uppercase">
+        </div>
+      </div>
+    </section>
+
+    <!-- Toast Customizer -->
+    <section class="card tab-content-elements tab-hidden">
+      <div class="card-title">
+        <span>Interactive Toast Customizer</span>
+        <span class="badge">Live Trigger</span>
+      </div>
+
+      <div class="preview-box" id="toast-preview" style="min-height: 100px;">
+        <!-- Trigger button will appear here -->
+      </div>
+
+      <div class="controls-grid">
+        <div class="control-group">
+          <label for="tst-title-input">Title (Nadpis)</label>
+          <input type="text" id="tst-title-input" value="Uloženo">
+        </div>
+
+        <div class="control-group">
+          <label for="tst-message-input">Message (Zpráva)</label>
+          <input type="text" id="tst-message-input" value="Vaše změny byly úspěšně uloženy.">
+        </div>
+
+        <div class="control-group">
+          <label for="tst-variant-select">Variant (Typ)</label>
+          <select id="tst-variant-select">
+            <option value="info">info (Indigo)</option>
+            <option value="success" selected>success (Green)</option>
+            <option value="warning">warning (Amber)</option>
+            <option value="error">error (Red)</option>
+          </select>
+        </div>
+
+        <div class="control-group">
+          <label for="tst-position-select">Position (Pozice)</label>
+          <select id="tst-position-select">
+            <option value="top-right">top-right</option>
+            <option value="top-left">top-left</option>
+            <option value="bottom-right">bottom-right</option>
+            <option value="bottom-left">bottom-left</option>
+          </select>
+        </div>
+
+        <div class="control-group">
+          <label for="tst-duration-input">Duration (ms, 0 = bez zavření)</label>
+          <input type="number" id="tst-duration-input" value="4000" min="0" step="500">
+        </div>
+
+        <div class="control-group">
+          <label>Options (Volby)</label>
+          <div class="checkbox-row">
+            <label class="checkbox-item">
+              <input type="checkbox" id="tst-closable-check" checked>
+              Closable
+            </label>
+          </div>
+        </div>
+      </div>
+    </section>
   </div>
 
   <!-- Right Column: Presets & Logs -->
@@ -840,6 +946,35 @@
         <div class="preset-section tab-content-links tab-hidden">
           <h3>Inline (Odkaz v textu)</h3>
           <div class="preset-list preset-list--column" id="preset-link-inline">
+            <!-- Rendered automatically -->
+          </div>
+        </div>
+
+        <!-- UI Elements Presets -->
+        <div class="preset-section tab-content-elements tab-hidden">
+          <h3>Toggles (Přepínače)</h3>
+          <div class="preset-list" id="preset-toggles">
+            <!-- Rendered automatically -->
+          </div>
+        </div>
+
+        <div class="preset-section tab-content-elements tab-hidden">
+          <h3>Badges (Štítky)</h3>
+          <div class="preset-list" id="preset-badges">
+            <!-- Rendered automatically -->
+          </div>
+        </div>
+
+        <div class="preset-section tab-content-elements tab-hidden">
+          <h3>Tooltips (Nápovědy — najeďte myší)</h3>
+          <div class="preset-list" id="preset-tooltips" style="justify-content: center; padding: 2.5rem 1rem;">
+            <!-- Rendered automatically -->
+          </div>
+        </div>
+
+        <div class="preset-section tab-content-elements tab-hidden">
+          <h3>Toasts (Notifikace)</h3>
+          <div class="preset-list" id="preset-toasts">
             <!-- Rendered automatically -->
           </div>
         </div>

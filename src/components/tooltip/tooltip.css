@@ -1,0 +1,126 @@
+/* Tooltip wrapper anchors the bubble to the target */
+.fl-tooltip-wrapper {
+  position: relative;
+  display: inline-flex;
+}
+
+/* Glass bubble */
+.fl-tooltip {
+  position: absolute;
+  z-index: 1000;
+  max-width: 240px;
+  width: max-content;
+  padding: 0.45rem 0.75rem;
+  font-family: var(--fl-font-family, system-ui, sans-serif);
+  font-size: 0.78rem;
+  font-weight: 500;
+  line-height: 1.45;
+  letter-spacing: -0.01em;
+  color: var(--fl-secondary-text, #f3f4f6);
+  background: rgba(15, 23, 42, 0.92);
+  border: 1px solid var(--fl-glass-border, rgba(255, 255, 255, 0.12));
+  border-radius: var(--fl-radius-sm, 8px);
+  box-shadow: var(--fl-glass-shadow, 0 8px 32px 0 rgba(0, 0, 0, 0.25));
+  backdrop-filter: blur(12px) saturate(180%);
+  -webkit-backdrop-filter: blur(12px) saturate(180%);
+  pointer-events: none;
+  opacity: 0;
+  transition: var(--fl-transition, all 0.35s cubic-bezier(0.16, 1, 0.3, 1));
+}
+
+/* Show on hover and keyboard focus of the wrapped target */
+.fl-tooltip-wrapper:hover .fl-tooltip,
+.fl-tooltip-wrapper:focus-within .fl-tooltip {
+  opacity: 1;
+}
+
+/* Arrow */
+.fl-tooltip::after {
+  content: '';
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  background: inherit;
+  border: inherit;
+  transform: rotate(45deg);
+}
+
+/* ==========================================================================
+   Positions
+   ========================================================================== */
+
+.fl-tooltip--top {
+  bottom: calc(100% + 10px);
+  left: 50%;
+  transform: translateX(-50%) translateY(4px);
+}
+
+.fl-tooltip-wrapper:hover .fl-tooltip--top,
+.fl-tooltip-wrapper:focus-within .fl-tooltip--top {
+  transform: translateX(-50%) translateY(0);
+}
+
+.fl-tooltip--top::after {
+  bottom: -5px;
+  left: 50%;
+  margin-left: -4px;
+  border-top: none;
+  border-left: none;
+}
+
+.fl-tooltip--bottom {
+  top: calc(100% + 10px);
+  left: 50%;
+  transform: translateX(-50%) translateY(-4px);
+}
+
+.fl-tooltip-wrapper:hover .fl-tooltip--bottom,
+.fl-tooltip-wrapper:focus-within .fl-tooltip--bottom {
+  transform: translateX(-50%) translateY(0);
+}
+
+.fl-tooltip--bottom::after {
+  top: -5px;
+  left: 50%;
+  margin-left: -4px;
+  border-bottom: none;
+  border-right: none;
+}
+
+.fl-tooltip--left {
+  right: calc(100% + 10px);
+  top: 50%;
+  transform: translateY(-50%) translateX(4px);
+}
+
+.fl-tooltip-wrapper:hover .fl-tooltip--left,
+.fl-tooltip-wrapper:focus-within .fl-tooltip--left {
+  transform: translateY(-50%) translateX(0);
+}
+
+.fl-tooltip--left::after {
+  right: -5px;
+  top: 50%;
+  margin-top: -4px;
+  border-left: none;
+  border-bottom: none;
+}
+
+.fl-tooltip--right {
+  left: calc(100% + 10px);
+  top: 50%;
+  transform: translateY(-50%) translateX(-4px);
+}
+
+.fl-tooltip-wrapper:hover .fl-tooltip--right,
+.fl-tooltip-wrapper:focus-within .fl-tooltip--right {
+  transform: translateY(-50%) translateX(0);
+}
+
+.fl-tooltip--right::after {
+  left: -5px;
+  top: 50%;
+  margin-top: -4px;
+  border-right: none;
+  border-top: none;
+}
