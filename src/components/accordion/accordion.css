@@ -1,0 +1,180 @@
+/* Accordion group layout */
+.fl-accordion {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  box-sizing: border-box;
+  font-family: var(--fl-font-family, system-ui, sans-serif);
+  /* Enables animating ::details-content block-size to "auto" where supported */
+  interpolate-size: allow-keywords;
+}
+
+/* Single item built on native <details> */
+.fl-accordion-item {
+  background: var(--fl-glass-bg, rgba(255, 255, 255, 0.07));
+  border: 1px solid var(--fl-glass-border, rgba(255, 255, 255, 0.12));
+  backdrop-filter: blur(12px) saturate(180%);
+  -webkit-backdrop-filter: blur(12px) saturate(180%);
+  transition: var(--fl-transition, all 0.35s cubic-bezier(0.16, 1, 0.3, 1));
+  overflow: hidden;
+}
+
+/* Clickable summary row */
+.fl-accordion-summary {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1rem 1.25rem;
+  cursor: pointer;
+  user-select: none;
+  list-style: none;
+  font-size: 0.95rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: var(--fl-secondary-text, #f3f4f6);
+  transition: var(--fl-transition, all 0.35s cubic-bezier(0.16, 1, 0.3, 1));
+}
+
+/* Hide the native disclosure marker */
+.fl-accordion-summary::marker,
+.fl-accordion-summary::-webkit-details-marker {
+  display: none;
+  content: '';
+}
+
+.fl-accordion-summary:hover {
+  background: rgba(255, 255, 255, 0.05);
+  color: #ffffff;
+}
+
+.fl-accordion-summary:focus-visible {
+  outline: 2px solid var(--fl-primary-border, rgba(168, 85, 247, 0.3));
+  outline-offset: -2px;
+}
+
+.fl-accordion-title {
+  flex: 1;
+  min-width: 0;
+}
+
+/* Optional icon before the title */
+.fl-accordion-icon {
+  width: 1.1em;
+  height: 1.1em;
+  flex-shrink: 0;
+  color: var(--text-muted, #9ca3af);
+}
+
+/* Chevron rotates when the item is open */
+.fl-accordion-chevron {
+  width: 1.1em;
+  height: 1.1em;
+  flex-shrink: 0;
+  color: var(--text-muted, #9ca3af);
+  transition: var(--fl-transition, all 0.35s cubic-bezier(0.16, 1, 0.3, 1));
+}
+
+.fl-accordion-item[open] > .fl-accordion-summary {
+  color: var(--fl-primary-text, #f3e8ff);
+}
+
+.fl-accordion-item[open] > .fl-accordion-summary .fl-accordion-chevron {
+  transform: rotate(180deg);
+  color: var(--fl-primary-text, #f3e8ff);
+}
+
+/* Expand/collapse animation of the native content slot.
+   Falls back to an instant toggle in browsers without
+   ::details-content / interpolate-size support. */
+.fl-accordion-item::details-content {
+  opacity: 0;
+  block-size: 0;
+  overflow-y: clip;
+  transition:
+    content-visibility 0.35s allow-discrete,
+    opacity 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+    block-size 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.fl-accordion-item[open]::details-content {
+  opacity: 1;
+  block-size: auto;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fl-accordion-item::details-content {
+    transition-duration: 0.05s;
+  }
+}
+
+/* Panel content */
+.fl-accordion-content {
+  padding: 0.25rem 1.25rem 1.25rem 1.25rem;
+}
+
+.fl-accordion-text {
+  margin: 0;
+  font-size: 0.88rem;
+  line-height: 1.65;
+  color: var(--text-muted, #c4c9d4);
+}
+
+/* ==========================================================================
+   Design Variants
+   ========================================================================== */
+
+/* Separated: standalone glass panels with gaps */
+.fl-accordion--separated {
+  gap: 0.75rem;
+}
+
+.fl-accordion--separated .fl-accordion-item {
+  border-radius: var(--fl-radius, 12px);
+  box-shadow: var(--fl-glass-shadow, 0 8px 32px 0 rgba(0, 0, 0, 0.25));
+}
+
+.fl-accordion--separated .fl-accordion-item[open] {
+  border-color: var(--fl-primary-border, rgba(168, 85, 247, 0.3));
+  box-shadow:
+    var(--fl-glass-shadow, 0 8px 32px 0 rgba(0, 0, 0, 0.25)),
+    0 0 15px 0 rgba(168, 85, 247, 0.15);
+}
+
+/* Joined: one container, dividers between items */
+.fl-accordion--joined {
+  gap: 0;
+  border-radius: var(--fl-radius, 12px);
+  box-shadow: var(--fl-glass-shadow, 0 8px 32px 0 rgba(0, 0, 0, 0.25));
+}
+
+.fl-accordion--joined .fl-accordion-item {
+  border-radius: 0;
+  border-bottom-width: 0;
+  box-shadow: none;
+}
+
+.fl-accordion--joined .fl-accordion-item:first-child {
+  border-radius: var(--fl-radius, 12px) var(--fl-radius, 12px) 0 0;
+}
+
+.fl-accordion--joined .fl-accordion-item:last-child {
+  border-radius: 0 0 var(--fl-radius, 12px) var(--fl-radius, 12px);
+  border-bottom-width: 1px;
+}
+
+/* ==========================================================================
+   Disabled item
+   ========================================================================== */
+
+.fl-accordion-item--disabled {
+  opacity: 0.45;
+}
+
+.fl-accordion-item--disabled > .fl-accordion-summary {
+  cursor: not-allowed;
+}
+
+.fl-accordion-item--disabled > .fl-accordion-summary:hover {
+  background: transparent;
+  color: var(--fl-secondary-text, #f3f4f6);
+}

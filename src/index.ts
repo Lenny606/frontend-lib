@@ -15,3 +15,5 @@ export * from './components/tooltip/index.ts';
 export * from './components/toast/index.ts';
 export * from './components/avatar/index.ts';
 export * from './components/modal/index.ts';
+export * from './components/accordion/index.ts';
+export * from './components/tabs/index.ts';

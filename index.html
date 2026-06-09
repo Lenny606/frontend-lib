@@ -382,6 +382,8 @@
     <button class="tab-trigger" data-tab="elements">UI Elements</button>
     <button class="tab-trigger" data-tab="modals">Modal Component</button>
     <button class="tab-trigger" data-tab="avatars">Avatar Component</button>
+    <button class="tab-trigger" data-tab="accordions">Accordion Component</button>
+    <button class="tab-trigger" data-tab="tabs">Tabs Component</button>
   </nav>
 
   <main>
@@ -956,6 +958,112 @@
         </div>
       </div>
     </section>
+
+    <!-- Accordion Customizer -->
+    <section class="card tab-content-accordions tab-hidden">
+      <div class="card-title">
+        <span>Interactive Accordion Customizer</span>
+        <span class="badge">Live Preview</span>
+      </div>
+
+      <div class="preview-box" id="accordion-preview" style="align-items: flex-start;">
+        <!-- Rendered accordion will appear here -->
+      </div>
+
+      <div class="controls-grid">
+        <div class="control-group">
+          <label for="acc-variant-select">Variant (Vzhled)</label>
+          <select id="acc-variant-select">
+            <option value="separated">separated (Oddělené panely)</option>
+            <option value="joined">joined (Spojený kontejner)</option>
+          </select>
+        </div>
+
+        <div class="control-group">
+          <label for="acc-count-input">Items (Počet sekcí)</label>
+          <input type="number" id="acc-count-input" value="3" min="1" max="6">
+        </div>
+
+        <div class="control-group">
+          <label>Options (Volby)</label>
+          <div class="checkbox-row">
+            <label class="checkbox-item">
+              <input type="checkbox" id="acc-exclusive-check" checked>
+              Exclusive
+            </label>
+            <label class="checkbox-item">
+              <input type="checkbox" id="acc-disabled-check">
+              Disabled Item
+            </label>
+          </div>
+        </div>
+
+        <div class="control-group">
+          <label for="acc-class-input">Custom Class Name</label>
+          <input type="text" id="acc-class-input" value="" placeholder="např. custom-uppercase">
+        </div>
+      </div>
+    </section>
+
+    <!-- Tabs Customizer -->
+    <section class="card tab-content-tabs tab-hidden">
+      <div class="card-title">
+        <span>Interactive Tabs Customizer</span>
+        <span class="badge">Live Preview</span>
+      </div>
+
+      <div class="preview-box" id="tabs-preview" style="align-items: stretch; justify-content: stretch; padding: 1.5rem;">
+        <!-- Rendered tabs will appear here -->
+      </div>
+
+      <div class="controls-grid">
+        <div class="control-group">
+          <label for="tabs-variant-select">Variant (Vzhled)</label>
+          <select id="tabs-variant-select">
+            <option value="glass">glass (Skleněný)</option>
+            <option value="pills">pills (Segmentovaný)</option>
+            <option value="underline">underline (Podtržený)</option>
+          </select>
+        </div>
+
+        <div class="control-group">
+          <label for="tabs-orientation-select">Orientation (Směr)</label>
+          <select id="tabs-orientation-select">
+            <option value="horizontal">horizontal (Horizontální)</option>
+            <option value="vertical">vertical (Vertikální)</option>
+          </select>
+        </div>
+
+        <div class="control-group">
+          <label for="tabs-size-select">Size (Velikost)</label>
+          <select id="tabs-size-select">
+            <option value="sm">Small</option>
+            <option value="md" selected>Medium</option>
+            <option value="lg">Large</option>
+          </select>
+        </div>
+
+        <div class="control-group">
+          <label for="tabs-count-input">Tabs Count (Počet záložek)</label>
+          <input type="number" id="tabs-count-input" value="3" min="1" max="5">
+        </div>
+
+        <div class="control-group">
+          <label>Options (Volby)</label>
+          <div class="checkbox-row">
+            <label class="checkbox-item">
+              <input type="checkbox" id="tabs-disabled-check">
+              Disable Last Tab
+            </label>
+          </div>
+        </div>
+
+        <div class="control-group">
+          <label for="tabs-class-input">Custom Class Name</label>
+          <input type="text" id="tabs-class-input" value="" placeholder="např. custom-tabs-style">
+        </div>
+      </div>
+    </section>
   </div>
 
   <!-- Right Column: Presets & Logs -->
@@ -1122,6 +1230,36 @@
         <div class="preset-section tab-content-avatars tab-hidden">
           <h3>Initials & Fallback States</h3>
           <div class="preset-list" id="preset-avatar-fallbacks" style="gap: 1.5rem; align-items: center; justify-content: flex-start; flex-wrap: wrap;">
+            <!-- Rendered automatically -->
+          </div>
+        </div>
+
+        <!-- Accordion Presets -->
+        <div class="preset-section tab-content-accordions tab-hidden">
+          <h3>FAQ (Exclusive režim)</h3>
+          <div class="preset-list preset-list--column" id="preset-accordion-faq">
+            <!-- Rendered automatically -->
+          </div>
+        </div>
+
+        <div class="preset-section tab-content-accordions tab-hidden">
+          <h3>Joined varianta s komponentami</h3>
+          <div class="preset-list preset-list--column" id="preset-accordion-joined">
+            <!-- Rendered automatically -->
+          </div>
+        </div>
+
+        <!-- Tabs Presets -->
+        <div class="preset-section tab-content-tabs tab-hidden">
+          <h3>Pill & Underline Variants</h3>
+          <div class="preset-list preset-list--column" id="preset-tabs-variants" style="width: 100%; gap: 2rem;">
+            <!-- Rendered automatically -->
+          </div>
+        </div>
+
+        <div class="preset-section tab-content-tabs tab-hidden">
+          <h3>Vertical Tabs Layout</h3>
+          <div class="preset-list" id="preset-tabs-vertical" style="width: 100%;">
             <!-- Rendered automatically -->
           </div>
         </div>

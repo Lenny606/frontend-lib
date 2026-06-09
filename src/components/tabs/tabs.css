@@ -1,0 +1,228 @@
+/* Glass Fluid Tabs Component Styles */
+.fl-tabs {
+  display: flex;
+  box-sizing: border-box;
+  font-family: var(--fl-font-family, system-ui, sans-serif);
+  gap: 1.5rem;
+}
+
+/* Layout Orientations */
+.fl-tabs--horizontal {
+  flex-direction: column;
+}
+
+.fl-tabs--vertical {
+  flex-direction: row;
+}
+
+/* Tabs Trigger List */
+.fl-tabs-list {
+  display: flex;
+  position: relative;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  box-sizing: border-box;
+}
+
+.fl-tabs--horizontal .fl-tabs-list {
+  flex-direction: row;
+  align-items: center;
+}
+
+.fl-tabs--vertical .fl-tabs-list {
+  flex-direction: column;
+  align-items: stretch;
+  min-width: 150px;
+}
+
+/* Individual Tab Button */
+.fl-tabs-trigger {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid transparent;
+  background: transparent;
+  color: var(--fl-muted-text, #9ca3af);
+  font-weight: 500;
+  cursor: pointer;
+  white-space: nowrap;
+  user-select: none;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  outline: none;
+  box-sizing: border-box;
+}
+
+.fl-tabs-trigger:hover:not(:disabled) {
+  color: var(--fl-primary-text, #ffffff);
+}
+
+.fl-tabs-trigger:focus-visible {
+  box-shadow: 0 0 0 2px var(--fl-primary-color, #3b82f6);
+}
+
+.fl-tabs-trigger:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* ==========================================================================
+   Visual Variant Styles
+   ========================================================================== */
+
+/* 1. Glass Variant (Rounded floating glass tablist) */
+.fl-tabs--glass .fl-tabs-list {
+  background: var(--fl-glass-bg, rgba(255, 255, 255, 0.05));
+  border: 1px solid var(--fl-glass-border, rgba(255, 255, 255, 0.1));
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  padding: 4px;
+}
+
+.fl-tabs--horizontal.fl-tabs--glass .fl-tabs-list {
+  border-radius: 12px;
+}
+
+.fl-tabs--vertical.fl-tabs--glass .fl-tabs-list {
+  border-radius: 16px;
+}
+
+.fl-tabs--glass .fl-tabs-trigger {
+  border-radius: 8px;
+}
+
+.fl-tabs--glass .fl-tabs-trigger[aria-selected="true"] {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: rgba(255, 255, 255, 0.15);
+  color: var(--fl-primary-text, #ffffff);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* 2. Pills Variant (Capsule segmented list) */
+.fl-tabs--pills .fl-tabs-list {
+  background: rgba(0, 0, 0, 0.2);
+  border: 1px solid var(--fl-glass-border, rgba(255, 255, 255, 0.08));
+  padding: 6px;
+  border-radius: 9999px;
+}
+
+.fl-tabs--vertical.fl-tabs--pills .fl-tabs-list {
+  border-radius: 20px;
+}
+
+.fl-tabs--pills .fl-tabs-trigger {
+  border-radius: 9999px;
+}
+
+.fl-tabs--vertical.fl-tabs--pills .fl-tabs-trigger {
+  border-radius: 12px;
+}
+
+.fl-tabs--pills .fl-tabs-trigger[aria-selected="true"] {
+  background: var(--fl-primary-color, #3b82f6);
+  color: #ffffff;
+  box-shadow: 0 2px 8px rgba(59, 130, 246, 0.4);
+}
+
+/* 3. Underline Variant (Tab triggers with bottom highlight bar) */
+.fl-tabs--underline.fl-tabs--horizontal .fl-tabs-list {
+  border-bottom: 1px solid var(--fl-glass-border, rgba(255, 255, 255, 0.1));
+  gap: 1.5rem;
+}
+
+.fl-tabs--underline.fl-tabs--vertical .fl-tabs-list {
+  border-right: 1px solid var(--fl-glass-border, rgba(255, 255, 255, 0.1));
+  gap: 0.5rem;
+  padding-right: 8px;
+}
+
+.fl-tabs--underline .fl-tabs-trigger {
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+.fl-tabs--underline.fl-tabs--horizontal .fl-tabs-trigger {
+  border-bottom: 2px solid transparent;
+  padding-bottom: 8px;
+}
+
+.fl-tabs--underline.fl-tabs--vertical .fl-tabs-trigger {
+  border-right: 2px solid transparent;
+  padding-right: 12px;
+  justify-content: flex-start;
+}
+
+.fl-tabs--underline .fl-tabs-trigger[aria-selected="true"] {
+  color: var(--fl-primary-text, #ffffff);
+}
+
+.fl-tabs--underline.fl-tabs--horizontal .fl-tabs-trigger[aria-selected="true"] {
+  border-bottom-color: var(--fl-primary-color, #3b82f6);
+}
+
+.fl-tabs--underline.fl-tabs--vertical .fl-tabs-trigger[aria-selected="true"] {
+  border-right-color: var(--fl-primary-color, #3b82f6);
+}
+
+/* ==========================================================================
+   Sizing Options
+   ========================================================================== */
+
+/* Small Sizes */
+.fl-tabs--sm .fl-tabs-trigger {
+  padding: 6px 12px;
+  font-size: 0.825rem;
+  height: 28px;
+}
+.fl-tabs--underline.fl-tabs--sm .fl-tabs-trigger {
+  height: auto;
+}
+
+/* Medium Sizes (Default) */
+.fl-tabs--md .fl-tabs-trigger {
+  padding: 8px 16px;
+  font-size: 0.9rem;
+  height: 36px;
+}
+.fl-tabs--underline.fl-tabs--md .fl-tabs-trigger {
+  height: auto;
+}
+
+/* Large Sizes */
+.fl-tabs--lg .fl-tabs-trigger {
+  padding: 10px 20px;
+  font-size: 1rem;
+  height: 44px;
+}
+.fl-tabs--underline.fl-tabs--lg .fl-tabs-trigger {
+  height: auto;
+}
+
+/* ==========================================================================
+   Content Panels
+   ========================================================================== */
+
+.fl-tabs-content {
+  flex-grow: 1;
+}
+
+.fl-tabs-panel {
+  display: none;
+  box-sizing: border-box;
+}
+
+.fl-tabs-panel--active {
+  display: block;
+  animation: fl-tabs-fade-in 0.2s ease-out;
+}
+
+@keyframes fl-tabs-fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(2px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

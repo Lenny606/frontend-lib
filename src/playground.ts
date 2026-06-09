@@ -12,7 +12,9 @@ import {
   createTooltip,
   showToast,
   createModal,
-  createAvatar
+  createAvatar,
+  createAccordion,
+  createTabs
 } from './index';
 
 // 1. Icon Definitions (SVG Strings)
@@ -123,6 +125,23 @@ const avShapeSelect = document.getElementById('av-shape-select') as HTMLSelectEl
 const avStatusSelect = document.getElementById('av-status-select') as HTMLSelectElement;
 const avAltInput = document.getElementById('av-alt-input') as HTMLInputElement;
 const avClassInput = document.getElementById('av-class-input') as HTMLInputElement;
+
+// Customizer Element Selectors - Accordion
+const accordionPreviewContainer = document.getElementById('accordion-preview');
+const accVariantSelect = document.getElementById('acc-variant-select') as HTMLSelectElement;
+const accCountInput = document.getElementById('acc-count-input') as HTMLInputElement;
+const accExclusiveCheck = document.getElementById('acc-exclusive-check') as HTMLInputElement;
+const accDisabledCheck = document.getElementById('acc-disabled-check') as HTMLInputElement;
+const accClassInput = document.getElementById('acc-class-input') as HTMLInputElement;
+
+// Customizer Element Selectors - Tabs
+const tabsPreviewContainer = document.getElementById('tabs-preview');
+const tabsVariantSelect = document.getElementById('tabs-variant-select') as HTMLSelectElement;
+const tabsOrientationSelect = document.getElementById('tabs-orientation-select') as HTMLSelectElement;
+const tabsSizeSelect = document.getElementById('tabs-size-select') as HTMLSelectElement;
+const tabsCountInput = document.getElementById('tabs-count-input') as HTMLInputElement;
+const tabsDisabledCheck = document.getElementById('tabs-disabled-check') as HTMLInputElement;
+const tabsClassInput = document.getElementById('tabs-class-input') as HTMLInputElement;
 
 // Log & Console Selectors
 const consoleLogs = document.getElementById('console-logs');
@@ -542,6 +561,108 @@ function setupAvatarCustomizer() {
   });
 }
 
+// 4i. Render Customizer Accordion
+let currentAccordion: HTMLElement | null = null;
+
+function renderCustomizerAccordion() {
+  if (!accordionPreviewContainer) return;
+
+  // Clear previous element
+  if (currentAccordion && accordionPreviewContainer.contains(currentAccordion)) {
+    accordionPreviewContainer.removeChild(currentAccordion);
+  }
+
+  const variant = (accVariantSelect ? accVariantSelect.value : 'separated') as any;
+  const count = accCountInput ? Math.min(6, Math.max(1, Number(accCountInput.value) || 3)) : 3;
+  const exclusive = accExclusiveCheck ? accExclusiveCheck.checked : false;
+  const withDisabled = accDisabledCheck ? accDisabledCheck.checked : false;
+  const className = accClassInput ? accClassInput.value : '';
+
+  const items = Array.from({ length: count }, (_, i) => ({
+    title: `Sekce ${i + 1}`,
+    content: `Obsah sekce ${i + 1}. Postaveno na nativním <details>, takže text najdete i přes Ctrl+F.`,
+    open: i === 0,
+    disabled: withDisabled && i === count - 1
+  }));
+
+  // Instantiate component
+  currentAccordion = createAccordion({
+    items,
+    variant,
+    exclusive,
+    className,
+    onToggle: (index, open) => {
+      logEvent(`Customizer accordion: sekce ${index + 1} ${open ? 'otevřena' : 'zavřena'}`);
+    }
+  });
+
+  accordionPreviewContainer.appendChild(currentAccordion);
+}
+
+// 4j. Render Customizer Tabs
+let currentTabs: HTMLElement | null = null;
+
+function renderCustomizerTabs() {
+  if (!tabsPreviewContainer) return;
+
+  // Clear previous element
+  if (currentTabs && tabsPreviewContainer.contains(currentTabs)) {
+    tabsPreviewContainer.removeChild(currentTabs);
+  }
+
+  const variant = (tabsVariantSelect ? tabsVariantSelect.value : 'glass') as any;
+  const orientation = (tabsOrientationSelect ? tabsOrientationSelect.value : 'horizontal') as any;
+  const size = (tabsSizeSelect ? tabsSizeSelect.value : 'md') as any;
+  const count = tabsCountInput ? Math.min(5, Math.max(1, Number(tabsCountInput.value) || 3)) : 3;
+  const disableLast = tabsDisabledCheck ? tabsDisabledCheck.checked : false;
+  const className = tabsClassInput ? tabsClassInput.value : '';
+
+  const items = Array.from({ length: count }, (_, i) => {
+    const isLast = i === count - 1;
+    let content: string | HTMLElement = `Toto je obsah záložky ${i + 1}.`;
+
+    // Make one of the tabs have a premium nested element (e.g. Tab 2 has a custom styled button)
+    if (i === 1) {
+      const wrapper = document.createElement('div');
+      wrapper.style.display = 'flex';
+      wrapper.style.flexDirection = 'column';
+      wrapper.style.gap = '0.5rem';
+      
+      const p = document.createElement('p');
+      p.textContent = 'Záložky mohou obsahovat i plnohodnotné interaktivní komponenty:';
+      wrapper.appendChild(p);
+
+      const btn = createButton({
+        label: 'Klikni na mě uvnitř záložky',
+        variant: 'primary',
+        onClick: () => logEvent('Kliknuto na tlačítko uvnitř Záložky 2!')
+      });
+      wrapper.appendChild(btn);
+      content = wrapper;
+    }
+
+    return {
+      id: `tab-${i + 1}`,
+      label: `Záložka ${i + 1}`,
+      content,
+      disabled: disableLast && isLast
+    };
+  });
+
+  currentTabs = createTabs({
+    items,
+    variant,
+    orientation,
+    size,
+    className,
+    onTabChange: (id) => {
+      logEvent(`Customizer tabs: aktivována záložka ${id}`);
+    }
+  });
+
+  tabsPreviewContainer.appendChild(currentTabs);
+}
+
 // Wire up customizer listeners - Button
 [labelInput, hrefInput, classInput].forEach(input => {
   if (input) input.addEventListener('input', renderCustomizerButton);
@@ -611,6 +732,30 @@ if (tglSizeSelect) tglSizeSelect.addEventListener('change', renderCustomizerTogg
 [tglCheckedCheck, tglDisabledCheck].forEach(check => {
   if (check) check.addEventListener('change', renderCustomizerToggle);
 });
+
+// Wire up customizer listeners - Accordion
+[accCountInput, accClassInput].forEach(input => {
+  if (input) input.addEventListener('input', renderCustomizerAccordion);
+});
+
+if (accVariantSelect) accVariantSelect.addEventListener('change', renderCustomizerAccordion);
+
+[accExclusiveCheck, accDisabledCheck].forEach(check => {
+  if (check) check.addEventListener('change', renderCustomizerAccordion);
+});
+
+// Wire up customizer listeners - Tabs
+[tabsCountInput, tabsClassInput].forEach(input => {
+  if (input) input.addEventListener('input', renderCustomizerTabs);
+});
+
+[tabsVariantSelect, tabsOrientationSelect, tabsSizeSelect].forEach(select => {
+  if (select) select.addEventListener('change', renderCustomizerTabs);
+});
+
+if (tabsDisabledCheck) {
+  tabsDisabledCheck.addEventListener('change', renderCustomizerTabs);
+}
 
 if (clearConsoleBtn && consoleLogs) {
   clearConsoleBtn.addEventListener('click', () => {
@@ -1337,6 +1482,133 @@ function renderPresets() {
       shape: 'square'
     }));
   }
+
+  // Accordion Presets
+  const accordionFaqContainer = document.getElementById('preset-accordion-faq');
+  if (accordionFaqContainer) {
+    accordionFaqContainer.appendChild(createAccordion({
+      exclusive: true,
+      items: [
+        {
+          title: 'Jak knihovnu nainstaluji?',
+          content: 'Spusťte npm install @thomas666/frontend-lib a naimportujte styly z dist/style.css.',
+          open: true
+        },
+        {
+          title: 'Podporuje knihovna TypeScript?',
+          content: 'Ano, všechny komponenty mají plné typové deklarace generované přes vite-plugin-dts.'
+        },
+        {
+          title: 'Jak funguje exclusive režim?',
+          content: 'Položky sdílejí nativní atribut name na elementu <details> — prohlížeč sám zajistí, že je otevřená vždy jen jedna.'
+        },
+        {
+          title: 'Připravovaná sekce',
+          content: 'Tento obsah zatím není dostupný.',
+          disabled: true
+        }
+      ],
+      onToggle: (index, open) => logEvent(`Preset accordion (FAQ): sekce ${index + 1} ${open ? 'otevřena' : 'zavřena'}`)
+    }));
+  }
+
+  const accordionJoinedContainer = document.getElementById('preset-accordion-joined');
+  if (accordionJoinedContainer) {
+    accordionJoinedContainer.appendChild(createAccordion({
+      variant: 'joined',
+      items: [
+        {
+          title: 'Profil',
+          icon: ICONS.check,
+          content: [
+            createInput({
+              label: 'Zobrazované jméno',
+              placeholder: 'Jan Novák',
+              size: 'sm'
+            })
+          ],
+          open: true
+        },
+        {
+          title: 'Notifikace',
+          content: [
+            createToggle({
+              label: 'E-mailová upozornění',
+              checked: true,
+              onChange: (val) => logEvent(`Accordion preset: e-mailová upozornění ${val ? 'zapnuta' : 'vypnuta'}`)
+            })
+          ]
+        },
+        {
+          title: 'Vyhledávání',
+          icon: ICONS.search,
+          content: 'Sekce může obsahovat libovolný text nebo další komponenty knihovny.'
+        }
+      ],
+      onToggle: (index, open) => logEvent(`Preset accordion (joined): sekce ${index + 1} ${open ? 'otevřena' : 'zavřena'}`)
+    }));
+  }
+
+  // Tabs Presets
+  const tabsVariantsContainer = document.getElementById('preset-tabs-variants');
+  if (tabsVariantsContainer) {
+    // 1. Underline Variant
+    const container1 = document.createElement('div');
+    container1.style.width = '100%';
+    container1.style.marginBottom = '1.5rem';
+    const title1 = document.createElement('h4');
+    title1.textContent = 'Underline Variant';
+    title1.style.marginBottom = '0.5rem';
+    title1.style.fontSize = '0.9rem';
+    title1.style.color = 'var(--fl-muted-text)';
+    container1.appendChild(title1);
+
+    container1.appendChild(createTabs({
+      variant: 'underline',
+      items: [
+        { id: 'u-one', label: 'Overview', content: 'Account summary and dashboard statistics.' },
+        { id: 'u-two', label: 'Settings', content: 'Configure profile preferences, themes, and notification rules.' },
+        { id: 'u-three', label: 'Billing', content: 'Manage credit cards, view past invoices, and choose plans.', disabled: true }
+      ],
+      onTabChange: (id) => logEvent(`Preset tabs (underline): aktivní záložka ${id}`)
+    }));
+    tabsVariantsContainer.appendChild(container1);
+
+    // 2. Pills Variant
+    const container2 = document.createElement('div');
+    container2.style.width = '100%';
+    const title2 = document.createElement('h4');
+    title2.textContent = 'Pills Variant';
+    title2.style.marginBottom = '0.5rem';
+    title2.style.fontSize = '0.9rem';
+    title2.style.color = 'var(--fl-muted-text)';
+    container2.appendChild(title2);
+
+    container2.appendChild(createTabs({
+      variant: 'pills',
+      items: [
+        { id: 'p-one', label: 'Weekly', content: 'Weekly performance stats and metrics.' },
+        { id: 'p-two', label: 'Monthly', content: 'Monthly aggregated breakdown reports.' },
+        { id: 'p-three', label: 'Annually', content: 'Annual projections and historical comparison charts.' }
+      ],
+      onTabChange: (id) => logEvent(`Preset tabs (pills): aktivní záložka ${id}`)
+    }));
+    tabsVariantsContainer.appendChild(container2);
+  }
+
+  const tabsVerticalContainer = document.getElementById('preset-tabs-vertical');
+  if (tabsVerticalContainer) {
+    tabsVerticalContainer.appendChild(createTabs({
+      orientation: 'vertical',
+      variant: 'glass',
+      items: [
+        { id: 'v-home', label: 'Home Page', content: 'This is the main panel with introductory greeting content.' },
+        { id: 'v-profile', label: 'User Profile', content: 'Edit display avatar, user details, and public links.' },
+        { id: 'v-security', label: 'Security & Keys', content: 'Manage multi-factor authentication and API token keys.' }
+      ],
+      onTabChange: (id) => logEvent(`Preset tabs (vertical): aktivní záložka ${id}`)
+    }));
+  }
 }
 
 // Initial setup
@@ -1349,11 +1621,13 @@ renderCustomizerToggle();
 setupToastCustomizer();
 setupModalCustomizer();
 setupAvatarCustomizer();
+renderCustomizerAccordion();
+renderCustomizerTabs();
 renderPresets();
 logEvent('Playground plně spuštěn.');
 
 // 6. Tabs switching logic
-const TAB_NAMES = ['buttons', 'checkboxes', 'forms', 'cards', 'links', 'elements', 'modals', 'avatars'];
+const TAB_NAMES = ['buttons', 'checkboxes', 'forms', 'cards', 'links', 'elements', 'modals', 'avatars', 'accordions', 'tabs'];
 const TAB_LABELS: Record<string, string> = {
   buttons: 'Button',
   checkboxes: 'Checkbox',
@@ -1362,7 +1636,9 @@ const TAB_LABELS: Record<string, string> = {
   links: 'Link',
   elements: 'UI Elements',
   modals: 'Modal',
-  avatars: 'Avatar'
+  avatars: 'Avatar',
+  accordions: 'Accordion',
+  tabs: 'Tabs'
 };
 const tabTriggers = document.querySelectorAll('.tab-trigger');
 
