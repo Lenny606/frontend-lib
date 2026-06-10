@@ -28,6 +28,15 @@
 .fl-tabs--horizontal .fl-tabs-list {
   flex-direction: row;
   align-items: center;
+  overflow-x: auto;
+  overflow-y: hidden;
+  max-width: 100%;
+  scrollbar-width: none; /* Hide scrollbar for standard look */
+  -webkit-overflow-scrolling: touch;
+}
+
+.fl-tabs--horizontal .fl-tabs-list::-webkit-scrollbar {
+  display: none; /* Hide scrollbar for Chrome, Safari, Opera */
 }
 
 .fl-tabs--vertical .fl-tabs-list {
@@ -38,6 +47,7 @@
 
 /* Individual Tab Button */
 .fl-tabs-trigger {
+  flex-shrink: 0;
   display: inline-flex;
   align-items: center;
   justify-content: center;

@@ -323,9 +323,33 @@
       padding-bottom: 0.75rem;
       padding-left: 1rem;
       padding-right: 1rem;
+      overflow-x: auto;
+      overflow-y: hidden;
+      white-space: nowrap;
+      scrollbar-width: thin;
+      scrollbar-color: rgba(255, 255, 255, 0.1) transparent;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .tabs-nav::-webkit-scrollbar {
+      height: 5px;
+    }
+
+    .tabs-nav::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    .tabs-nav::-webkit-scrollbar-thumb {
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 4px;
+    }
+
+    .tabs-nav::-webkit-scrollbar-thumb:hover {
+      background: var(--accent-color);
     }
 
     .tab-trigger {
+      flex-shrink: 0;
       background: transparent;
       border: none;
       color: var(--text-muted);
