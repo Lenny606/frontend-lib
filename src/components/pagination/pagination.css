@@ -1,0 +1,93 @@
+/* Glass Fluid Pagination Styles */
+
+.fl-pagination {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-family: var(--fl-font-family, system-ui, sans-serif);
+}
+
+.fl-pagination-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 2.4rem;
+  height: 2.4rem;
+  padding: 0 0.5rem;
+  border: 1px solid transparent;
+  border-radius: var(--fl-radius-sm, 8px);
+  background: transparent;
+  color: var(--fl-secondary-text, #f3f4f6);
+  font-family: inherit;
+  font-size: 0.85rem;
+  font-weight: 500;
+  cursor: pointer;
+  box-sizing: border-box;
+  transition: var(--fl-transition, all 0.35s cubic-bezier(0.16, 1, 0.3, 1));
+}
+
+.fl-pagination--sm .fl-pagination-btn {
+  min-width: 2rem;
+  height: 2rem;
+  font-size: 0.78rem;
+}
+
+.fl-pagination-btn:hover:not(:disabled) {
+  background: rgba(255, 255, 255, 0.08);
+  color: #ffffff;
+}
+
+.fl-pagination-btn:focus-visible {
+  outline: 2px solid var(--fl-primary-border, rgba(168, 85, 247, 0.3));
+  outline-offset: 1px;
+}
+
+.fl-pagination-btn:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+.fl-pagination-nav {
+  color: var(--text-muted, #9ca3af);
+}
+
+.fl-pagination-nav svg {
+  width: 1em;
+  height: 1em;
+}
+
+/* Active page: glass primary pill */
+.fl-pagination-page--active {
+  background: var(--fl-primary-bg, rgba(168, 85, 247, 0.12));
+  border-color: var(--fl-primary-border, rgba(168, 85, 247, 0.3));
+  color: var(--fl-primary-text, #f3e8ff);
+  font-weight: 600;
+  box-shadow: 0 0 10px 0 rgba(168, 85, 247, 0.25);
+  backdrop-filter: blur(12px) saturate(180%);
+  -webkit-backdrop-filter: blur(12px) saturate(180%);
+}
+
+.fl-pagination-page--active:hover:not(:disabled) {
+  background: rgba(168, 85, 247, 0.2);
+  color: var(--fl-primary-text, #f3e8ff);
+}
+
+.fl-pagination-ellipsis {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 2.4rem;
+  height: 2.4rem;
+  color: var(--text-muted, #9ca3af);
+  font-size: 0.85rem;
+  user-select: none;
+}
+
+.fl-pagination--sm .fl-pagination-ellipsis {
+  min-width: 2rem;
+  height: 2rem;
+}
+
+.fl-pagination--disabled {
+  opacity: 0.6;
+}

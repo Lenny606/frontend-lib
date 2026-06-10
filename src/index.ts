@@ -21,4 +21,10 @@ export * from './components/spinner/index.ts';
 export * from './components/skeleton/index.ts';
 export * from './components/dropdown/index.ts';
 export * from './components/progress/index.ts';
+export * from './components/breadcrumbs/index.ts';
+export * from './components/datepicker/index.ts';
+export * from './components/alert/index.ts';
+export * from './components/pagination/index.ts';
+export * from './components/slider/index.ts';
+export * from './components/table/index.ts';
 

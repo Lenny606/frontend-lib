@@ -1,0 +1,140 @@
+/* Glass Fluid Table Styles */
+
+.fl-table-wrapper {
+  width: 100%;
+  overflow-x: auto;
+  box-sizing: border-box;
+  border: 1px solid var(--fl-glass-border, rgba(255, 255, 255, 0.12));
+  border-radius: var(--fl-radius, 12px);
+  background: var(--fl-glass-bg, rgba(255, 255, 255, 0.07));
+  backdrop-filter: blur(12px) saturate(180%);
+  -webkit-backdrop-filter: blur(12px) saturate(180%);
+  box-shadow: var(--fl-glass-shadow, 0 8px 32px 0 rgba(0, 0, 0, 0.25));
+}
+
+.fl-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: var(--fl-font-family, system-ui, sans-serif);
+  font-size: 0.85rem;
+  color: var(--fl-secondary-text, #f3f4f6);
+}
+
+/* Header */
+.fl-table-th {
+  padding: 0.8rem 1rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.03);
+  color: var(--text-muted, #9ca3af);
+  font-size: 0.72rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  text-align: left;
+  white-space: nowrap;
+}
+
+/* Sortable header button */
+.fl-table-sort {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0;
+  border: none;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  text-transform: inherit;
+  letter-spacing: inherit;
+  cursor: pointer;
+  transition: color 0.12s ease;
+}
+
+.fl-table-sort:hover {
+  color: #ffffff;
+}
+
+.fl-table-sort:focus-visible {
+  outline: 2px solid var(--fl-primary-border, rgba(168, 85, 247, 0.3));
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+.fl-table-sort-icon {
+  display: inline-flex;
+  align-items: center;
+  opacity: 0.45;
+}
+
+.fl-table-sort-icon svg {
+  width: 0.85rem;
+  height: 0.85rem;
+}
+
+.fl-table-sort-icon--active {
+  opacity: 1;
+  color: var(--fl-primary-text, #f3e8ff);
+}
+
+/* Body cells */
+.fl-table-td {
+  padding: 0.8rem 1rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  vertical-align: middle;
+}
+
+.fl-table-row:last-child .fl-table-td {
+  border-bottom: none;
+}
+
+/* Alignment helpers */
+.fl-table-cell--left {
+  text-align: left;
+}
+
+.fl-table-cell--center {
+  text-align: center;
+}
+
+.fl-table-cell--right {
+  text-align: right;
+}
+
+/* Striping */
+.fl-table-wrapper--striped .fl-table-row:nth-child(even) {
+  background: rgba(255, 255, 255, 0.03);
+}
+
+/* Hover highlight */
+.fl-table-wrapper--hoverable .fl-table-row:hover {
+  background: rgba(255, 255, 255, 0.06);
+}
+
+/* Clickable rows */
+.fl-table-row--clickable {
+  cursor: pointer;
+}
+
+.fl-table-row--clickable:focus-visible {
+  outline: 2px solid var(--fl-primary-border, rgba(168, 85, 247, 0.3));
+  outline-offset: -2px;
+}
+
+/* Compact density */
+.fl-table-wrapper--compact .fl-table-th,
+.fl-table-wrapper--compact .fl-table-td {
+  padding: 0.45rem 0.75rem;
+}
+
+/* Empty state */
+.fl-table-empty {
+  padding: 2.5rem 1rem;
+  text-align: center;
+  color: var(--text-muted, #9ca3af);
+  font-size: 0.85rem;
+}
+
+/* Loading skeleton rows should not react to hover */
+.fl-table-wrapper--hoverable .fl-table-row--loading:hover {
+  background: transparent;
+}

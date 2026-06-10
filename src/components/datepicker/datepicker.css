@@ -1,0 +1,295 @@
+/* Glass Fluid Datepicker Styles */
+
+.fl-datepicker {
+  display: inline-flex;
+  font-family: var(--fl-font-family, system-ui, sans-serif);
+}
+
+/* Trigger field styled to match the Input component */
+.fl-datepicker-trigger {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  min-width: 13rem;
+  height: 2.75rem;
+  padding: 0 1rem;
+  border: 1px solid var(--fl-glass-border, rgba(255, 255, 255, 0.12));
+  border-radius: var(--fl-radius, 12px);
+  background: var(--fl-glass-bg, rgba(255, 255, 255, 0.07));
+  backdrop-filter: blur(12px) saturate(180%);
+  -webkit-backdrop-filter: blur(12px) saturate(180%);
+  color: var(--fl-secondary-text, #f3f4f6);
+  font-family: inherit;
+  font-size: 0.9rem;
+  text-align: left;
+  cursor: pointer;
+  box-sizing: border-box;
+  transition: var(--fl-transition, all 0.35s cubic-bezier(0.16, 1, 0.3, 1));
+}
+
+.fl-datepicker--sm .fl-datepicker-trigger {
+  height: 2.25rem;
+  min-width: 11rem;
+  padding: 0 0.75rem;
+  font-size: 0.8rem;
+}
+
+.fl-datepicker--lg .fl-datepicker-trigger {
+  height: 3.25rem;
+  min-width: 15rem;
+  padding: 0 1.25rem;
+  font-size: 1rem;
+}
+
+.fl-datepicker-trigger:hover:not(:disabled) {
+  border-color: rgba(255, 255, 255, 0.25);
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.fl-datepicker-trigger:focus-visible {
+  outline: none;
+  border-color: var(--fl-primary-border, rgba(168, 85, 247, 0.3));
+  box-shadow: 0 0 12px 0 var(--fl-primary-glow, rgba(168, 85, 247, 0.4));
+}
+
+.fl-datepicker--disabled .fl-datepicker-trigger {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.fl-datepicker-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.1em;
+  height: 1.1em;
+  flex-shrink: 0;
+  color: var(--text-muted, #9ca3af);
+}
+
+.fl-datepicker-icon svg {
+  width: 100%;
+  height: 100%;
+}
+
+.fl-datepicker-value {
+  flex: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.fl-datepicker-value--placeholder {
+  color: var(--text-muted, #9ca3af);
+}
+
+/* ==========================================================================
+   Calendar popover
+   ========================================================================== */
+
+.fl-datepicker-calendar {
+  display: none; /* Required for popover transition support */
+  position: fixed;
+  z-index: 9999;
+  width: 18.5rem;
+  padding: 0.85rem;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: var(--fl-radius, 12px);
+  background: rgba(15, 15, 20, 0.65);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35),
+              inset 0 1px 1px rgba(255, 255, 255, 0.08);
+  box-sizing: border-box;
+  margin: 0;
+  font-family: var(--fl-font-family, system-ui, sans-serif);
+  color: var(--fl-secondary-text, #f3f4f6);
+
+  /* Entry/Exit Transitions */
+  opacity: 0;
+  transform: translateY(-8px) scale(0.96);
+  transition:
+    opacity 0.18s ease,
+    transform 0.18s cubic-bezier(0.16, 1, 0.3, 1),
+    display 0.18s allow-discrete,
+    overlay 0.18s allow-discrete;
+}
+
+.fl-datepicker-calendar:popover-open {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+@starting-style {
+  .fl-datepicker-calendar:popover-open {
+    opacity: 0;
+    transform: translateY(-8px) scale(0.96);
+  }
+}
+
+/* Header with month navigation */
+.fl-datepicker-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.fl-datepicker-month {
+  flex: 1;
+  text-align: center;
+  font-size: 0.9rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  text-transform: capitalize;
+}
+
+.fl-datepicker-nav {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  padding: 0;
+  border: none;
+  border-radius: var(--fl-radius-sm, 8px);
+  background: transparent;
+  color: var(--text-muted, #9ca3af);
+  cursor: pointer;
+  transition: background-color 0.12s ease, color 0.12s ease;
+}
+
+.fl-datepicker-nav svg {
+  width: 1em;
+  height: 1em;
+}
+
+.fl-datepicker-nav:hover {
+  background: rgba(255, 255, 255, 0.08);
+  color: #ffffff;
+}
+
+.fl-datepicker-nav:focus-visible {
+  outline: 2px solid var(--fl-primary-border, rgba(168, 85, 247, 0.3));
+  outline-offset: 1px;
+}
+
+/* Weekday + day grid */
+.fl-datepicker-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 0.15rem;
+}
+
+.fl-datepicker-weekday {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 1.6rem;
+  font-size: 0.68rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--text-muted, #9ca3af);
+  user-select: none;
+}
+
+.fl-datepicker-day {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 2.1rem;
+  padding: 0;
+  border: 1px solid transparent;
+  border-radius: var(--fl-radius-sm, 8px);
+  background: transparent;
+  color: var(--fl-secondary-text, #f3f4f6);
+  font-family: inherit;
+  font-size: 0.82rem;
+  cursor: pointer;
+  transition: background-color 0.12s ease, color 0.12s ease, border-color 0.12s ease;
+}
+
+.fl-datepicker-day:hover:not(:disabled) {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.fl-datepicker-day:focus-visible {
+  outline: 2px solid var(--fl-primary-border, rgba(168, 85, 247, 0.3));
+  outline-offset: 1px;
+}
+
+.fl-datepicker-day--outside {
+  color: rgba(255, 255, 255, 0.25);
+}
+
+.fl-datepicker-day--today {
+  border-color: var(--fl-glass-border, rgba(255, 255, 255, 0.12));
+  font-weight: 600;
+}
+
+.fl-datepicker-day--selected {
+  background: var(--fl-primary-bg, rgba(168, 85, 247, 0.12));
+  border-color: var(--fl-primary-border, rgba(168, 85, 247, 0.3));
+  color: var(--fl-primary-text, #f3e8ff);
+  font-weight: 600;
+  box-shadow: 0 0 10px 0 rgba(168, 85, 247, 0.25);
+}
+
+.fl-datepicker-day--selected:hover:not(:disabled) {
+  background: rgba(168, 85, 247, 0.2);
+}
+
+.fl-datepicker-day:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+/* Footer actions */
+.fl-datepicker-footer {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.5rem;
+  padding-top: 0.35rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.fl-datepicker-action {
+  padding: 0.35rem 0.6rem;
+  border: none;
+  border-radius: var(--fl-radius-sm, 8px);
+  background: transparent;
+  color: var(--fl-primary-text, #f3e8ff);
+  font-family: inherit;
+  font-size: 0.78rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.12s ease;
+}
+
+.fl-datepicker-action:hover:not(:disabled) {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.fl-datepicker-action:focus-visible {
+  outline: 2px solid var(--fl-primary-border, rgba(168, 85, 247, 0.3));
+  outline-offset: 1px;
+}
+
+.fl-datepicker-action:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.fl-datepicker-action--clear {
+  color: var(--text-muted, #9ca3af);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fl-datepicker-calendar {
+    transition-duration: 0.05s;
+  }
+}

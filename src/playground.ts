@@ -18,7 +18,13 @@ import {
   createSpinner,
   createSkeleton,
   createDropdown,
-  createProgress
+  createProgress,
+  createBreadcrumbs,
+  createDatepicker,
+  createAlert,
+  createPagination,
+  createSlider,
+  createTable
 } from './index';
 
 // 1. Icon Definitions (SVG Strings)
@@ -164,6 +170,61 @@ const skeletonWidthInput = document.getElementById('skeleton-width-input') as HT
 const skeletonHeightInput = document.getElementById('skeleton-height-input') as HTMLInputElement;
 const skeletonAnimateCheck = document.getElementById('skeleton-animate-check') as HTMLInputElement;
 const skeletonClassInput = document.getElementById('skeleton-class-input') as HTMLInputElement;
+
+// Customizer Element Selectors - Breadcrumbs
+const breadcrumbsPreviewContainer = document.getElementById('breadcrumbs-preview');
+const breadcrumbsSeparatorSelect = document.getElementById('breadcrumbs-separator-select') as HTMLSelectElement;
+const breadcrumbsDepthInput = document.getElementById('breadcrumbs-depth-input') as HTMLInputElement;
+const breadcrumbsCollapseCheck = document.getElementById('breadcrumbs-collapse-check') as HTMLInputElement;
+const breadcrumbsIconCheck = document.getElementById('breadcrumbs-icon-check') as HTMLInputElement;
+const breadcrumbsClassInput = document.getElementById('breadcrumbs-class-input') as HTMLInputElement;
+
+// Customizer Element Selectors - Datepicker
+const datepickerPreviewContainer = document.getElementById('datepicker-preview');
+const datepickerSizeSelect = document.getElementById('datepicker-size-select') as HTMLSelectElement;
+const datepickerLocaleSelect = document.getElementById('datepicker-locale-select') as HTMLSelectElement;
+const datepickerMinCheck = document.getElementById('datepicker-min-check') as HTMLInputElement;
+const datepickerClearableCheck = document.getElementById('datepicker-clearable-check') as HTMLInputElement;
+const datepickerDisabledCheck = document.getElementById('datepicker-disabled-check') as HTMLInputElement;
+const datepickerPlaceholderInput = document.getElementById('datepicker-placeholder-input') as HTMLInputElement;
+const datepickerClassInput = document.getElementById('datepicker-class-input') as HTMLInputElement;
+
+// Customizer Element Selectors - Alert
+const alertPreviewContainer = document.getElementById('alert-preview');
+const alertTitleInput = document.getElementById('alert-title-input') as HTMLInputElement;
+const alertMessageInput = document.getElementById('alert-message-input') as HTMLInputElement;
+const alertVariantSelect = document.getElementById('alert-variant-select') as HTMLSelectElement;
+const alertDismissibleCheck = document.getElementById('alert-dismissible-check') as HTMLInputElement;
+const alertHideIconCheck = document.getElementById('alert-hideicon-check') as HTMLInputElement;
+const alertClassInput = document.getElementById('alert-class-input') as HTMLInputElement;
+
+// Customizer Element Selectors - Pagination
+const paginationPreviewContainer = document.getElementById('pagination-preview');
+const paginationTotalInput = document.getElementById('pagination-total-input') as HTMLInputElement;
+const paginationSiblingsSelect = document.getElementById('pagination-siblings-select') as HTMLSelectElement;
+const paginationSizeSelect = document.getElementById('pagination-size-select') as HTMLSelectElement;
+const paginationDisabledCheck = document.getElementById('pagination-disabled-check') as HTMLInputElement;
+const paginationClassInput = document.getElementById('pagination-class-input') as HTMLInputElement;
+
+// Customizer Element Selectors - Slider
+const sliderPreviewContainer = document.getElementById('slider-preview');
+const sliderMinInput = document.getElementById('slider-min-input') as HTMLInputElement;
+const sliderMaxInput = document.getElementById('slider-max-input') as HTMLInputElement;
+const sliderStepInput = document.getElementById('slider-step-input') as HTMLInputElement;
+const sliderUnitInput = document.getElementById('slider-unit-input') as HTMLInputElement;
+const sliderValueCheck = document.getElementById('slider-value-check') as HTMLInputElement;
+const sliderDisabledCheck = document.getElementById('slider-disabled-check') as HTMLInputElement;
+const sliderClassInput = document.getElementById('slider-class-input') as HTMLInputElement;
+
+// Customizer Element Selectors - Table
+const tablePreviewContainer = document.getElementById('table-preview');
+const tableStripedCheck = document.getElementById('table-striped-check') as HTMLInputElement;
+const tableCompactCheck = document.getElementById('table-compact-check') as HTMLInputElement;
+const tableHoverableCheck = document.getElementById('table-hoverable-check') as HTMLInputElement;
+const tableRowClickCheck = document.getElementById('table-rowclick-check') as HTMLInputElement;
+const tableLoadingCheck = document.getElementById('table-loading-check') as HTMLInputElement;
+const tableEmptyCheck = document.getElementById('table-empty-check') as HTMLInputElement;
+const tableClassInput = document.getElementById('table-class-input') as HTMLInputElement;
 
 // Customizer Element Selectors - Dropdown
 const dropdownCustomizerTrigger = document.getElementById('dropdown-customizer-trigger') as HTMLButtonElement;
@@ -849,6 +910,212 @@ function renderCustomizerProgress() {
   progressPreviewContainer.appendChild(currentProgressInstance.element);
 }
 
+// 4o. Render Customizer Breadcrumbs
+const HOME_ICON_SVG = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>`;
+const BREADCRUMB_PATH_LABELS = ['Domů', 'Knihovna', 'Komponenty', 'Navigace', 'Breadcrumbs', 'Varianty', 'Detail'];
+
+let customizerBreadcrumbsInstance: any = null;
+
+function renderCustomizerBreadcrumbs() {
+  if (!breadcrumbsPreviewContainer) return;
+
+  if (customizerBreadcrumbsInstance) {
+    customizerBreadcrumbsInstance.destroy();
+    customizerBreadcrumbsInstance = null;
+  }
+
+  const separator = (breadcrumbsSeparatorSelect ? breadcrumbsSeparatorSelect.value : 'chevron') as any;
+  const depth = breadcrumbsDepthInput ? parseInt(breadcrumbsDepthInput.value, 10) : 4;
+  const collapse = breadcrumbsCollapseCheck ? breadcrumbsCollapseCheck.checked : false;
+  const showHomeIcon = breadcrumbsIconCheck ? breadcrumbsIconCheck.checked : true;
+  const className = breadcrumbsClassInput ? breadcrumbsClassInput.value : '';
+
+  const items = BREADCRUMB_PATH_LABELS.slice(0, depth).map((label, index) => ({
+    label,
+    href: '#',
+    icon: index === 0 && showHomeIcon ? HOME_ICON_SVG : undefined,
+    onClick: (e: MouseEvent) => {
+      e.preventDefault();
+      logEvent(`Breadcrumbs: Kliknuto na úroveň "${label}"`);
+    }
+  }));
+
+  customizerBreadcrumbsInstance = createBreadcrumbs({
+    items,
+    separator,
+    maxItems: collapse ? 3 : undefined,
+    className
+  });
+
+  breadcrumbsPreviewContainer.appendChild(customizerBreadcrumbsInstance.element);
+}
+
+// 4p. Render Customizer Datepicker
+let customizerDatepickerInstance: any = null;
+
+function renderCustomizerDatepicker() {
+  if (!datepickerPreviewContainer) return;
+
+  if (customizerDatepickerInstance) {
+    customizerDatepickerInstance.destroy();
+    customizerDatepickerInstance = null;
+  }
+
+  const size = (datepickerSizeSelect ? datepickerSizeSelect.value : 'default') as any;
+  const locale = datepickerLocaleSelect ? datepickerLocaleSelect.value : 'cs-CZ';
+  const disablePast = datepickerMinCheck ? datepickerMinCheck.checked : false;
+  const clearable = datepickerClearableCheck ? datepickerClearableCheck.checked : true;
+  const disabled = datepickerDisabledCheck ? datepickerDisabledCheck.checked : false;
+  const placeholder = datepickerPlaceholderInput ? datepickerPlaceholderInput.value : 'Vyberte datum';
+  const className = datepickerClassInput ? datepickerClassInput.value : '';
+
+  customizerDatepickerInstance = createDatepicker({
+    placeholder,
+    locale,
+    size,
+    min: disablePast ? new Date() : undefined,
+    clearable,
+    disabled,
+    className,
+    onChange: (date) => {
+      if (date) {
+        logEvent(`Datepicker: Vybráno datum ${date.toLocaleDateString(locale)}`);
+      } else {
+        logEvent('Datepicker: Výběr vymazán');
+      }
+    }
+  });
+
+  datepickerPreviewContainer.appendChild(customizerDatepickerInstance.element);
+}
+
+// 4q. Render Customizer Alert
+function renderCustomizerAlert() {
+  if (!alertPreviewContainer) return;
+  alertPreviewContainer.innerHTML = '';
+
+  const title = alertTitleInput ? alertTitleInput.value : '';
+  const message = alertMessageInput ? alertMessageInput.value : 'Ukázková zpráva';
+  const variant = (alertVariantSelect ? alertVariantSelect.value : 'info') as any;
+  const dismissible = alertDismissibleCheck ? alertDismissibleCheck.checked : true;
+  const hideIcon = alertHideIconCheck ? alertHideIconCheck.checked : false;
+  const className = alertClassInput ? alertClassInput.value : '';
+
+  alertPreviewContainer.appendChild(createAlert({
+    title: title || undefined,
+    message,
+    variant,
+    dismissible,
+    hideIcon,
+    className,
+    onDismiss: () => logEvent(`Alert (${variant}): Zavřen uživatelem`)
+  }));
+}
+
+// 4r. Render Customizer Pagination
+let customizerPaginationInstance: any = null;
+
+function renderCustomizerPagination() {
+  if (!paginationPreviewContainer) return;
+
+  if (customizerPaginationInstance) {
+    customizerPaginationInstance.destroy();
+    customizerPaginationInstance = null;
+  }
+
+  const totalPages = paginationTotalInput ? parseInt(paginationTotalInput.value, 10) || 1 : 12;
+  const siblingCount = paginationSiblingsSelect ? parseInt(paginationSiblingsSelect.value, 10) : 1;
+  const size = (paginationSizeSelect ? paginationSizeSelect.value : 'default') as any;
+  const disabled = paginationDisabledCheck ? paginationDisabledCheck.checked : false;
+  const className = paginationClassInput ? paginationClassInput.value : '';
+
+  customizerPaginationInstance = createPagination({
+    totalPages,
+    siblingCount,
+    size,
+    disabled,
+    className,
+    onChange: (page) => logEvent(`Pagination: Přepnuto na stránku ${page}`)
+  });
+
+  paginationPreviewContainer.appendChild(customizerPaginationInstance.element);
+}
+
+// 4s. Render Customizer Slider
+function renderCustomizerSlider() {
+  if (!sliderPreviewContainer) return;
+  sliderPreviewContainer.innerHTML = '';
+
+  const min = sliderMinInput ? parseFloat(sliderMinInput.value) || 0 : 0;
+  const max = sliderMaxInput ? parseFloat(sliderMaxInput.value) || 100 : 100;
+  const step = sliderStepInput ? parseFloat(sliderStepInput.value) || 1 : 1;
+  const unit = sliderUnitInput ? sliderUnitInput.value : '';
+  const showValue = sliderValueCheck ? sliderValueCheck.checked : true;
+  const disabled = sliderDisabledCheck ? sliderDisabledCheck.checked : false;
+  const className = sliderClassInput ? sliderClassInput.value : '';
+
+  sliderPreviewContainer.appendChild(createSlider({
+    min,
+    max,
+    step,
+    unit,
+    value: min + (max - min) / 2,
+    showValue,
+    disabled,
+    className,
+    ariaLabel: 'Ukázkový slider',
+    onChange: (value) => logEvent(`Slider: Hodnota nastavena na ${value}${unit}`)
+  }));
+}
+
+// 4t. Render Customizer Table
+const TABLE_DEMO_ROWS = [
+  { name: 'Anna Dvořáková', role: 'Designer', status: 'Aktivní', tasks: 12 },
+  { name: 'Petr Svoboda', role: 'Developer', status: 'Aktivní', tasks: 31 },
+  { name: 'Jana Nováková', role: 'Manager', status: 'Offline', tasks: 7 },
+  { name: 'Tomáš Krátký', role: 'Developer', status: 'Aktivní', tasks: 24 },
+  { name: 'Eva Malá', role: 'Tester', status: 'Dovolená', tasks: 3 }
+];
+
+let customizerTableInstance: any = null;
+
+function renderCustomizerTable() {
+  if (!tablePreviewContainer) return;
+
+  if (customizerTableInstance) {
+    customizerTableInstance.destroy();
+    customizerTableInstance = null;
+  }
+
+  const striped = tableStripedCheck ? tableStripedCheck.checked : true;
+  const compact = tableCompactCheck ? tableCompactCheck.checked : false;
+  const hoverable = tableHoverableCheck ? tableHoverableCheck.checked : true;
+  const rowClick = tableRowClickCheck ? tableRowClickCheck.checked : true;
+  const loading = tableLoadingCheck ? tableLoadingCheck.checked : false;
+  const empty = tableEmptyCheck ? tableEmptyCheck.checked : false;
+  const className = tableClassInput ? tableClassInput.value : '';
+
+  customizerTableInstance = createTable({
+    columns: [
+      { key: 'name', label: 'Jméno', sortable: true },
+      { key: 'role', label: 'Role', sortable: true },
+      { key: 'status', label: 'Status' },
+      { key: 'tasks', label: 'Úkoly', sortable: true, align: 'right', width: '5rem' }
+    ],
+    data: empty ? [] : TABLE_DEMO_ROWS,
+    striped,
+    compact,
+    hoverable,
+    loading,
+    emptyMessage: 'Žádní členové týmu',
+    className,
+    onRowClick: rowClick ? (row) => logEvent(`Table: Kliknuto na řádek "${row.name}"`) : undefined,
+    onSort: (key, direction) => logEvent(`Table: Seřazeno podle "${key}" (${direction})`)
+  });
+
+  tablePreviewContainer.appendChild(customizerTableInstance.element);
+}
+
 // Wire up customizer listeners - Button
 [labelInput, hrefInput, classInput].forEach(input => {
   if (input) input.addEventListener('input', renderCustomizerButton);
@@ -977,6 +1244,61 @@ if (progressVariantSelect) progressVariantSelect.addEventListener('change', rend
   if (check) check.addEventListener('change', renderCustomizerProgress);
 });
 
+// Wire up customizer listeners - Breadcrumbs
+[breadcrumbsClassInput].forEach(input => {
+  if (input) input.addEventListener('input', renderCustomizerBreadcrumbs);
+});
+if (breadcrumbsDepthInput) breadcrumbsDepthInput.addEventListener('input', renderCustomizerBreadcrumbs);
+if (breadcrumbsSeparatorSelect) breadcrumbsSeparatorSelect.addEventListener('change', renderCustomizerBreadcrumbs);
+[breadcrumbsCollapseCheck, breadcrumbsIconCheck].forEach(check => {
+  if (check) check.addEventListener('change', renderCustomizerBreadcrumbs);
+});
+
+// Wire up customizer listeners - Datepicker
+[datepickerPlaceholderInput, datepickerClassInput].forEach(input => {
+  if (input) input.addEventListener('input', renderCustomizerDatepicker);
+});
+[datepickerSizeSelect, datepickerLocaleSelect].forEach(select => {
+  if (select) select.addEventListener('change', renderCustomizerDatepicker);
+});
+[datepickerMinCheck, datepickerClearableCheck, datepickerDisabledCheck].forEach(check => {
+  if (check) check.addEventListener('change', renderCustomizerDatepicker);
+});
+
+// Wire up customizer listeners - Alert
+[alertTitleInput, alertMessageInput, alertClassInput].forEach(input => {
+  if (input) input.addEventListener('input', renderCustomizerAlert);
+});
+if (alertVariantSelect) alertVariantSelect.addEventListener('change', renderCustomizerAlert);
+[alertDismissibleCheck, alertHideIconCheck].forEach(check => {
+  if (check) check.addEventListener('change', renderCustomizerAlert);
+});
+
+// Wire up customizer listeners - Pagination
+[paginationTotalInput, paginationClassInput].forEach(input => {
+  if (input) input.addEventListener('input', renderCustomizerPagination);
+});
+[paginationSiblingsSelect, paginationSizeSelect].forEach(select => {
+  if (select) select.addEventListener('change', renderCustomizerPagination);
+});
+if (paginationDisabledCheck) paginationDisabledCheck.addEventListener('change', renderCustomizerPagination);
+
+// Wire up customizer listeners - Slider
+[sliderMinInput, sliderMaxInput, sliderStepInput, sliderUnitInput, sliderClassInput].forEach(input => {
+  if (input) input.addEventListener('input', renderCustomizerSlider);
+});
+[sliderValueCheck, sliderDisabledCheck].forEach(check => {
+  if (check) check.addEventListener('change', renderCustomizerSlider);
+});
+
+// Wire up customizer listeners - Table
+[tableClassInput].forEach(input => {
+  if (input) input.addEventListener('input', renderCustomizerTable);
+});
+[tableStripedCheck, tableCompactCheck, tableHoverableCheck, tableRowClickCheck, tableLoadingCheck, tableEmptyCheck].forEach(check => {
+  if (check) check.addEventListener('change', renderCustomizerTable);
+});
+
 if (clearConsoleBtn && consoleLogs) {
   clearConsoleBtn.addEventListener('click', () => {
     consoleLogs.innerHTML = '';
@@ -987,6 +1309,10 @@ if (clearConsoleBtn && consoleLogs) {
 // 5. Render Presets Gallery (Static Cases)
 const presetDropdownInstances: any[] = [];
 const presetProgressInstances: any[] = [];
+const presetBreadcrumbInstances: any[] = [];
+const presetDatepickerInstances: any[] = [];
+const presetPaginationInstances: any[] = [];
+const presetTableInstances: any[] = [];
 
 function renderPresets() {
   // Clear any existing instances to avoid memory leaks
@@ -994,6 +1320,26 @@ function renderPresets() {
     if (inst && typeof inst.destroy === 'function') inst.destroy();
   });
   presetDropdownInstances.length = 0;
+
+  presetBreadcrumbInstances.forEach(inst => {
+    if (inst && typeof inst.destroy === 'function') inst.destroy();
+  });
+  presetBreadcrumbInstances.length = 0;
+
+  presetDatepickerInstances.forEach(inst => {
+    if (inst && typeof inst.destroy === 'function') inst.destroy();
+  });
+  presetDatepickerInstances.length = 0;
+
+  presetPaginationInstances.forEach(inst => {
+    if (inst && typeof inst.destroy === 'function') inst.destroy();
+  });
+  presetPaginationInstances.length = 0;
+
+  presetTableInstances.forEach(inst => {
+    if (inst && typeof inst.destroy === 'function') inst.destroy();
+  });
+  presetTableInstances.length = 0;
   
   presetProgressInstances.forEach(inst => {
     if (inst && typeof inst.destroy === 'function') inst.destroy();
@@ -2239,6 +2585,349 @@ function renderPresets() {
 
     progressContainer.appendChild(queueGroup);
   }
+
+  // Breadcrumbs Presets
+  const breadcrumbSeparatorsContainer = document.getElementById('preset-breadcrumb-separators');
+  if (breadcrumbSeparatorsContainer) {
+    const separators = ['chevron', 'slash', 'dot'] as const;
+    const separatorLabels: Record<string, string> = {
+      chevron: 'Chevron',
+      slash: 'Slash',
+      dot: 'Dot'
+    };
+
+    separators.forEach(sep => {
+      const wrapper = document.createElement('div');
+      wrapper.style.display = 'flex';
+      wrapper.style.flexDirection = 'column';
+      wrapper.style.gap = '0.25rem';
+
+      const titleSpan = document.createElement('span');
+      titleSpan.textContent = separatorLabels[sep];
+      titleSpan.style.fontSize = '0.75rem';
+      titleSpan.style.fontWeight = '500';
+      titleSpan.style.color = 'var(--fl-muted-text)';
+      wrapper.appendChild(titleSpan);
+
+      const crumbs = createBreadcrumbs({
+        items: [
+          { label: 'Domů', href: '#', icon: HOME_ICON_SVG, onClick: (e) => { e.preventDefault(); logEvent(`Breadcrumbs (${sep}): Domů`); } },
+          { label: 'Produkty', href: '#', onClick: (e) => { e.preventDefault(); logEvent(`Breadcrumbs (${sep}): Produkty`); } },
+          { label: 'Elektronika', href: '#', onClick: (e) => { e.preventDefault(); logEvent(`Breadcrumbs (${sep}): Elektronika`); } },
+          { label: 'Sluchátka' }
+        ],
+        separator: sep
+      });
+      presetBreadcrumbInstances.push(crumbs);
+      wrapper.appendChild(crumbs.element);
+      breadcrumbSeparatorsContainer.appendChild(wrapper);
+    });
+  }
+
+  const breadcrumbCollapsedContainer = document.getElementById('preset-breadcrumb-collapsed');
+  if (breadcrumbCollapsedContainer) {
+    const desc = document.createElement('span');
+    desc.textContent = 'Dlouhá cesta (7 úrovní) sbalená na 3 viditelné položky — skryté úrovně otevírá tlačítko "…" v Dropdown menu.';
+    desc.style.fontSize = '0.75rem';
+    desc.style.color = 'var(--fl-muted-text)';
+    breadcrumbCollapsedContainer.appendChild(desc);
+
+    const longPath = ['Domů', 'Dokumenty', 'Projekty', '2026', 'Frontend', 'Komponenty', 'breadcrumbs.ts'];
+    const collapsedCrumbs = createBreadcrumbs({
+      items: longPath.map((label, index) => ({
+        label,
+        href: '#',
+        icon: index === 0 ? HOME_ICON_SVG : undefined,
+        onClick: (e: MouseEvent) => {
+          e.preventDefault();
+          logEvent(`Breadcrumbs (sbalené): Kliknuto na "${label}"`);
+        }
+      })),
+      separator: 'chevron',
+      maxItems: 3
+    });
+    presetBreadcrumbInstances.push(collapsedCrumbs);
+    breadcrumbCollapsedContainer.appendChild(collapsedCrumbs.element);
+
+    // File-manager style mock with slash separators and deeper collapse
+    const fmMock = document.createElement('div');
+    fmMock.style.display = 'flex';
+    fmMock.style.alignItems = 'center';
+    fmMock.style.padding = '0.6rem 1rem';
+    fmMock.style.borderRadius = '12px';
+    fmMock.style.border = '1px solid rgba(255, 255, 255, 0.08)';
+    fmMock.style.background = 'rgba(255, 255, 255, 0.02)';
+    fmMock.style.width = '100%';
+    fmMock.style.boxSizing = 'border-box';
+
+    const fmPath = ['Workspace', 'frontend-lib', 'src', 'components', 'breadcrumbs'];
+    const fmCrumbs = createBreadcrumbs({
+      items: fmPath.map((label) => ({
+        label,
+        href: '#',
+        onClick: (e: MouseEvent) => {
+          e.preventDefault();
+          logEvent(`Breadcrumbs (souborový mock): Otevřena složka "${label}"`);
+        }
+      })),
+      separator: 'slash',
+      maxItems: 4
+    });
+    presetBreadcrumbInstances.push(fmCrumbs);
+    fmMock.appendChild(fmCrumbs.element);
+    breadcrumbCollapsedContainer.appendChild(fmMock);
+  }
+
+  // Datepicker Presets
+  const datepickersContainer = document.getElementById('preset-datepickers');
+  if (datepickersContainer) {
+    const addDatepickerPreset = (title: string, instance: any) => {
+      const wrapper = document.createElement('div');
+      wrapper.style.display = 'flex';
+      wrapper.style.flexDirection = 'column';
+      wrapper.style.gap = '0.35rem';
+
+      const titleSpan = document.createElement('span');
+      titleSpan.textContent = title;
+      titleSpan.style.fontSize = '0.75rem';
+      titleSpan.style.fontWeight = '500';
+      titleSpan.style.color = 'var(--fl-muted-text)';
+      wrapper.appendChild(titleSpan);
+
+      presetDatepickerInstances.push(instance);
+      wrapper.appendChild(instance.element);
+      datepickersContainer.appendChild(wrapper);
+    };
+
+
+    // Pre-filled date of birth picker
+    addDatepickerPreset('Předvyplněné datum (Datum narození)', createDatepicker({
+      value: '1990-06-15',
+      placeholder: 'Datum narození',
+      max: new Date(),
+      clearable: true,
+      onChange: (date) => logEvent(`Preset Datum narození: ${date ? date.toLocaleDateString('cs-CZ') : 'vymazáno'}`)
+    }));
+
+    // Future-only booking picker
+    addDatepickerPreset('Pouze budoucí termíny (Rezervace)', createDatepicker({
+      placeholder: 'Termín rezervace',
+      min: new Date(),
+      onChange: (date) => logEvent(`Preset Rezervace: ${date ? date.toLocaleDateString('cs-CZ') : 'vymazáno'}`)
+    }));
+
+    // Small english variant
+    addDatepickerPreset('Anglický formát (size SM, en-US)', createDatepicker({
+      placeholder: 'Pick a date',
+      locale: 'en-US',
+      firstDayOfWeek: 0,
+      size: 'sm',
+      clearable: true,
+      onChange: (date) => logEvent(`Preset EN: ${date ? date.toLocaleDateString('en-US') : 'cleared'}`)
+    }));
+
+    // Disabled state
+    addDatepickerPreset('Disabled (Zakázaný)', createDatepicker({
+      value: new Date(),
+      disabled: true
+    }));
+  }
+
+  // Alert Presets
+  const alertsContainer = document.getElementById('preset-alerts');
+  if (alertsContainer) {
+    alertsContainer.appendChild(createAlert({
+      variant: 'info',
+      title: 'Informace',
+      message: 'Údržba systému proběhne v neděli mezi 2:00 a 4:00 ráno.'
+    }));
+    alertsContainer.appendChild(createAlert({
+      variant: 'success',
+      title: 'Platba přijata',
+      message: 'Vaše objednávka #2381 byla úspěšně zaplacena.'
+    }));
+    alertsContainer.appendChild(createAlert({
+      variant: 'warning',
+      message: 'Platnost vašeho hesla vyprší za 5 dní. Doporučujeme ho změnit.',
+      dismissible: true,
+      onDismiss: () => logEvent('Alert preset (warning): Zavřen')
+    }));
+    alertsContainer.appendChild(createAlert({
+      variant: 'error',
+      title: 'Chyba synchronizace',
+      message: 'Nepodařilo se uložit změny. Zkontrolujte připojení k internetu.',
+      dismissible: true,
+      onDismiss: () => logEvent('Alert preset (error): Zavřen')
+    }));
+  }
+
+  // Pagination Presets
+  const paginationContainer = document.getElementById('preset-pagination');
+  if (paginationContainer) {
+    const addPaginationPreset = (title: string, instance: any) => {
+      const wrapper = document.createElement('div');
+      wrapper.style.display = 'flex';
+      wrapper.style.flexDirection = 'column';
+      wrapper.style.gap = '0.35rem';
+
+      const titleSpan = document.createElement('span');
+      titleSpan.textContent = title;
+      titleSpan.style.fontSize = '0.75rem';
+      titleSpan.style.fontWeight = '500';
+      titleSpan.style.color = 'var(--fl-muted-text)';
+      wrapper.appendChild(titleSpan);
+
+      presetPaginationInstances.push(instance);
+      wrapper.appendChild(instance.element);
+      paginationContainer.appendChild(wrapper);
+    };
+
+    addPaginationPreset('Krátký seznam (5 stránek)', createPagination({
+      totalPages: 5,
+      onChange: (page) => logEvent(`Pagination preset (5): Stránka ${page}`)
+    }));
+
+    addPaginationPreset('Dlouhý seznam se zkracováním (50 stránek)', createPagination({
+      totalPages: 50,
+      page: 25,
+      onChange: (page) => logEvent(`Pagination preset (50): Stránka ${page}`)
+    }));
+
+    addPaginationPreset('Kompaktní (size SM, siblingCount 0)', createPagination({
+      totalPages: 20,
+      page: 10,
+      siblingCount: 0,
+      size: 'sm',
+      onChange: (page) => logEvent(`Pagination preset (SM): Stránka ${page}`)
+    }));
+  }
+
+  // Slider Presets
+  const slidersContainer = document.getElementById('preset-sliders');
+  if (slidersContainer) {
+    const addSliderPreset = (title: string, slider: HTMLElement) => {
+      const wrapper = document.createElement('div');
+      wrapper.style.display = 'flex';
+      wrapper.style.flexDirection = 'column';
+      wrapper.style.gap = '0.35rem';
+      wrapper.style.width = '100%';
+
+      const titleSpan = document.createElement('span');
+      titleSpan.textContent = title;
+      titleSpan.style.fontSize = '0.75rem';
+      titleSpan.style.fontWeight = '500';
+      titleSpan.style.color = 'var(--fl-muted-text)';
+      wrapper.appendChild(titleSpan);
+      wrapper.appendChild(slider);
+      slidersContainer.appendChild(wrapper);
+    };
+
+    addSliderPreset('Hlasitost (0-100 %)', createSlider({
+      value: 65,
+      unit: '%',
+      showValue: true,
+      ariaLabel: 'Hlasitost',
+      onChange: (value) => logEvent(`Slider Hlasitost: ${value}%`)
+    }));
+
+    addSliderPreset('Teplota (krok 0.5 °C)', createSlider({
+      min: 16,
+      max: 28,
+      step: 0.5,
+      value: 21.5,
+      unit: ' °C',
+      showValue: true,
+      ariaLabel: 'Teplota',
+      onChange: (value) => logEvent(`Slider Teplota: ${value} °C`)
+    }));
+
+    addSliderPreset('Bez zobrazení hodnoty', createSlider({
+      value: 30,
+      ariaLabel: 'Průhlednost',
+      onChange: (value) => logEvent(`Slider bez hodnoty: ${value}`)
+    }));
+
+    addSliderPreset('Disabled (Zakázaný)', createSlider({
+      value: 45,
+      unit: '%',
+      showValue: true,
+      disabled: true,
+      ariaLabel: 'Zakázaný slider'
+    }));
+  }
+
+  // Table Presets
+  const tablesContainer = document.getElementById('preset-tables');
+  if (tablesContainer) {
+    const addTablePreset = (title: string, instance: any) => {
+      const wrapper = document.createElement('div');
+      wrapper.style.display = 'flex';
+      wrapper.style.flexDirection = 'column';
+      wrapper.style.gap = '0.35rem';
+      wrapper.style.width = '100%';
+
+      const titleSpan = document.createElement('span');
+      titleSpan.textContent = title;
+      titleSpan.style.fontSize = '0.75rem';
+      titleSpan.style.fontWeight = '500';
+      titleSpan.style.color = 'var(--fl-muted-text)';
+      wrapper.appendChild(titleSpan);
+
+      presetTableInstances.push(instance);
+      wrapper.appendChild(instance.element);
+      tablesContainer.appendChild(wrapper);
+    };
+
+    // Rich table combining Badge and right-aligned numbers
+    addTablePreset('Faktury s Badge komponentou (řazení, kliknutí na řádek)', createTable({
+      columns: [
+        { key: 'invoice', label: 'Faktura', sortable: true },
+        { key: 'client', label: 'Klient', sortable: true },
+        {
+          key: 'status',
+          label: 'Status',
+          render: (row) => createBadge({
+            label: row.status,
+            variant: row.status === 'Zaplaceno' ? 'success' : row.status === 'Po splatnosti' ? 'error' : 'warning',
+            size: 'sm'
+          })
+        },
+        { key: 'amount', label: 'Částka (Kč)', sortable: true, align: 'right' }
+      ],
+      data: [
+        { invoice: 'INV-001', client: 'Alfa s.r.o.', status: 'Zaplaceno', amount: 12500 },
+        { invoice: 'INV-002', client: 'Beta a.s.', status: 'Čeká', amount: 8200 },
+        { invoice: 'INV-003', client: 'Gama spol.', status: 'Po splatnosti', amount: 31400 },
+        { invoice: 'INV-004', client: 'Delta s.r.o.', status: 'Zaplaceno', amount: 5600 }
+      ],
+      striped: true,
+      onRowClick: (row) => logEvent(`Table preset: Otevřena faktura ${row.invoice}`),
+      onSort: (key, direction) => logEvent(`Table preset: Řazení podle "${key}" (${direction})`)
+    }));
+
+    // Loading skeleton state
+    addTablePreset('Loading stav (Skeleton řádky)', createTable({
+      columns: [
+        { key: 'name', label: 'Soubor' },
+        { key: 'size', label: 'Velikost' },
+        { key: 'modified', label: 'Upraveno' }
+      ],
+      data: [],
+      loading: true,
+      loadingRows: 3
+    }));
+
+    // Empty state
+    addTablePreset('Prázdný stav (Empty)', createTable({
+      columns: [
+        { key: 'name', label: 'Název' },
+        { key: 'owner', label: 'Vlastník' },
+        { key: 'created', label: 'Vytvořeno' }
+      ],
+      data: [],
+      emptyMessage: 'Zatím tu nejsou žádné projekty. Vytvořte první kliknutím na „Nový projekt".'
+    }));
+  }
 }
 
 // Initial setup
@@ -2257,11 +2946,17 @@ renderCustomizerSpinner();
 renderCustomizerSkeleton();
 renderCustomizerDropdown();
 renderCustomizerProgress();
+renderCustomizerBreadcrumbs();
+renderCustomizerDatepicker();
+renderCustomizerAlert();
+renderCustomizerPagination();
+renderCustomizerSlider();
+renderCustomizerTable();
 renderPresets();
 logEvent('Playground plně spuštěn.');
 
 // 6. Tabs switching logic
-const TAB_NAMES = ['buttons', 'checkboxes', 'forms', 'cards', 'links', 'elements', 'modals', 'avatars', 'accordions', 'tabs', 'spinners', 'skeletons', 'dropdowns', 'progress'];
+const TAB_NAMES = ['buttons', 'checkboxes', 'forms', 'cards', 'links', 'elements', 'modals', 'avatars', 'accordions', 'tabs', 'spinners', 'skeletons', 'dropdowns', 'progress', 'breadcrumbs', 'datepicker', 'alerts', 'pagination', 'sliders', 'tables'];
 const TAB_LABELS: Record<string, string> = {
   buttons: 'Button',
   checkboxes: 'Checkbox',
@@ -2276,7 +2971,13 @@ const TAB_LABELS: Record<string, string> = {
   spinners: 'Spinner',
   skeletons: 'Skeleton',
   dropdowns: 'Dropdown',
-  progress: 'Progress'
+  progress: 'Progress',
+  breadcrumbs: 'Breadcrumbs',
+  datepicker: 'Datepicker',
+  alerts: 'Alert',
+  pagination: 'Pagination',
+  sliders: 'Slider',
+  tables: 'Table'
 };
 const tabTriggers = document.querySelectorAll('.tab-trigger');
 

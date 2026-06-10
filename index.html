@@ -388,6 +388,12 @@
     <button class="tab-trigger" data-tab="skeletons">Skeleton Component</button>
     <button class="tab-trigger" data-tab="dropdowns">Dropdown Component</button>
     <button class="tab-trigger" data-tab="progress">Progress Component</button>
+    <button class="tab-trigger" data-tab="breadcrumbs">Breadcrumbs Component</button>
+    <button class="tab-trigger" data-tab="datepicker">Datepicker Component</button>
+    <button class="tab-trigger" data-tab="alerts">Alert Component</button>
+    <button class="tab-trigger" data-tab="pagination">Pagination Component</button>
+    <button class="tab-trigger" data-tab="sliders">Slider Component</button>
+    <button class="tab-trigger" data-tab="tables">Table Component</button>
   </nav>
 
   <main>
@@ -1272,6 +1278,343 @@
         </div>
       </div>
     </section>
+
+    <!-- Breadcrumbs Customizer -->
+    <section class="card tab-content-breadcrumbs tab-hidden">
+      <div class="card-title">
+        <span>Interactive Breadcrumbs Customizer</span>
+        <span class="badge">Live Preview</span>
+      </div>
+
+      <div class="preview-box" id="breadcrumbs-preview" style="min-height: 120px; display: flex; align-items: center; justify-content: center; padding: 2rem;">
+        <!-- Rendered breadcrumbs will appear here -->
+      </div>
+
+      <div class="controls-grid">
+        <div class="control-group">
+          <label for="breadcrumbs-separator-select">Separator (Oddělovač)</label>
+          <select id="breadcrumbs-separator-select">
+            <option value="chevron" selected>Chevron (Šipka)</option>
+            <option value="slash">Slash (Lomítko)</option>
+            <option value="dot">Dot (Tečka)</option>
+          </select>
+        </div>
+
+        <div class="control-group">
+          <label for="breadcrumbs-depth-input">Path Depth (Hloubka cesty: 2-7)</label>
+          <input type="range" id="breadcrumbs-depth-input" min="2" max="7" value="4" style="width: 100%;">
+        </div>
+
+        <div class="control-group">
+          <label>Collapse (Sbalení dlouhé cesty)</label>
+          <div class="checkbox-row">
+            <label class="checkbox-item">
+              <input type="checkbox" id="breadcrumbs-collapse-check">
+              Collapse to dropdown (max 3)
+            </label>
+          </div>
+        </div>
+
+        <div class="control-group">
+          <label>Home Icon (Ikona domů)</label>
+          <div class="checkbox-row">
+            <label class="checkbox-item">
+              <input type="checkbox" id="breadcrumbs-icon-check" checked>
+              Show icon on first item
+            </label>
+          </div>
+        </div>
+
+        <div class="control-group">
+          <label for="breadcrumbs-class-input">Custom Class Name</label>
+          <input type="text" id="breadcrumbs-class-input" value="" placeholder="např. custom-breadcrumbs">
+        </div>
+      </div>
+    </section>
+
+    <!-- Datepicker Customizer -->
+    <section class="card tab-content-datepicker tab-hidden">
+      <div class="card-title">
+        <span>Interactive Datepicker Customizer</span>
+        <span class="badge">Live Preview</span>
+      </div>
+
+      <div class="preview-box" id="datepicker-preview" style="min-height: 140px; display: flex; align-items: center; justify-content: center; padding: 2rem;">
+        <!-- Rendered datepicker will appear here -->
+      </div>
+
+      <div class="controls-grid">
+        <div class="control-group">
+          <label for="datepicker-size-select">Field Size (Velikost)</label>
+          <select id="datepicker-size-select">
+            <option value="sm">Small (SM)</option>
+            <option value="default" selected>Default</option>
+            <option value="lg">Large (LG)</option>
+          </select>
+        </div>
+
+        <div class="control-group">
+          <label for="datepicker-locale-select">Locale (Jazyk formátu)</label>
+          <select id="datepicker-locale-select">
+            <option value="cs-CZ" selected>Čeština (cs-CZ)</option>
+            <option value="en-US">English (en-US)</option>
+            <option value="de-DE">Deutsch (de-DE)</option>
+          </select>
+        </div>
+
+        <div class="control-group">
+          <label>Range Limit (Omezení rozsahu)</label>
+          <div class="checkbox-row">
+            <label class="checkbox-item">
+              <input type="checkbox" id="datepicker-min-check">
+              Disable past dates (min = dnes)
+            </label>
+          </div>
+        </div>
+
+        <div class="control-group">
+          <label>Options (Možnosti)</label>
+          <div class="checkbox-row">
+            <label class="checkbox-item">
+              <input type="checkbox" id="datepicker-clearable-check" checked>
+              Clearable (Vymazat)
+            </label>
+            <label class="checkbox-item">
+              <input type="checkbox" id="datepicker-disabled-check">
+              Disabled
+            </label>
+          </div>
+        </div>
+
+        <div class="control-group">
+          <label for="datepicker-placeholder-input">Placeholder Text</label>
+          <input type="text" id="datepicker-placeholder-input" value="Vyberte datum">
+        </div>
+
+        <div class="control-group">
+          <label for="datepicker-class-input">Custom Class Name</label>
+          <input type="text" id="datepicker-class-input" value="" placeholder="např. custom-datepicker">
+        </div>
+      </div>
+    </section>
+
+    <!-- Alert Customizer -->
+    <section class="card tab-content-alerts tab-hidden">
+      <div class="card-title">
+        <span>Interactive Alert Customizer</span>
+        <span class="badge">Live Preview</span>
+      </div>
+
+      <div class="preview-box" id="alert-preview" style="min-height: 120px; display: flex; align-items: center; justify-content: center; padding: 2rem;">
+        <!-- Rendered alert will appear here -->
+      </div>
+
+      <div class="controls-grid">
+        <div class="control-group">
+          <label for="alert-title-input">Title (Nadpis)</label>
+          <input type="text" id="alert-title-input" value="Aktualizace dostupná">
+        </div>
+
+        <div class="control-group">
+          <label for="alert-message-input">Message (Zpráva)</label>
+          <input type="text" id="alert-message-input" value="Nová verze knihovny je připravena k instalaci.">
+        </div>
+
+        <div class="control-group">
+          <label for="alert-variant-select">Variant (Varianta)</label>
+          <select id="alert-variant-select">
+            <option value="info" selected>Info (Modrá)</option>
+            <option value="success">Success (Zelená)</option>
+            <option value="warning">Warning (Oranžová)</option>
+            <option value="error">Error (Červená)</option>
+          </select>
+        </div>
+
+        <div class="control-group">
+          <label>Options (Možnosti)</label>
+          <div class="checkbox-row">
+            <label class="checkbox-item">
+              <input type="checkbox" id="alert-dismissible-check" checked>
+              Dismissible (Zavíratelný)
+            </label>
+            <label class="checkbox-item">
+              <input type="checkbox" id="alert-hideicon-check">
+              Hide icon (Skrýt ikonu)
+            </label>
+          </div>
+        </div>
+
+        <div class="control-group">
+          <label for="alert-class-input">Custom Class Name</label>
+          <input type="text" id="alert-class-input" value="" placeholder="např. custom-alert">
+        </div>
+      </div>
+    </section>
+
+    <!-- Pagination Customizer -->
+    <section class="card tab-content-pagination tab-hidden">
+      <div class="card-title">
+        <span>Interactive Pagination Customizer</span>
+        <span class="badge">Live Preview</span>
+      </div>
+
+      <div class="preview-box" id="pagination-preview" style="min-height: 120px; display: flex; align-items: center; justify-content: center; padding: 2rem;">
+        <!-- Rendered pagination will appear here -->
+      </div>
+
+      <div class="controls-grid">
+        <div class="control-group">
+          <label for="pagination-total-input">Total Pages (Počet stránek)</label>
+          <input type="number" id="pagination-total-input" value="12" min="1" max="100">
+        </div>
+
+        <div class="control-group">
+          <label for="pagination-siblings-select">Sibling Count (Sousední stránky)</label>
+          <select id="pagination-siblings-select">
+            <option value="0">0</option>
+            <option value="1" selected>1</option>
+            <option value="2">2</option>
+          </select>
+        </div>
+
+        <div class="control-group">
+          <label for="pagination-size-select">Size (Velikost)</label>
+          <select id="pagination-size-select">
+            <option value="default" selected>Default</option>
+            <option value="sm">Small (SM)</option>
+          </select>
+        </div>
+
+        <div class="control-group">
+          <label>State (Stav)</label>
+          <div class="checkbox-row">
+            <label class="checkbox-item">
+              <input type="checkbox" id="pagination-disabled-check">
+              Disabled
+            </label>
+          </div>
+        </div>
+
+        <div class="control-group">
+          <label for="pagination-class-input">Custom Class Name</label>
+          <input type="text" id="pagination-class-input" value="" placeholder="např. custom-pagination">
+        </div>
+      </div>
+    </section>
+
+    <!-- Slider Customizer -->
+    <section class="card tab-content-sliders tab-hidden">
+      <div class="card-title">
+        <span>Interactive Slider Customizer</span>
+        <span class="badge">Live Preview</span>
+      </div>
+
+      <div class="preview-box" id="slider-preview" style="min-height: 120px; display: flex; align-items: center; justify-content: center; padding: 2rem 3rem;">
+        <!-- Rendered slider will appear here -->
+      </div>
+
+      <div class="controls-grid">
+        <div class="control-group">
+          <label for="slider-min-input">Min Value (Minimum)</label>
+          <input type="number" id="slider-min-input" value="0">
+        </div>
+
+        <div class="control-group">
+          <label for="slider-max-input">Max Value (Maximum)</label>
+          <input type="number" id="slider-max-input" value="100">
+        </div>
+
+        <div class="control-group">
+          <label for="slider-step-input">Step (Krok)</label>
+          <input type="number" id="slider-step-input" value="1" min="0.1" step="0.1">
+        </div>
+
+        <div class="control-group">
+          <label for="slider-unit-input">Unit Suffix (Jednotka)</label>
+          <input type="text" id="slider-unit-input" value="%" placeholder="např. %, px, °C">
+        </div>
+
+        <div class="control-group">
+          <label>Options (Možnosti)</label>
+          <div class="checkbox-row">
+            <label class="checkbox-item">
+              <input type="checkbox" id="slider-value-check" checked>
+              Show value (Zobrazit hodnotu)
+            </label>
+            <label class="checkbox-item">
+              <input type="checkbox" id="slider-disabled-check">
+              Disabled
+            </label>
+          </div>
+        </div>
+
+        <div class="control-group">
+          <label for="slider-class-input">Custom Class Name</label>
+          <input type="text" id="slider-class-input" value="" placeholder="např. custom-slider">
+        </div>
+      </div>
+    </section>
+
+    <!-- Table Customizer -->
+    <section class="card tab-content-tables tab-hidden">
+      <div class="card-title">
+        <span>Interactive Table Customizer</span>
+        <span class="badge">Live Preview</span>
+      </div>
+
+      <div class="preview-box" id="table-preview" style="min-height: 200px; display: flex; align-items: flex-start; justify-content: center; padding: 1.5rem;">
+        <!-- Rendered table will appear here -->
+      </div>
+
+      <div class="controls-grid">
+        <div class="control-group">
+          <label>Layout (Rozvržení)</label>
+          <div class="checkbox-row">
+            <label class="checkbox-item">
+              <input type="checkbox" id="table-striped-check" checked>
+              Striped (Pruhované řádky)
+            </label>
+            <label class="checkbox-item">
+              <input type="checkbox" id="table-compact-check">
+              Compact (Kompaktní)
+            </label>
+          </div>
+        </div>
+
+        <div class="control-group">
+          <label>Interaction (Interakce)</label>
+          <div class="checkbox-row">
+            <label class="checkbox-item">
+              <input type="checkbox" id="table-hoverable-check" checked>
+              Hoverable rows
+            </label>
+            <label class="checkbox-item">
+              <input type="checkbox" id="table-rowclick-check" checked>
+              Row click events
+            </label>
+          </div>
+        </div>
+
+        <div class="control-group">
+          <label>Data State (Stav dat)</label>
+          <div class="checkbox-row">
+            <label class="checkbox-item">
+              <input type="checkbox" id="table-loading-check">
+              Loading (Skeleton řádky)
+            </label>
+            <label class="checkbox-item">
+              <input type="checkbox" id="table-empty-check">
+              Empty (Bez dat)
+            </label>
+          </div>
+        </div>
+
+        <div class="control-group">
+          <label for="table-class-input">Custom Class Name</label>
+          <input type="text" id="table-class-input" value="" placeholder="např. custom-table">
+        </div>
+      </div>
+    </section>
   </div>
 
   <!-- Right Column: Presets & Logs -->
@@ -1500,6 +1843,61 @@
         <div class="preset-section tab-content-progress tab-hidden">
           <h3>Progress Scenarios (Předvolby)</h3>
           <div class="preset-list preset-list--column" id="preset-progress" style="width: 100%; gap: 1.5rem; padding: 1rem 0;">
+            <!-- Rendered automatically -->
+          </div>
+        </div>
+
+        <!-- Breadcrumbs Presets -->
+        <div class="preset-section tab-content-breadcrumbs tab-hidden">
+          <h3>Separator Styles (Oddělovače)</h3>
+          <div class="preset-list preset-list--column" id="preset-breadcrumb-separators" style="width: 100%; gap: 1rem; padding: 1rem 0;">
+            <!-- Rendered automatically -->
+          </div>
+        </div>
+
+        <div class="preset-section tab-content-breadcrumbs tab-hidden">
+          <h3>Collapsed Path with Dropdown (Sbalená cesta)</h3>
+          <div class="preset-list preset-list--column" id="preset-breadcrumb-collapsed" style="width: 100%; gap: 1rem; padding: 1rem 0;">
+            <!-- Rendered automatically -->
+          </div>
+        </div>
+
+        <!-- Datepicker Presets -->
+        <div class="preset-section tab-content-datepicker tab-hidden">
+          <h3>Datepicker Scenarios (Předvolby)</h3>
+          <div class="preset-list preset-list--column" id="preset-datepickers" style="width: 100%; gap: 1.25rem; padding: 1rem 0;">
+            <!-- Rendered automatically -->
+          </div>
+        </div>
+
+        <!-- Alert Presets -->
+        <div class="preset-section tab-content-alerts tab-hidden">
+          <h3>Alert Variants (Varianty)</h3>
+          <div class="preset-list preset-list--column" id="preset-alerts" style="width: 100%; gap: 0.85rem; padding: 1rem 0;">
+            <!-- Rendered automatically -->
+          </div>
+        </div>
+
+        <!-- Pagination Presets -->
+        <div class="preset-section tab-content-pagination tab-hidden">
+          <h3>Pagination Scenarios (Předvolby)</h3>
+          <div class="preset-list preset-list--column" id="preset-pagination" style="width: 100%; gap: 1.25rem; padding: 1rem 0;">
+            <!-- Rendered automatically -->
+          </div>
+        </div>
+
+        <!-- Slider Presets -->
+        <div class="preset-section tab-content-sliders tab-hidden">
+          <h3>Slider Scenarios (Předvolby)</h3>
+          <div class="preset-list preset-list--column" id="preset-sliders" style="width: 100%; gap: 1.25rem; padding: 1rem 0;">
+            <!-- Rendered automatically -->
+          </div>
+        </div>
+
+        <!-- Table Presets -->
+        <div class="preset-section tab-content-tables tab-hidden">
+          <h3>Table Scenarios (Předvolby)</h3>
+          <div class="preset-list preset-list--column" id="preset-tables" style="width: 100%; gap: 1.5rem; padding: 1rem 0;">
             <!-- Rendered automatically -->
           </div>
         </div>
